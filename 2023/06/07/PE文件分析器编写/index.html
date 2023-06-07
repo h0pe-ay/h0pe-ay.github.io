@@ -1,0 +1,668 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="hope">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="加密与解密学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PE文件分析器编写">
+<meta property="og:url" content="http://example.com/2023/06/07/PE%E6%96%87%E4%BB%B6%E5%88%86%E6%9E%90%E5%99%A8%E7%BC%96%E5%86%99/index.html">
+<meta property="og:site_name" content="hope">
+<meta property="og:description" content="加密与解密学习笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-07T14:08:24.956Z">
+<meta property="article:modified_time" content="2022-01-13T09:51:43.359Z">
+<meta property="article:author" content="hope">
+<meta property="article:tag" content="Reverse">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>PE文件分析器编写 - hope</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="PE文件分析器编写"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-06-07 22:08" pubdate>
+          2023年6月7日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          74 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">PE文件分析器编写</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="编写PE分析工具"><a href="#编写PE分析工具" class="headerlink" title="编写PE分析工具"></a>编写PE分析工具</h1><h2 id="1-检查文件格式"><a href="#1-检查文件格式" class="headerlink" title="1.检查文件格式"></a>1.检查文件格式</h2><ul>
+<li>判断文件第一个字段<code>e_magic</code>是否为<code>IMAGE_DOS_SIGNATURE</code>即<code>5A4Dh</code></li>
+<li>通过<code>e_lfanew</code>找到<code>IMAGE_NT_HEADRES</code>，判断该字段是否为<code>IMAGE_NT_SIGNATURE</code>即<code>0x4550</code></li>
+</ul>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;Windows.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br>HANDLE hFile;<br>HANDLE hMapping;<br><span class="hljs-function">BOOL <span class="hljs-title">CheckFile</span><span class="hljs-params">(PVOID ImageBase)</span></span><br><span class="hljs-function"></span>&#123;<br>	BOOL flag = FALSE;<br>	PIMAGE_DOS_HEADER header = <span class="hljs-literal">NULL</span>; <span class="hljs-comment">//DOS文件头</span><br>	PIMAGE_NT_HEADERS32 headerNT = <span class="hljs-literal">NULL</span>; <span class="hljs-comment">//NT头</span><br>	header = (PIMAGE_DOS_HEADER)ImageBase; <br>	<span class="hljs-keyword">if</span> (header-&gt;e_magic == IMAGE_DOS_SIGNATURE)<span class="hljs-comment">//判断是否为DOS文件</span><br>	&#123;<br>		headerNT = (PIMAGE_NT_HEADERS32)((DWORD)ImageBase + header-&gt;e_lfanew);<br>		<span class="hljs-keyword">if</span> (headerNT-&gt;Signature == IMAGE_NT_SIGNATURE) <span class="hljs-comment">//判断是否为标准的PE文件</span><br>		&#123;<br>			flag = TRUE;<br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">return</span> flag;<br><br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	PVOID ImageBagse = <span class="hljs-literal">NULL</span>;<br>	BOOL flag;<br>	LPCSTR path = <span class="hljs-string">&quot;F://CTF//逆向//加密与解密//PE文件结构//PETools//Release//PE.exe&quot;</span>;<br>    <span class="hljs-comment">//打开文件</span><br>	hFile = <span class="hljs-built_in">CreateFileA</span>(<br>		path,<br>		GENERIC_READ,<br>		FILE_SHARE_READ,<br>		<span class="hljs-literal">NULL</span>,<br>		OPEN_EXISTING,<br>		FILE_ATTRIBUTE_NORMAL,<br>		<span class="hljs-literal">NULL</span><br>	);<br>	<span class="hljs-keyword">if</span> (hFile == INVALID_HANDLE_VALUE)<br>	&#123;<br>		cout &lt;&lt; <span class="hljs-string">&quot;文件加载失败&quot;</span> &lt;&lt; endl;<br>	&#125;<br>	<span class="hljs-keyword">else</span><br>	&#123;<br>        <span class="hljs-comment">//将文件映射成对象</span><br>		hMapping = <span class="hljs-built_in">CreateFileMapping</span>(<br>			hFile,<br>			<span class="hljs-literal">NULL</span>,<br>			PAGE_READONLY,<br>			<span class="hljs-number">0</span>,<br>			<span class="hljs-number">0</span>,<br>			<span class="hljs-literal">NULL</span><br>		);<br>		<span class="hljs-keyword">if</span> (hMapping == INVALID_HANDLE_VALUE)<br>		&#123;<br>			cout &lt;&lt; <span class="hljs-string">&quot;文件映射对象失败&quot;</span> &lt;&lt; endl;<br>			<span class="hljs-built_in">CloseHandle</span>(hFile);<br>		&#125;<br>		<span class="hljs-keyword">else</span><br>		&#123;<br>            <span class="hljs-comment">//将映射对象映射到当前的进程中</span><br>			ImageBagse = <span class="hljs-built_in">MapViewOfFile</span>(<br>				hMapping,<br>				FILE_MAP_READ,<br>				<span class="hljs-number">0</span>,<br>				<span class="hljs-number">0</span>,<br>				<span class="hljs-number">0</span><br>			);<br>			<span class="hljs-keyword">if</span> (!ImageBagse)<br>			&#123;<br>				cout &lt;&lt; <span class="hljs-string">&quot;文件映射到当前进程空间失败&quot;</span> &lt;&lt; endl;<br>				<span class="hljs-built_in">CloseHandle</span>(hFile);<br>				<span class="hljs-built_in">CloseHandle</span>(hMapping);<br>			&#125;<br>			<span class="hljs-keyword">else</span><br>			&#123;<br>				flag = <span class="hljs-built_in">CheckFile</span>(ImageBagse);<br>				<span class="hljs-keyword">if</span> (flag)<br>				&#123;<br>					cout &lt;&lt; <span class="hljs-string">&quot;这是标准的PE文件&quot;</span> &lt;&lt; endl;<br>				&#125;<br>				<span class="hljs-keyword">else</span><br>				&#123;<br>					cout &lt;&lt; <span class="hljs-string">&quot;非法PE文件&quot;</span> &lt;&lt; endl;<br>				&#125;<br>			&#125;<br>		&#125;<br><br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="使用的Win32-API"><a href="#使用的Win32-API" class="headerlink" title="使用的Win32 API"></a>使用的Win32 API</h3><h4 id="CreateFileA"><a href="#CreateFileA" class="headerlink" title="CreateFileA"></a>CreateFileA</h4><p>创建或打开文件或 I&#x2F;O 设备</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">HANDLE <span class="hljs-title">CreateFileA</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">  [in]           LPCSTR                lpFileName, <span class="hljs-comment">//要创建或打开的文件或设备的名称。</span></span></span><br><span class="hljs-params"><span class="hljs-function">  [in]           DWORD                 dwDesiredAccess,<span class="hljs-comment">//对文件或设备的请求访问，可以概括为读、写、两者或都不为零</span></span></span><br><span class="hljs-params"><span class="hljs-function">  [in]           DWORD                 dwShareMode,<span class="hljs-comment">//文件或设备请求的共享模式，可以是read、write、both、delete、all these或none</span></span></span><br><span class="hljs-params"><span class="hljs-function">  [in, optional] LPSECURITY_ATTRIBUTES lpSecurityAttributes,<span class="hljs-comment">//一个指向SECURITY_ATTRIBUTES 结构的指针，该结构包含两个独立但相关的数据成员：一个可选的安全描述符和一个布尔值，用于确定返回的句柄是否可以被子进程继承。此参数可以为NULL</span></span></span><br><span class="hljs-params"><span class="hljs-function">  [in]           DWORD                 dwCreationDisposition,<span class="hljs-comment">//对存在或不存在的文件或设备执行的操作。对于文件以外的设备，此参数通常设置为OPEN_EXISTING。</span></span></span><br><span class="hljs-params"><span class="hljs-function">  [in]           DWORD                 dwFlagsAndAttributes,<span class="hljs-comment">//文件或设备属性和标志，FILE_ATTRIBUTE_NORMAL是文件最常见的默认值。</span></span></span><br><span class="hljs-params"><span class="hljs-function">  [in, optional] HANDLE                hTemplateFile<span class="hljs-comment">//具有GENERIC_READ访问权限的模板文件的有效句柄。模板文件为正在创建的文件提供文件属性和扩展属性。此参数可以为NULL。</span></span></span><br><span class="hljs-params"><span class="hljs-function">)</span></span>;<br><br><span class="hljs-comment">//例子</span><br>hFile = <span class="hljs-built_in">CreateFileA</span>(<br>		path,<br>		GENERIC_READ,<br>		FILE_SHARE_READ,<br>		<span class="hljs-literal">NULL</span>,<br>		OPEN_EXISTING,<br>		FILE_ATTRIBUTE_NORMAL,<br>		<span class="hljs-literal">NULL</span><br>	);<br></code></pre></td></tr></table></figure>
+
+<h4 id="CreateFileMapping"><a href="#CreateFileMapping" class="headerlink" title="CreateFileMapping"></a>CreateFileMapping</h4><p>为指定文件创建或打开命名或未命名文件映射对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">HANDLE <span class="hljs-title">CreateFileMappingA</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">  [in]           HANDLE                hFile,<span class="hljs-comment">//要从中创建文件映射对象的文件的句柄。</span></span></span><br><span class="hljs-params"><span class="hljs-function">  [in, optional] LPSECURITY_ATTRIBUTES lpFileMappingAttributes,</span></span><br><span class="hljs-params"><span class="hljs-function">  [in]           DWORD                 flProtect,<span class="hljs-comment">//指定文件映射对象的页面保护。对象的所有映射视图都必须与此保护兼容。</span></span></span><br><span class="hljs-params"><span class="hljs-function">  [in]           DWORD                 dwMaximumSizeHigh,<span class="hljs-comment">//文件映射对象的最大大小的高位DWORD</span></span></span><br><span class="hljs-params"><span class="hljs-function">  [in]           DWORD                 dwMaximumSizeLow,<span class="hljs-comment">//文件映射对象的最大大小的低位DWORD</span></span></span><br><span class="hljs-params"><span class="hljs-function">  [in, optional] LPCSTR                lpName<span class="hljs-comment">//文件映射对象的名称</span></span></span><br><span class="hljs-params"><span class="hljs-function">)</span></span>;<br><br><span class="hljs-comment">//例子</span><br>hMapping = <span class="hljs-built_in">CreateFileMapping</span>(<br>			hFile,<br>			<span class="hljs-literal">NULL</span>,<br>			PAGE_READONLY,<br>			<span class="hljs-number">0</span>,<br>			<span class="hljs-number">0</span>,<br>			<span class="hljs-literal">NULL</span><br>);<br></code></pre></td></tr></table></figure>
+
+<h4 id="MapViewOfFile"><a href="#MapViewOfFile" class="headerlink" title="MapViewOfFile"></a>MapViewOfFile</h4><p>将文件映射视图映射到调用进程的地址空间。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">LPVOID <span class="hljs-title">MapViewOfFile</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">  [in] HANDLE hFileMappingObject,<span class="hljs-comment">//文件映射对象的句柄</span></span></span><br><span class="hljs-params"><span class="hljs-function">  [in] DWORD  dwDesiredAccess,<span class="hljs-comment">//对文件映射对象的访问类型，它决定了页面的页面保护。</span></span></span><br><span class="hljs-params"><span class="hljs-function">  [in] DWORD  dwFileOffsetHigh,<span class="hljs-comment">//视图开始的文件偏移量的高位DWORD。</span></span></span><br><span class="hljs-params"><span class="hljs-function">  [in] DWORD  dwFileOffsetLow,<span class="hljs-comment">//视图开始的文件偏移量的低位DWORD。</span></span></span><br><span class="hljs-params"><span class="hljs-function">  [in] SIZE_T dwNumberOfBytesToMap<span class="hljs-comment">//映射到视图的文件映射的字节数</span></span></span><br><span class="hljs-params"><span class="hljs-function">)</span></span>;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-获取PE文件头信息"><a href="#2-获取PE文件头信息" class="headerlink" title="2.获取PE文件头信息"></a>2.获取PE文件头信息</h2><ol>
+<li>通过<code>NT</code>头获取<code>IMAGE_FILE_HEADE</code>结构体指针，接着输出各成员的信息</li>
+<li>通过<code>NT</code>头获取<code>IMAGE_OPTIONAL_HEADER</code>结构体指针，接着输出各成员信息</li>
+<li>通过<code>IMAGE_OPTIONAL_HEADER</code>结构体获取数据目录项成员</li>
+</ol>
+<h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">//获取FILE_HEADER结构体</span><br><span class="hljs-function">PIMAGE_FILE_HEADER <span class="hljs-title">GetFileHeader</span><span class="hljs-params">(PVOID ImageBase)</span></span><br><span class="hljs-function"></span>&#123;<br>	PIMAGE_FILE_HEADER  pFH = <span class="hljs-literal">NULL</span>;<br>	PIMAGE_NT_HEADERS  pNtH = <span class="hljs-literal">NULL</span>;<br>	pNtH = <span class="hljs-built_in">GetNtHeader</span>(ImageBase);<br>	pFH = &amp;pNtH-&gt;FileHeader;<br>	<span class="hljs-keyword">return</span> pFH;<br>&#125;<br><span class="hljs-function">PIMAGE_OPTIONAL_HEADER32 <span class="hljs-title">GetOptionalHeader</span><span class="hljs-params">(PVOID ImageBase)</span></span><br><span class="hljs-function"></span>&#123;<br>	PIMAGE_OPTIONAL_HEADER32 pOH = <span class="hljs-literal">NULL</span>;<br>	PIMAGE_NT_HEADERS32 pNtH = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-keyword">if</span> (!ImageBase)<br>	&#123;<br>		cout &lt;&lt; <span class="hljs-string">&quot;非法地址&quot;</span> &lt;&lt; endl;<br>		<span class="hljs-keyword">return</span> pOH;<br>	&#125;<br>	pNtH = <span class="hljs-built_in">GetNtHeader</span>(ImageBase);<br>	pOH = &amp;pNtH-&gt;OptionalHeader;<br>	<span class="hljs-keyword">return</span> pOH;<br>&#125;<br><span class="hljs-comment">//显示FileHeader结构体信息</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ShowFileHeaderInfo</span><span class="hljs-params">(PIMAGE_FILE_HEADER pFH)</span></span><br><span class="hljs-function"></span>&#123;<br>	cout &lt;&lt; <span class="hljs-string">&quot;-------------FileHeaderInfo----------------&quot;</span> &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;FileHeader结构体的地址为:&quot;</span> &lt;&lt; hex&lt;&lt;pFH &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;Machine:&quot;</span> &lt;&lt; hex&lt;&lt;pFH-&gt;Machine &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;NumberOfSections:&quot;</span> &lt;&lt; hex&lt;&lt;pFH-&gt;NumberOfSections &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;TimeDateStamp:&quot;</span> &lt;&lt; hex&lt;&lt; pFH-&gt;TimeDateStamp &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;PointerToSymbolTable:&quot;</span> &lt;&lt; hex &lt;&lt; pFH-&gt;PointerToSymbolTable &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;NumberOfSymbols:&quot;</span> &lt;&lt; hex &lt;&lt; pFH-&gt;NumberOfSymbols &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;SizeOfOptionalHeader:&quot;</span> &lt;&lt; hex &lt;&lt; pFH-&gt;SizeOfOptionalHeader &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;Characteristics:&quot;</span> &lt;&lt; hex &lt;&lt; pFH-&gt;Characteristics &lt;&lt; endl;<br>&#125;<br><span class="hljs-comment">//显示Optional结构体的信息</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ShowOptionalInfo</span><span class="hljs-params">(PIMAGE_OPTIONAL_HEADER32 pOH)</span></span><br><span class="hljs-function"></span>&#123;<br>	cout &lt;&lt; <span class="hljs-string">&quot;-------------OptionalInfo----------------&quot;</span> &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;Magic:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;Magic &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;SizeOfCode&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;SizeOfCode &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;AddressOfEntryPoint&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;AddressOfEntryPoint &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;BaseOfCode&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;BaseOfCode &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;BaseOfData&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;BaseOfData &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;ImageBase&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;ImageBase &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;SizeOfImage&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;SizeOfImage &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;CheckSum&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;CheckSum &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;NumberOfRvaAndSize&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;NumberOfRvaAndSizes &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;DataDirectory&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory &lt;&lt; endl;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ShowDataDirectoryInfo</span><span class="hljs-params">(PIMAGE_OPTIONAL_HEADER32 pOH)</span></span><br><span class="hljs-function"></span>&#123;<br>	cout &lt;&lt; <span class="hljs-string">&quot;-------------DataDirectoryInfo----------------&quot;</span> &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;ExportTable -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">0</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">0</span>].Size &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;ImportTable -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">1</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">1</span>].Size &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;ResourcesTable -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">2</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">2</span>].Size &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;ExceptionTable -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">3</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">3</span>].Size &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;SecurityTable -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">4</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">4</span>].Size &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;BaserelocationTable -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">5</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">5</span>].Size &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;Debug -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">6</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">6</span>].Size &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;Copyright -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">7</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">7</span>].Size &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;Global Ptr -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">8</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">8</span>].Size &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;Thread local storage(TLS) -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">9</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">9</span>].Size &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;Load configuration -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">10</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">10</span>].Size &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;Bound Import -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">11</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">11</span>].Size &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;Import Address Table(IAT) -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">12</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">12</span>].Size &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;Delay Import -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">13</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">13</span>].Size &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;COM descriptor -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">14</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">14</span>].Size &lt;&lt; endl;<br>	cout &lt;&lt; <span class="hljs-string">&quot;NULL -- RVA:&quot;</span> &lt;&lt; hex &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">15</span>].VirtualAddress &lt;&lt; <span class="hljs-string">&quot; -- size: &quot;</span> &lt;&lt; pOH-&gt;DataDirectory[<span class="hljs-number">15</span>].Size &lt;&lt; endl;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%80%86%E5%90%91/" class="category-chain-item">逆向</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Reverse/">#Reverse</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>PE文件分析器编写</div>
+      <div>http://example.com/2023/06/07/PE文件分析器编写/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>hope</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年6月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/06/07/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" title="PE文件结构">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">PE文件结构</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/06/07/PE%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E6%B3%A8%E5%85%A5/" title="PE静态文件注入">
+                        <span class="hidden-mobile">PE静态文件注入</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
