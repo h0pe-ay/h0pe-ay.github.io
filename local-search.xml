@@ -4,7 +4,7 @@
   
   
   <entry>
-    <title>CVE-2021-4034 pkexec本地提权漏洞</title>
+    <title>CVE-2021-4034-pkexec数组越界</title>
     <link href="/2023/06/07/CVE-2021-4034%20pkexec/"/>
     <url>/2023/06/07/CVE-2021-4034%20pkexec/</url>
     
