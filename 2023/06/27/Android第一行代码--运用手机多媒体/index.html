@@ -1,0 +1,818 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/hope.jpg">
+  <link rel="icon" href="/img/hope.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="hope">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Android第一行代码学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android第一行代码--多媒体">
+<meta property="og:url" content="http://example.com/2023/06/27/Android%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81--%E8%BF%90%E7%94%A8%E6%89%8B%E6%9C%BA%E5%A4%9A%E5%AA%92%E4%BD%93/index.html">
+<meta property="og:site_name" content="hope">
+<meta property="og:description" content="Android第一行代码学习笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-27T11:03:46.702Z">
+<meta property="article:modified_time" content="2022-01-21T17:22:22.175Z">
+<meta property="article:author" content="hope">
+<meta property="article:tag" content="Android">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Android第一行代码--多媒体 - hope</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ZqEEnP8vrF2LzEKjCt8pL5Cf-gzGzoHsz","app_key":"6Owvec9nVB4K93xxi7CKzAqh","server_url":"https://zqeenp8v.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>hope</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Android第一行代码--多媒体"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-06-27 19:03" pubdate>
+          2023年6月27日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          102 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Android第一行代码--多媒体</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="运用手机多媒体"><a href="#运用手机多媒体" class="headerlink" title="运用手机多媒体"></a>运用手机多媒体</h1><h2 id="通知-Notification"><a href="#通知-Notification" class="headerlink" title="通知(Notification)"></a>通知(Notification)</h2><p>创建通知的详细步骤</p>
+<ul>
+<li>首先需要一个<code>NotificationManager</code>对通知进行管理。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">NotificationManager</span> <span class="hljs-variable">manager</span> <span class="hljs-operator">=</span> (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>接着使用<code>Builder</code>构造器来创建<code>Notification</code>对象</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Notification</span> <span class="hljs-variable">notification</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">NotificationCompat</span>.Builder(context).build();<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>设置许多方法丰富<code>Notification</code>对象</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Notification</span> <span class="hljs-variable">notification</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">NotificationCompat</span>.Builder(context)<br>    .setContentTile(<span class="hljs-string">&quot;This is content titile&quot;</span>)<span class="hljs-comment">//用于指定通知的标题内容</span><br>    .setContextText(<span class="hljs-string">&quot;This is content&quot;</span>)<span class="hljs-comment">//指定通知的正文内容</span><br>    .setWhen(System.currentTimeMillis())<span class="hljs-comment">//通知被创建的时间</span><br>    .setSmallIcon(R.drawable.small_icon)<span class="hljs-comment">//设置通知的小图标</span><br>    .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.large_icon))<span class="hljs-comment">//设置通知的大图标</span><br>    .build();<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>使用<code>notify()</code>方法可以让通知显示出来<ul>
+<li>参数一：<code>id</code>，保证每个通知所指定的<code>id</code>都是不同的</li>
+<li>参数二：<code>Notification</code>对象</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">manager.notify(<span class="hljs-number">1</span>,notification);<br></code></pre></td></tr></table></figure>
+
+<h3 id="NotificationTest"><a href="#NotificationTest" class="headerlink" title="NotificationTest"></a>NotificationTest</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onClick</span><span class="hljs-params">(View v)</span> &#123;<br>    <span class="hljs-keyword">switch</span> (v.getId())&#123;<br>        <span class="hljs-keyword">case</span> R.id.send_notice:<br>            <span class="hljs-type">NotificationManager</span> <span class="hljs-variable">notificationManager</span> <span class="hljs-operator">=</span> (NotificationManager) getSystemService(NOTIFICATION_SERVICE);<br>            <span class="hljs-type">Notification</span> <span class="hljs-variable">notification</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">NotificationCompat</span>.Builder(<span class="hljs-built_in">this</span>)<br>                    .setContentTitle(<span class="hljs-string">&quot;This is content title&quot;</span>)<br>                    .setContentText(<span class="hljs-string">&quot;this is content text&quot;</span>)<br>                    .setWhen(System.currentTimeMillis())<br>                    .setSmallIcon(R.mipmap.ic_launcher)<br>                    .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher))<br>                    .build();<br>            notificationManager.notify(<span class="hljs-number">1</span>,notification);<br>            <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">default</span>:<br>                <span class="hljs-keyword">break</span>;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="PendingIntent"><a href="#PendingIntent" class="headerlink" title="PendingIntent"></a>PendingIntent</h3><p><code>PendingIntent</code>倾向于在某个合适的时机去执行某个动作。这里第一行代码也比喻为延迟执行的<code>Intent</code></p>
+<p><code>PendingIntent</code>可以用几种方法提供实例</p>
+<ul>
+<li><code>getActivity()</code>方法</li>
+<li><code>getBroadcast()</code>方法</li>
+<li><code>getService()</code>方法</li>
+</ul>
+<p>这几个方法接收参数相同</p>
+<ul>
+<li>参数一：<code>Context</code></li>
+<li>参数二：一般用不到，传入0</li>
+<li>参数三：<code>Intent</code>对象</li>
+<li>参数四：用于确定<code>PendingIntent</code>的行为<ul>
+<li><code>FLAG_ONE_SHOT</code></li>
+<li><code>FLAG_NOCREATE</code></li>
+<li><code>FLAG_CANCEL_CURRENT</code></li>
+<li><code>FLAG_UPDATE_CURRENT</code></li>
+<li>通常传0即可</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">                <span class="hljs-type">Intent</span> <span class="hljs-variable">intent</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Intent</span>(<span class="hljs-built_in">this</span>, NotificationActivity.class);<br>                <span class="hljs-type">PendingIntent</span> <span class="hljs-variable">pi</span> <span class="hljs-operator">=</span> PendingIntent.getActivity(<span class="hljs-built_in">this</span>,<span class="hljs-number">0</span>,intent,<span class="hljs-number">0</span>);<br>...<br>    .setContentIntent(pi)<br></code></pre></td></tr></table></figure>
+
+<p><strong>消失显示在系统通知栏的图标</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//方法一</span><br>.setAutoCancel(<span class="hljs-literal">true</span>)<br><span class="hljs-comment">//方法二</span><br>manager.cancel(<span class="hljs-number">1</span>);<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>setSound()</code>方法用于在通知发出的时候播放一段音频。<ul>
+<li>参数一：接收一个<code>Uri</code>参数</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">.setSound(Uri.fromFile(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;/system/media/audio/ringtones/Luna.ogg&quot;</span>)))<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>通知到来的时候让手机进行振动</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/*</span><br><span class="hljs-comment">下标为0表示手机静止的时长</span><br><span class="hljs-comment">下标为1表示手机振动的时长</span><br><span class="hljs-comment">下标为2表示手机静止的时长</span><br><span class="hljs-comment">...</span><br><span class="hljs-comment">以此类推</span><br><span class="hljs-comment">*/</span><br>.setVibrate(<span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[]&#123;<span class="hljs-number">0</span>,<span class="hljs-number">1000</span>,<span class="hljs-number">1000</span>,<span class="hljs-number">1000</span>&#125;)<br><span class="hljs-comment">/*</span><br><span class="hljs-comment">还需要添加权限</span><br><span class="hljs-comment">*/</span><br>&lt;uses-permission android:name=<span class="hljs-string">&quot;android.permission.VIBRATE&quot;</span>/&gt;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>通知时控制手机LED灯的显示</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/*</span><br><span class="hljs-comment">第一个参数用于指定LED灯的颜色</span><br><span class="hljs-comment">第二个参数用于指定LED灯亮起的时长</span><br><span class="hljs-comment">第三个参数用于指定LED灯暗去的时长</span><br><span class="hljs-comment">*/</span><br>.setLights(Color.GREEN,<span class="hljs-number">1000</span>,<span class="hljs-number">1000</span>)<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>通知的默认效果</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">.setDefaults(NotificationCompat.DEFAULT_ALL)<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>显示通知长段文字</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">.setStyle(<span class="hljs-keyword">new</span> <span class="hljs-title class_">NotificationCompat</span>.BigTextStyle().bigText(<span class="hljs-string">&quot;.....&quot;</span>))<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>显示一张大图片</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">.setStyle(<span class="hljs-keyword">new</span> <span class="hljs-title class_">NotificationCompat</span>.BigPictureStyle().bigPicture(BitmapFactory.decodeResource(getResources(),R.drawable.big_image)))<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>设置通知的重要程度<ul>
+<li><code>PRIORITY_DEFAULT</code>默认的重要程度</li>
+<li><code>PRIORITY_MIN</code>表示最低的重要程度</li>
+<li><code>PRIORITY_LOW</code>表示较低的重要程度</li>
+<li><code>PRIORITY_HIGH</code>表示较高的重要程度</li>
+<li><code>PRIORITY_MAX</code>表示最高的重要程度，这类通知消息必须要让用户立刻看到</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">.setPriority(NotificationCompat.PRIORITY_MAX)<br></code></pre></td></tr></table></figure>
+
+<h2 id="调用摄像头和相册"><a href="#调用摄像头和相册" class="headerlink" title="调用摄像头和相册"></a>调用摄像头和相册</h2><h3 id="调用摄像头"><a href="#调用摄像头" class="headerlink" title="调用摄像头"></a>调用摄像头</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs java">...<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onClick</span><span class="hljs-params">(View v)</span> &#123;<br>                <span class="hljs-comment">//用于存放摄像头拍摄的照片</span><br>                <span class="hljs-comment">//getExternalCacheDir()用于获取应用关联缓冲目录</span><br>                <span class="hljs-comment">//File()参数一为目录，参数二为文件名</span><br>                <span class="hljs-type">File</span> <span class="hljs-variable">outputImage</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(getExternalCacheDir(),<span class="hljs-string">&quot;output_image.jpg&quot;</span>);<br>                <span class="hljs-keyword">try</span>&#123;<br>                    <span class="hljs-comment">//判断文件是否存在</span><br>                    <span class="hljs-keyword">if</span>(outputImage.exists())&#123;<br>                        <span class="hljs-comment">//文件存在则直接删除</span><br>                        outputImage.delete();<br>                    &#125;<br>                    <span class="hljs-comment">//创建新文件</span><br>                    outputImage.createNewFile();<br>                &#125;<span class="hljs-keyword">catch</span> (IOException e)&#123;<br>                    e.printStackTrace();<br>                &#125;<br>                <span class="hljs-keyword">if</span>(Build.VERSION.SDK_INT&gt;=<span class="hljs-number">24</span>)&#123;<br>                    <span class="hljs-comment">/*</span><br><span class="hljs-comment">                    参数一：context</span><br><span class="hljs-comment">                    参数二：唯一的字符串</span><br><span class="hljs-comment">                    参数三：File对象</span><br><span class="hljs-comment">                     */</span><br>                    imageUri = FileProvider.getUriForFile(MainActivity.<span class="hljs-built_in">this</span>,<span class="hljs-string">&quot;com.example.cameraalbumtest.fileprovider&quot;</span>,outputImage);<br><br>                &#125;<br>                <span class="hljs-keyword">else</span>&#123;<br>                    <span class="hljs-comment">//将File对象转化为Uri对象</span><br>                    imageUri = Uri.fromFile(outputImage);<br>                &#125;<br>                <span class="hljs-comment">//隐式intent，action为android.media.action.IMAGE_CAPTURE</span><br>                <span class="hljs-type">Intent</span> <span class="hljs-variable">intent</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Intent</span>(<span class="hljs-string">&quot;android.media.action.IMAGE_CAPTURE&quot;</span>);<br>                <span class="hljs-comment">//指定图片存储的路径</span><br>                intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);<br>                <span class="hljs-comment">//启动activity</span><br>                startActivityForResult(intent,TAKE_PHOTO);<br>            &#125;<br>        &#125;);<br>...<br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onActivityResult</span><span class="hljs-params">(<span class="hljs-type">int</span> requestCode, <span class="hljs-type">int</span> resultCode, <span class="hljs-meta">@Nullable</span> Intent data)</span> &#123;<br>        <span class="hljs-keyword">switch</span> (requestCode)&#123;<br>            <span class="hljs-keyword">case</span> TAKE_PHOTO:<br>                <span class="hljs-keyword">if</span>(resultCode == RESULT_OK)&#123;<br>                    <span class="hljs-keyword">try</span>&#123;<br>                        <span class="hljs-comment">//将拍摄的图片解析成Bitmap对象</span><br>                        <span class="hljs-type">Bitmap</span> <span class="hljs-variable">bitmap</span> <span class="hljs-operator">=</span> BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));<br>                        <span class="hljs-comment">//将Bitmap对象使用imageView呈现出来</span><br>                        picture.setImageBitmap(bitmap);<br>                    &#125;<span class="hljs-keyword">catch</span> (FileNotFoundException e)&#123;<br>                        e.printStackTrace();<br>                    &#125;<br>                &#125;<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">default</span>:<br>                <span class="hljs-keyword">break</span>;<br>        &#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>配置文件</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">provider</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;androidx.core.content.FileProvider&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:authorities</span>=<span class="hljs-string">&quot;com.example.cameraalbumtest.fileprovider&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:exported</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">    <span class="hljs-attr">android:grantUriPermissions</span>=<span class="hljs-string">&quot;true&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta-data</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.support.FILE_PROVIDER_PATHS&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">android:resource</span>=<span class="hljs-string">&quot;@xml/file_paths&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">meta-data</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">provider</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>file_paths.xml</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;utf-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">paths</span> <span class="hljs-attr">xmlns:android</span>=<span class="hljs-string">&quot;http://schemas.android.com/apk/res/android&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">files-path</span></span><br><span class="hljs-tag">        <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;my_images&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">path</span>=<span class="hljs-string">&quot;.&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">paths</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="调用相册"><a href="#调用相册" class="headerlink" title="调用相册"></a>调用相册</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><code class="hljs java">...<br>        chooseFromAlbum.setOnClickListener(<span class="hljs-keyword">new</span> <span class="hljs-title class_">View</span>.OnClickListener() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onClick</span><span class="hljs-params">(View v)</span> &#123;<br>                <span class="hljs-comment">//检查是否有写外部存储的权限</span><br>                <span class="hljs-keyword">if</span>(ContextCompat.checkSelfPermission(MainActivity.<span class="hljs-built_in">this</span>, Manifest.permission.WRITE_EXTERNAL_STORAGE)<br>                != PackageManager.PERMISSION_GRANTED)&#123;<br>                    <span class="hljs-comment">//若没有则请求获取，利用String[]&#123;&#125;写入需要获得的权限</span><br>                    ActivityCompat.requestPermissions(MainActivity.<span class="hljs-built_in">this</span>,<span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>[]&#123;Manifest.permission.WRITE_EXTERNAL_STORAGE&#125;,<span class="hljs-number">1</span>);<br>                &#125;<span class="hljs-keyword">else</span> &#123;<br>                    openAlbum();<br>                &#125;<br>            &#125;<br>        &#125;);<br>...<br>        <span class="hljs-keyword">private</span>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">openAlbum</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-type">Intent</span> <span class="hljs-variable">intent</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Intent</span>(<span class="hljs-string">&quot;android.intent.action.GET_CONTENT&quot;</span>);<br>        intent.setType(<span class="hljs-string">&quot;image/*&quot;</span>);<br>        startActivityForResult(intent,CHOOSE_PHOTO);<br>    &#125;<br>...<br>        <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onRequestPermissionsResult</span><span class="hljs-params">(<span class="hljs-type">int</span> requestCode, <span class="hljs-meta">@NonNull</span> String[] permissions, <span class="hljs-meta">@NonNull</span> <span class="hljs-type">int</span>[] grantResults)</span> &#123;<br>        <span class="hljs-keyword">switch</span> (requestCode)&#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:<br>                <span class="hljs-keyword">if</span>(grantResults.length&gt;<span class="hljs-number">0</span>&amp;&amp;grantResults[<span class="hljs-number">0</span>]==PackageManager.PERMISSION_GRANTED)&#123;<br>                    openAlbum();<br>                &#125;<span class="hljs-keyword">else</span>&#123;<br>                    Toast.makeText(<span class="hljs-built_in">this</span>,<span class="hljs-string">&quot;You denied the permission&quot;</span>,Toast.LENGTH_SHORT).show();<br>                &#125;<br>                <span class="hljs-keyword">break</span>;<br>        &#125;<br>    &#125;<br>...<br>               <span class="hljs-keyword">case</span> CHOOSE_PHOTO:<br>                <span class="hljs-keyword">if</span>(resultCode == RESULT_OK)&#123;<br>                    <span class="hljs-keyword">if</span>(Build.VERSION.SDK_INT&gt;=<span class="hljs-number">19</span>)&#123;<br>                        handleImageOnKitKat(data);<br>                    &#125;<br>                    <span class="hljs-keyword">else</span>&#123;<br>                        handleImageBeforeKitKat(data);<br>                    &#125;<br>                &#125;<br>                <span class="hljs-keyword">break</span>;<br>...<br>        <span class="hljs-comment">//指示Lint应将此类型视为针对给定API级别，无论项目的target版本是多少</span><br>    <span class="hljs-meta">@TargetApi(19)</span><br>    <span class="hljs-keyword">private</span>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">handleImageOnKitKat</span><span class="hljs-params">(Intent data)</span>&#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">imagePath</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-comment">/*</span><br><span class="hljs-comment">        getData()检索intent正在操作的数据</span><br><span class="hljs-comment">        Uri代表要操作的数据</span><br><span class="hljs-comment">        */</span><br>        <span class="hljs-type">Uri</span> <span class="hljs-variable">uri</span> <span class="hljs-operator">=</span> data.getData();<br>        <span class="hljs-comment">/*</span><br><span class="hljs-comment">        DocumentsContract用于定义documents provider和平台之间的连接</span><br><span class="hljs-comment">        isDocumentUri()方法用于测试给定的Uri是否为DocumentsProvider支持的Document</span><br><span class="hljs-comment">         */</span><br>        <span class="hljs-keyword">if</span>(DocumentsContract.isDocumentUri(<span class="hljs-built_in">this</span>,uri))&#123;<br>            <span class="hljs-comment">/*</span><br><span class="hljs-comment">            Uri:content://com.android.providers.media.documents/document/image%3A447</span><br><span class="hljs-comment">             */</span><br><br>            <span class="hljs-comment">//如果是document类型的Uri，则通过document id处理</span><br><br>            <span class="hljs-comment">/*</span><br><span class="hljs-comment">            在4.4之前Uri的形式Uri ： content://media/extenral/images/media/17766</span><br><span class="hljs-comment">            在4.4之后Uri的形式content://com.android.providers.media.documents/document/image%3A82482</span><br><span class="hljs-comment">            参考https://blog.csdn.net/yancychas/article/details/76695136</span><br><span class="hljs-comment">            4.4之后的Uri经过了documents的封装</span><br><span class="hljs-comment">             */</span><br><br>            <span class="hljs-comment">/*</span><br><span class="hljs-comment">            这里取出的docId为image:447，即取出document后面的值</span><br><span class="hljs-comment">             */</span><br><br>            <span class="hljs-type">String</span> <span class="hljs-variable">docId</span> <span class="hljs-operator">=</span> DocumentsContract.getDocumentId(uri);<br><br>            <span class="hljs-comment">/*</span><br><span class="hljs-comment">            getAuthority()方法用于获取URI中authority的部分的解码</span><br><span class="hljs-comment">             */</span><br>            <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;com.android.providers.media.documents&quot;</span>.equals(uri.getAuthority()))&#123;<br>                <span class="hljs-comment">//取出id值</span><br>                <span class="hljs-type">String</span> <span class="hljs-variable">id</span> <span class="hljs-operator">=</span> docId.split(<span class="hljs-string">&quot;:&quot;</span>)[<span class="hljs-number">1</span>];<br>                <span class="hljs-comment">/*</span><br><span class="hljs-comment">                MediaStore用于连接medio provider 与应用程序</span><br><span class="hljs-comment">                MediaStore.Images用于收集所有MIME类型的images</span><br><span class="hljs-comment">                MIME类型是媒体类型</span><br><span class="hljs-comment">                 */</span><br>                <span class="hljs-type">String</span> <span class="hljs-variable">selection</span> <span class="hljs-operator">=</span> MediaStore.Images.Media._ID + <span class="hljs-string">&quot;=&quot;</span> + id;<br>                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,selection);<br>            &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;content&quot;</span>.equalsIgnoreCase(uri.getScheme()))&#123;<br>                <span class="hljs-comment">/*</span><br><span class="hljs-comment">                uri.getScheme()用于获取主机号</span><br><span class="hljs-comment">                 */</span><br>                imagePath = getImagePath(uri,<span class="hljs-literal">null</span>);<br>            &#125;<span class="hljs-keyword">else</span>  <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;file&quot;</span>.equalsIgnoreCase(uri.getScheme()))&#123;<br>                imagePath = uri.getPath();<br>            &#125;<br>            displayImage(imagePath);<br><br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">handleImageBeforeKitKat</span><span class="hljs-params">(Intent data)</span>&#123;<br>        <span class="hljs-type">Uri</span> <span class="hljs-variable">uri</span> <span class="hljs-operator">=</span> data.getData();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">imagePath</span> <span class="hljs-operator">=</span> getImagePath(uri,<span class="hljs-literal">null</span>);<br>        displayImage(imagePath);<br>    &#125;<br>    <span class="hljs-keyword">private</span> String <span class="hljs-title function_">getImagePath</span><span class="hljs-params">(Uri uri,String selection)</span>&#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">path</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-comment">/*</span><br><span class="hljs-comment">           query()方法用于检索数据</span><br><span class="hljs-comment">           参数一:uri 类型Uri 为检索的内容</span><br><span class="hljs-comment">           参数二:projection 类型String 要返回的列表</span><br><span class="hljs-comment">           参数三:queryArgs 类型Bundle 包含操作所需的附加消息</span><br><span class="hljs-comment">           参数四:cancellationSignal 取消正在进行的操作信号</span><br><span class="hljs-comment">         */</span><br>        <span class="hljs-type">Cursor</span> <span class="hljs-variable">cursor</span> <span class="hljs-operator">=</span> getContentResolver().query(uri,<span class="hljs-literal">null</span>,selection,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>);<br>        <span class="hljs-keyword">if</span>(cursor != <span class="hljs-literal">null</span>)&#123;<br>            <span class="hljs-keyword">if</span>(cursor.moveToFirst())&#123;<br>                <span class="hljs-comment">/*</span><br><span class="hljs-comment">                getColumnIndex(String columnName)用于获取指定列的下标</span><br><span class="hljs-comment">                 */</span><br>                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));<br>                System.out.println(path);<br>            &#125;<br>            cursor.close();<br>        &#125;<br>        <span class="hljs-keyword">return</span> path;<br>    &#125;<br>    <span class="hljs-keyword">private</span>  <span class="hljs-keyword">void</span> <span class="hljs-title function_">displayImage</span><span class="hljs-params">(String imagePath)</span>&#123;<br>        <span class="hljs-keyword">if</span>(imagePath!=<span class="hljs-literal">null</span>)&#123;<br>            <span class="hljs-type">Bitmap</span> <span class="hljs-variable">bitmap</span> <span class="hljs-operator">=</span> BitmapFactory.decodeFile(imagePath);<br>            picture.setImageBitmap(bitmap);<br>        &#125;<br>        <span class="hljs-keyword">else</span>&#123;<br>            Toast.makeText(<span class="hljs-built_in">this</span>,<span class="hljs-string">&quot;failed to get image&quot;</span>,Toast.LENGTH_SHORT).show();<br>        &#125;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="播放多媒体文件"><a href="#播放多媒体文件" class="headerlink" title="播放多媒体文件"></a>播放多媒体文件</h2><h3 id="播放音频"><a href="#播放音频" class="headerlink" title="播放音频"></a>播放音频</h3><ul>
+<li>首先需要创建<code>MeidaPlayer</code>对象</li>
+<li>接着调用<code>setDataSource()</code>方法设置音频文件的路径</li>
+<li>再调用<code>prepare()</code>方法使<code>MediaPlayer</code>进入到准备状态</li>
+<li>调用<code>start()</code>方法开始播放音频</li>
+<li>调用<code>pause()</code>方法暂停播放</li>
+<li>调用<code>reset()</code>方法就会停止播放</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs java">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">initMediaPlayer</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-keyword">try</span>&#123;<br>           <span class="hljs-comment">// System.out.println(Environment.getExternalStorageDirectory());</span><br>            <span class="hljs-type">File</span> <span class="hljs-variable">file</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;/storage/emulated/0/Pictures&quot;</span>,<span class="hljs-string">&quot;music.mp3&quot;</span>);<br>            mediaPlayer.setDataSource(file.getPath());<br>            mediaPlayer.prepare();<span class="hljs-comment">//这里不能漏掉，否则会报错</span><br>        &#125;<span class="hljs-keyword">catch</span> (Exception e)&#123;<br>            e.printStackTrace();<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onRequestPermissionsResult</span><span class="hljs-params">(<span class="hljs-type">int</span> requestCode, <span class="hljs-meta">@NonNull</span> String[] permissions, <span class="hljs-meta">@NonNull</span> <span class="hljs-type">int</span>[] grantResults)</span> &#123;<br>        <span class="hljs-built_in">super</span>.onRequestPermissionsResult(requestCode, permissions, grantResults);<br>        <span class="hljs-keyword">switch</span> (requestCode)&#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:<br>                <span class="hljs-keyword">if</span>(grantResults.length&gt;<span class="hljs-number">0</span>&amp;&amp;grantResults[<span class="hljs-number">0</span>] == PackageManager.PERMISSION_GRANTED)&#123;<br>                    initMediaPlayer();<br>                &#125;<span class="hljs-keyword">else</span>&#123;<br>                    Toast.makeText(<span class="hljs-built_in">this</span>,<span class="hljs-string">&quot;拒绝权限将无法继续使用&quot;</span>,Toast.LENGTH_SHORT).show();<br>                    finish();<br>                &#125;<br>                <span class="hljs-keyword">break</span>;<br>                <span class="hljs-keyword">default</span>:<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onClick</span><span class="hljs-params">(View v)</span> &#123;<br>        <span class="hljs-keyword">switch</span> (v.getId())&#123;<br>            <span class="hljs-keyword">case</span> R.id.play:<br>                <span class="hljs-keyword">if</span>(!mediaPlayer.isPlaying())&#123;<br>                    mediaPlayer.start();<br>                &#125;<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> R.id.stop:<br>                <span class="hljs-keyword">if</span>(mediaPlayer.isPlaying())&#123;<br>                    mediaPlayer.reset();<br>                    initMediaPlayer();<br>                &#125;<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> R.id.pause:<br>                <span class="hljs-keyword">if</span>(mediaPlayer.isPlaying())&#123;<br>                    mediaPlayer.pause();<br>                &#125;<br>                <span class="hljs-keyword">default</span>:<br>                    <span class="hljs-keyword">break</span>;<br>        &#125;<br><br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onDestroy</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-built_in">super</span>.onDestroy();<br>        <span class="hljs-keyword">if</span>(mediaPlayer != <span class="hljs-literal">null</span>)&#123;<br>            mediaPlayer.stop();<br>            mediaPlayer.release();<br>        &#125;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="播放视频"><a href="#播放视频" class="headerlink" title="播放视频"></a>播放视频</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MainActivity</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">AppCompatActivity</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">View</span>.OnClickListener &#123;<br>    <span class="hljs-keyword">private</span> VideoView videoView;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onCreate</span><span class="hljs-params">(Bundle savedInstanceState)</span> &#123;<br>        <span class="hljs-built_in">super</span>.onCreate(savedInstanceState);<br>        setContentView(R.layout.activity_main);<br>        videoView = findViewById(R.id.video_view);<br>        <span class="hljs-type">Button</span> <span class="hljs-variable">play</span> <span class="hljs-operator">=</span> (Button)findViewById(R.id.play);<br>        <span class="hljs-type">Button</span> <span class="hljs-variable">pause</span> <span class="hljs-operator">=</span> (Button)findViewById(R.id.pause);<br>        <span class="hljs-type">Button</span> <span class="hljs-variable">replay</span> <span class="hljs-operator">=</span> (Button)findViewById(R.id.replay);<br>        play.setOnClickListener(<span class="hljs-built_in">this</span>);<br>        pause.setOnClickListener(<span class="hljs-built_in">this</span>);<br>        replay.setOnClickListener(<span class="hljs-built_in">this</span>);<br>        <span class="hljs-keyword">if</span>(ContextCompat.checkSelfPermission(MainActivity.<span class="hljs-built_in">this</span>,Manifest.permission.WRITE_EXTERNAL_STORAGE)!=<br>                PackageManager.PERMISSION_GRANTED)&#123;<br>            ActivityCompat.requestPermissions(MainActivity.<span class="hljs-built_in">this</span>,<span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>[]&#123;Manifest.permission.WRITE_EXTERNAL_STORAGE&#125;,<span class="hljs-number">1</span>);<br>        &#125;<span class="hljs-keyword">else</span>&#123;<br>            initVideoPath();<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">initVideoPath</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-type">File</span> <span class="hljs-variable">file</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;/storage/emulated/0/Pictures&quot;</span>,<span class="hljs-string">&quot;movie.mp4&quot;</span>);<br>        videoView.setVideoPath(file.getPath());<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onClick</span><span class="hljs-params">(View v)</span> &#123;<br>        <span class="hljs-keyword">switch</span> (v.getId())&#123;<br>            <span class="hljs-keyword">case</span> R.id.play:<br>                <span class="hljs-keyword">if</span>(!videoView.isPlaying())&#123;<br>                    videoView.start();<br>                &#125;<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> R.id.pause:<br>                <span class="hljs-keyword">if</span>(videoView.isPlaying())&#123;<br>                    videoView.pause();<br>                &#125;<br>            <span class="hljs-keyword">case</span> R.id.replay:<br>                <span class="hljs-keyword">if</span>(videoView.isPlaying())&#123;<br>                    videoView.resume();<br>                &#125;<br>                <span class="hljs-keyword">break</span>;<br>        &#125;<br><br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onRequestPermissionsResult</span><span class="hljs-params">(<span class="hljs-type">int</span> requestCode, <span class="hljs-meta">@NonNull</span> String[] permissions, <span class="hljs-meta">@NonNull</span> <span class="hljs-type">int</span>[] grantResults)</span> &#123;<br>        <span class="hljs-keyword">switch</span> (requestCode)&#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:<br>                <span class="hljs-keyword">if</span>(grantResults.length&gt;<span class="hljs-number">0</span>&amp;&amp;grantResults[<span class="hljs-number">0</span>]==PackageManager.PERMISSION_GRANTED)&#123;<br>                    initVideoPath();<br>                &#125;<br>                <span class="hljs-keyword">else</span>&#123;<br>                    Toast.makeText(MainActivity.<span class="hljs-built_in">this</span>,<span class="hljs-string">&quot;拒绝权限无法使用程序&quot;</span>,Toast.LENGTH_SHORT).show();<br>                &#125;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onDestroy</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-built_in">super</span>.onDestroy();<br>        <span class="hljs-keyword">if</span>(videoView!=<span class="hljs-literal">null</span>)&#123;<br>            videoView.suspend();<br>        &#125;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Android%E7%BC%96%E7%A8%8B/" class="category-chain-item">Android编程</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Android/">#Android</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Android第一行代码--多媒体</div>
+      <div>http://example.com/2023/06/27/Android第一行代码--运用手机多媒体/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>hope</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年6月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/06/27/CVE-2016-5195-DirtyCow/" title="CVE-2016-5195-Dirtycow">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CVE-2016-5195-Dirtycow</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/06/27/Android%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81--%E6%B4%BB%E5%8A%A8/" title="Android第一行代码--活动">
+                        <span class="hidden-mobile">Android第一行代码--活动</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
