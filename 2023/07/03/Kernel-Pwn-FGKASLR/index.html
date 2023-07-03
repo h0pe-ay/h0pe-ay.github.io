@@ -16,12 +16,12 @@
   <meta name="author" content="hope">
   <meta name="keywords" content="">
   
-    <meta name="description" content="FGKASLRFGASLR（Function Granular KASLR）是KASLR的加强版，增加了更细粒度的地址随机化。因此在开启了FGASLR的内核中，即使泄露了内核的程序基地址也不能调用任意的内核函数。 layout_randomized_image在fgkaslr.c文件中存在着随机化的明细。 1234567891011121314151617181920212223242526272">
+    <meta name="description" content="kernel-pwn学习笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hope">
+<meta property="og:title" content="Kernel-Pwn-FGKASLR">
 <meta property="og:url" content="https://h0pe-ay.github.io/2023/07/03/Kernel-Pwn-FGKASLR/index.html">
 <meta property="og:site_name" content="hope">
-<meta property="og:description" content="FGKASLRFGASLR（Function Granular KASLR）是KASLR的加强版，增加了更细粒度的地址随机化。因此在开启了FGASLR的内核中，即使泄露了内核的程序基地址也不能调用任意的内核函数。 layout_randomized_image在fgkaslr.c文件中存在着随机化的明细。 1234567891011121314151617181920212223242526272">
+<meta property="og:description" content="kernel-pwn学习笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150483.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150484.png">
@@ -33,14 +33,15 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150490.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150491.png">
 <meta property="article:published_time" content="2023-07-03T13:49:29.170Z">
-<meta property="article:modified_time" content="2023-07-03T13:50:36.326Z">
+<meta property="article:modified_time" content="2023-07-03T13:52:11.141Z">
 <meta property="article:author" content="hope">
+<meta property="article:tag" content="kernel">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150483.png">
   
   
   
-  <title>hope</title>
+  <title>Kernel-Pwn-FGKASLR - hope</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -223,7 +224,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="Kernel-Pwn-FGKASLR"></span>
           
         </div>
 
@@ -303,7 +304,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none"></h1>
+            <h1 style="display: none">Kernel-Pwn-FGKASLR</h1>
             
             
               <div class="markdown-body">
@@ -380,6 +381,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/kernel/" class="category-chain-item">kernel</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/kernel/">#kernel</a>
+      
+    </div>
   
 </div>
 
@@ -389,7 +418,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
+      <div>Kernel-Pwn-FGKASLR</div>
       <div>https://h0pe-ay.github.io/2023/07/03/Kernel-Pwn-FGKASLR/</div>
     </div>
     <div class="license-meta">
