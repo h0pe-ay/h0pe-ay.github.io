@@ -1,0 +1,735 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/hope.jpg">
+  <link rel="icon" href="/img/hope.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="hope">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="逆向工程核心原理学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="逆向工程核心原理--DLL注入">
+<meta property="og:url" content="https://h0pe-ay.github.io/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86--DLL%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="hope">
+<meta property="og:description" content="逆向工程核心原理学习笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:\Users\admin\AppData\Roaming\Typora\typora-user-images\image-20220127143759703.png">
+<meta property="article:published_time" content="2023-06-27T11:03:47.019Z">
+<meta property="article:modified_time" content="2023-06-08T08:41:46.953Z">
+<meta property="article:author" content="hope">
+<meta property="article:tag" content="逆向">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="c:\Users\admin\AppData\Roaming\Typora\typora-user-images\image-20220127143759703.png">
+  
+  
+  
+  <title>逆向工程核心原理--DLL注入 - hope</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"h0pe-ay.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ZqEEnP8vrF2LzEKjCt8pL5Cf-gzGzoHsz","app_key":"6Owvec9nVB4K93xxi7CKzAqh","server_url":"https://zqeenp8v.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>hope</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="逆向工程核心原理--DLL注入"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-06-27 19:03" pubdate>
+          2023年6月27日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          23k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          192 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">逆向工程核心原理--DLL注入</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="键盘消息钩取"><a href="#键盘消息钩取" class="headerlink" title="键盘消息钩取"></a>键盘消息钩取</h1><h2 id="KeyHook"><a href="#KeyHook" class="headerlink" title="KeyHook"></a><strong>KeyHook</strong></h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// dllmain.cpp : 定义 DLL 应用程序的入口点。</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;pch.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;stdio.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_PROCESS_NAME <span class="hljs-string">&quot;notepad.exe&quot;</span></span><br><br>HINSTANCE g_hInstance = <span class="hljs-literal">NULL</span>;<br>HHOOK g_hHook = <span class="hljs-literal">NULL</span>;<br>HWND g_hWnd = <span class="hljs-literal">NULL</span>;<br><br><span class="hljs-function">BOOL APIENTRY <span class="hljs-title">DllMain</span><span class="hljs-params">( HMODULE hModule,</span></span><br><span class="hljs-params"><span class="hljs-function">                       DWORD  ul_reason_for_call,</span></span><br><span class="hljs-params"><span class="hljs-function">                       LPVOID lpReserved</span></span><br><span class="hljs-params"><span class="hljs-function">                     )</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">switch</span> (ul_reason_for_call)<br>    &#123;<br>    <span class="hljs-keyword">case</span> DLL_PROCESS_ATTACH:<br>        g_hInstance = hModule;<br>    <span class="hljs-keyword">case</span> DLL_THREAD_ATTACH:<br>    <span class="hljs-keyword">case</span> DLL_THREAD_DETACH:<br>    <span class="hljs-keyword">case</span> DLL_PROCESS_DETACH:<br>        <span class="hljs-keyword">break</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> TRUE;<br>&#125;<br><br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">LRESULT为长整形指针</span><br><span class="hljs-comment">每当需要处理键盘消息时就会调用此函数</span><br><span class="hljs-comment">参数一：nCode,如果code小于零，则挂钩过程必须将消息传递给CallNextHookEx函数而不进行进一步处理，并且应该返回CallNextHookEx返回的值。</span><br><span class="hljs-comment">参数二：wParam，生成击键消息的虚拟键代码</span><br><span class="hljs-comment">参数三：当第31位为0时则按键被按下，当为1时表示按键释放</span><br><span class="hljs-comment">*/</span><br><span class="hljs-function">LRESULT CALLBACK <span class="hljs-title">KeyboardProc</span><span class="hljs-params">(<span class="hljs-type">int</span> nCode, WPARAM wParam, LPARAM lParam)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">char</span> szPath[MAX_PATH] = &#123; <span class="hljs-number">0</span>, &#125;;<br>    <span class="hljs-type">char</span>* p = <span class="hljs-literal">NULL</span>;<br><br>    <span class="hljs-keyword">if</span> (nCode == <span class="hljs-number">0</span>)<br>    &#123;<br>        <span class="hljs-comment">/*</span><br><span class="hljs-comment">        */</span><br>        <span class="hljs-keyword">if</span> (!(lParam &amp; <span class="hljs-number">0x80000000</span>))<br>        &#123;<br>            <span class="hljs-built_in">GetModuleFileNameA</span>(<span class="hljs-literal">NULL</span>, szPath, MAX_PATH);<br>            p = <span class="hljs-built_in">strrchr</span>(szPath, <span class="hljs-string">&#x27;\\&#x27;</span>);<br><br>            <span class="hljs-keyword">if</span> (!_stricmp(p + <span class="hljs-number">1</span>, DEF_PROCESS_NAME))<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">//返回到钩链中的下一个函数</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">CallNextHookEx</span>(g_hHook, nCode, wParam, lParam);<br><br>&#125;<br><br><span class="hljs-comment">//判断是否使用c++编写</span><br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> __cplusplus</span><br><span class="hljs-comment">//使用与C语言一致的编译过程</span><br><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> &#123;<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">    	__declspec(dllexport)将DLL中的函数导出给其他应用程序使用</span><br><span class="hljs-comment">    */</span><br>    __declspec(dllexport) <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">HookStart</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        g_hHook = <span class="hljs-built_in">SetWindowsHookEx</span>(WH_KEYBOARD, KeyboardProc, g_hInstance, <span class="hljs-number">0</span>);<br>    &#125;<br>    __declspec(dllexport) <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">HookStop</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (g_hHook)<br>        &#123;<br>            <span class="hljs-built_in">UnhookWindowsHookEx</span>(g_hHook);<br>            g_hHook = <span class="hljs-literal">NULL</span>;<br>        &#125;<br>    &#125;<br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span>  __cplusplus</span><br>&#125;<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span> <span class="hljs-comment">//  __cplusplus</span></span><br></code></pre></td></tr></table></figure>
+
+<h2 id="HookMain"><a href="#HookMain" class="headerlink" title="HookMain"></a>HookMain</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;conio.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;Windows.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_DLL_NAME <span class="hljs-string">&quot;KeyHook.dll&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_HOOKSTART <span class="hljs-string">&quot;HookStart&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_HOOKSTOP <span class="hljs-string">&quot;HookStop&quot;</span></span><br><br><span class="hljs-function"><span class="hljs-keyword">typedef</span> <span class="hljs-title">void</span> <span class="hljs-params">(*PFN_HOOKSTART)</span><span class="hljs-params">()</span></span>;<br><span class="hljs-function"><span class="hljs-keyword">typedef</span> <span class="hljs-title">void</span> <span class="hljs-params">(*PFN_HOOKSTOP)</span><span class="hljs-params">()</span></span>;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	HMODULE hDll = <span class="hljs-literal">NULL</span>;<br>	PFN_HOOKSTART HookStart = <span class="hljs-literal">NULL</span>;<br>	PFN_HOOKSTOP HookStop = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-type">char</span> ch = <span class="hljs-number">0</span>;<br>    <br>    <span class="hljs-comment">//加载KeyHook.dll</span><br>	hDll = <span class="hljs-built_in">LoadLibraryA</span>(DEF_DLL_NAME);<br>    <br>    <span class="hljs-comment">//获取开始Hook的函数地址</span><br>	HookStart = (PFN_HOOKSTART)<span class="hljs-built_in">GetProcAddress</span>(hDll, DEF_HOOKSTART);<br>    <span class="hljs-comment">//获取停止Hook的函数地址</span><br>	HookStop = (PFN_HOOKSTOP)<span class="hljs-built_in">GetProcAddress</span>(hDll, DEF_HOOKSTOP);<br><br>    <span class="hljs-comment">//Hook开始</span><br>	<span class="hljs-built_in">HookStart</span>();<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;press &#x27;q&#x27; to quit!\n&quot;</span>);<br>	<span class="hljs-keyword">while</span> (_getch() != <span class="hljs-string">&#x27;q&#x27;</span>);<br>    <span class="hljs-comment">//Hook停止</span><br>	<span class="hljs-built_in">HookStop</span>();<br>    <br>    <span class="hljs-comment">//卸载DLL</span><br>	<span class="hljs-built_in">FreeLibrary</span>(hDll);<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="DLL注入"><a href="#DLL注入" class="headerlink" title="DLL注入"></a>DLL注入</h1><p><code>DLL</code>注入指的是向运行中的其他进程强制插入特定的<code>DLL</code>文件。</p>
+<h2 id="DLL注入的实现方法"><a href="#DLL注入的实现方法" class="headerlink" title="DLL注入的实现方法"></a>DLL注入的实现方法</h2><ul>
+<li><p>创建远程线程(<code>CreateRemoteThread()API</code>)</p>
+</li>
+<li><p>使用注册表(<code>AppInit_DLLs</code>值)</p>
+</li>
+<li><p>消息钩取(<code>SetWindowsHookEx()API</code>)</p>
+</li>
+</ul>
+<h3 id="创建远程线程"><a href="#创建远程线程" class="headerlink" title="创建远程线程"></a>创建远程线程</h3><h4 id="InjectDll"><a href="#InjectDll" class="headerlink" title="InjectDll"></a>InjectDll</h4><p><code>InjectDll</code>需要传入需要注入的进程号，在该进程的空间内开辟一段区域用于创建线程运行<code>LoadLibrary()</code>方法载入<code>DLL</code>文件，从而达到<code>DLL</code>注入的目的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;windows.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;tchar.h&gt;</span></span><br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">* LPCTSTR含义</span><br><span class="hljs-comment">* L代表long长整型</span><br><span class="hljs-comment">* P代表指针</span><br><span class="hljs-comment">* C代表不可改变</span><br><span class="hljs-comment">* T代表char，若定义了UNICODE则代表wchar_t</span><br><span class="hljs-comment">* STR代表字符串</span><br><span class="hljs-comment">*/</span><br><span class="hljs-function">BOOL <span class="hljs-title">InjectDll</span><span class="hljs-params">(DWORD dwPID, LPCTSTR szDllPath)</span></span><br><span class="hljs-function"></span>&#123;<br>	HANDLE hProcess = <span class="hljs-literal">NULL</span>, hThread = <span class="hljs-literal">NULL</span>;<br>	HMODULE hMod = <span class="hljs-literal">NULL</span>;<br>	LPVOID pRemoteBuf = <span class="hljs-literal">NULL</span>;<br>	DWORD dwBufSize = (DWORD)(_tcslen(szDllPath) + <span class="hljs-number">1</span>) * <span class="hljs-built_in">sizeof</span>(TCHAR);<br><br>	<span class="hljs-comment">//函数指针</span><br>	LPTHREAD_START_ROUTINE pThreadProc;<br><br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	*	打开现有的本地进程对象</span><br><span class="hljs-comment">	*   HANDLE OpenProcess(</span><br><span class="hljs-comment">	*	[in] DWORD dwDesiredAccess,对进程对象访问的权限 PROCESS_ALL_ACCESS即所有权限</span><br><span class="hljs-comment">	*	[in] BOOL  bInheritHandle,进程是否继承句柄，FALSE为否</span><br><span class="hljs-comment">	*	[in] DWORD dwProcessId，进程号</span><br><span class="hljs-comment">	*	返回值，打开进程的句柄</span><br><span class="hljs-comment">	*	);</span><br><span class="hljs-comment">	*/</span><br>	<span class="hljs-keyword">if</span> (!(hProcess = <span class="hljs-built_in">OpenProcess</span>(PROCESS_ALL_ACCESS, FALSE, dwPID)))<br>	&#123;<br>		_tprintf(<span class="hljs-string">L&quot;OpenProcess(%d) failed!!! [%d]\n&quot;</span>, dwPID, GetLastError);<br>		<span class="hljs-keyword">return</span> FALSE;<br>	&#125;<br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	* 在指定进程的虚拟地址空间内保留、提交或更改内存区域的状态。</span><br><span class="hljs-comment">	*	LPVOID VirtualAllocEx(</span><br><span class="hljs-comment">	*	[in]           HANDLE hProcess,进程句柄，该函数在该进程的虚拟地址空间内分配内存</span><br><span class="hljs-comment">	*	[in, optional] LPVOID lpAddress,为要分配的页面区域指定所需起始地址的指针</span><br><span class="hljs-comment">	*	[in]           SIZE_T dwSize,要分配的内存区域的大小，以字节为单位</span><br><span class="hljs-comment">	*	[in]           DWORD  flAllocationType,内存分配的类型，MEM_COMMIT为指定的保留内存页面分配内存费用</span><br><span class="hljs-comment">	*	[in]           DWORD  flProtect,要分配的页面区域的内存保护,PAGE_READWRITE,启用对已提交页面区域的执行、只读或读/写访问。</span><br><span class="hljs-comment">	*	);</span><br><span class="hljs-comment">	* 返回值，如果函数成功，则返回值非零。如果函数失败，则返回值为 0（零）</span><br><span class="hljs-comment">	*/</span><br>	pRemoteBuf = <span class="hljs-built_in">VirtualAllocEx</span>(hProcess, <span class="hljs-literal">NULL</span>, dwBufSize, MEM_COMMIT, PAGE_READWRITE);<br><br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	* 将数据写入指定进程中的内存区域。要写入的整个区域必须可访问，否则操作将失败。</span><br><span class="hljs-comment">	* BOOL WriteProcessMemory(</span><br><span class="hljs-comment">	*	[in]  HANDLE  hProcess,要修改的进程内存的句柄,句柄必须具有对进程的 PROCESS_VM_WRITE 和 PROCESS_VM_OPERATION 访问权限。</span><br><span class="hljs-comment">	*	[in]  LPVOID  lpBaseAddress,指向要写入数据的指定进程中的起始地址</span><br><span class="hljs-comment">	*	[in]  LPCVOID lpBuffer,指向缓冲区的指针，该缓冲区包含要写入指定进程地址空间的数据</span><br><span class="hljs-comment">	*	[in]  SIZE_T  nSize,要写入指定进程的字节数</span><br><span class="hljs-comment">	*	[out] SIZE_T  *lpNumberOfBytesWritten，指向变量的指针，该变量接收传输到指定进程的字节数，NULL则忽略该参数</span><br><span class="hljs-comment">	*	);</span><br><span class="hljs-comment">	*/</span><br>	<span class="hljs-built_in">WriteProcessMemory</span>(hProcess, pRemoteBuf, (LPVOID)szDllPath, dwBufSize, <span class="hljs-literal">NULL</span>);<br><br>	hMod = <span class="hljs-built_in">GetModuleHandle</span>(<span class="hljs-string">L&quot;kernel32.dll&quot;</span>);<br>	pThreadProc = (LPTHREAD_START_ROUTINE)<span class="hljs-built_in">GetProcAddress</span>(hMod, <span class="hljs-string">&quot;LoadLibraryW&quot;</span>);<br><br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	* 创建在另一个进程的虚拟地址空间中运行的线程</span><br><span class="hljs-comment">	* HANDLE CreateRemoteThread(</span><br><span class="hljs-comment">	*	[in]  HANDLE                 hProcess,要在其中创建线程的进程的句柄</span><br><span class="hljs-comment">	*	[in]  LPSECURITY_ATTRIBUTES  lpThreadAttributes,指向 SECURITY_ATTRIBUTES结构的指针，该结构指定新线程的安全描述符并确定子进程是否可以继承返回的句柄</span><br><span class="hljs-comment">	*	[in]  SIZE_T                 dwStackSize,堆栈的初始大小，以字节为单位</span><br><span class="hljs-comment">	*	[in]  LPTHREAD_START_ROUTINE lpStartAddress,指向要由线程执行的LPTHREAD_START_ROUTINE 类型的应用程序定义函数的指针</span><br><span class="hljs-comment">	*	[in]  LPVOID                 lpParameter,指向要传递给线程函数的变量的指针</span><br><span class="hljs-comment">	*	[in]  DWORD                  dwCreationFlags,控制线程创建的标志,0表示线程在创建后立即运行</span><br><span class="hljs-comment">	*	[out] LPDWORD                lpThreadId，指向接收线程标识符的变量的指针</span><br><span class="hljs-comment">	*	);</span><br><span class="hljs-comment">	*   如果函数成功，则返回值是新线程的句柄</span><br><span class="hljs-comment">	*/</span><br>	<span class="hljs-comment">/*创建线程执行LoadLibraryW(DllPath)*/</span><br>	hThread = <span class="hljs-built_in">CreateRemoteThread</span>(<br>		hProcess,<br>		<span class="hljs-literal">NULL</span>,<br>		<span class="hljs-number">0</span>,<br>		pThreadProc,<br>		pRemoteBuf,<br>		<span class="hljs-number">0</span>,<br>		<span class="hljs-literal">NULL</span><br>	);<br><br>	<span class="hljs-comment">/*等到线程执行操作*/</span><br>	<span class="hljs-built_in">WaitForSingleObject</span>(hThread, INFINITE);<br><br>	<span class="hljs-built_in">CloseHandle</span>(hThread);<br>	<span class="hljs-built_in">CloseHandle</span>(hProcess);<br><br>	<span class="hljs-keyword">return</span> TRUE;<br>&#125;<br><br><span class="hljs-type">int</span> _tmain(<span class="hljs-type">int</span> argc, TCHAR* argv[])<br>&#123;<br>	<span class="hljs-keyword">if</span> (argc != <span class="hljs-number">3</span>)<br>	&#123;<br>		_tprintf(<span class="hljs-string">L&quot;USAG : %s pid dll_path\n&quot;</span>, argv[<span class="hljs-number">0</span>]);<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>	&#125;<br><br>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">InjectDll</span>((DWORD)_tstol(argv[<span class="hljs-number">1</span>]), argv[<span class="hljs-number">2</span>]))<br>		_tprintf(<span class="hljs-string">L&quot;InjectDll(\&quot;s\&quot;) success!!!\n&quot;</span>, argv[<span class="hljs-number">2</span>]);<br>	<span class="hljs-keyword">else</span><br>		_tprintf(<span class="hljs-string">L&quot;InjectDll(\&quot;%s\&quot;) failed!!!\n&quot;</span>, argv[<span class="hljs-number">2</span>]);<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="myhack"><a href="#myhack" class="headerlink" title="myhack"></a>myhack</h4><p>当<code>myhack.dll</code>文件被注入时会在<code>dll</code>文件的目录下通过<code>URLDownloadToFile</code>方法下载指定页面</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// dllmain.cpp : 定义 DLL 应用程序的入口点。</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;pch.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;tchar.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;urlmon.h&gt;</span></span><br><br><span class="hljs-comment">//这条语句必须加上否则调用URLDownloadToFile方法会报错</span><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> comment(lib,<span class="hljs-string">&quot;urlmon.lib&quot;</span>)</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_URL (<span class="hljs-string">L&quot;https://www.baidu.com&quot;</span>)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_FILE_NAME (<span class="hljs-string">L&quot;index.html&quot;</span>)</span><br><br>HMODULE g_hMod = <span class="hljs-literal">NULL</span>;<br><br><span class="hljs-function">DWORD WINAPI <span class="hljs-title">ThreadProc</span><span class="hljs-params">(LPVOID lParam)</span></span><br><span class="hljs-function"></span>&#123;<br>    TCHAR szPath[MAX_PATH] = &#123; <span class="hljs-number">0</span>, &#125;;<br>    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">GetModuleFileName</span>(g_hMod, szPath, MAX_PATH))<br>        <span class="hljs-keyword">return</span> FALSE;<br><br>    TCHAR* p = _tcsrchr(szPath, <span class="hljs-string">&#x27;\\&#x27;</span>);<br>    <span class="hljs-keyword">if</span> (!p)<br>        <span class="hljs-keyword">return</span> FALSE;<br><br>    _tcscpy_s(p + <span class="hljs-number">1</span>, MAX_PATH, DEF_FILE_NAME);<br>    <span class="hljs-built_in">URLDownloadToFile</span>(<span class="hljs-literal">NULL</span>,DEF_URL,szPath,<span class="hljs-number">0</span>,<span class="hljs-literal">NULL</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-function">BOOL APIENTRY <span class="hljs-title">DllMain</span><span class="hljs-params">( HMODULE hModule,</span></span><br><span class="hljs-params"><span class="hljs-function">                       DWORD  ul_reason_for_call,</span></span><br><span class="hljs-params"><span class="hljs-function">                       LPVOID lpReserved</span></span><br><span class="hljs-params"><span class="hljs-function">                     )</span></span><br><span class="hljs-function"></span>&#123;<br>    HANDLE hThread = <span class="hljs-literal">NULL</span>;<br>    g_hMod = hModule;<br>    <span class="hljs-keyword">switch</span> (ul_reason_for_call)<br>    &#123;<br>    <span class="hljs-keyword">case</span> DLL_PROCESS_ATTACH:<br>        <span class="hljs-built_in">OutputDebugString</span>(<span class="hljs-string">L&quot;myhack.dll Injection!!!&quot;</span>);<br>        <span class="hljs-comment">/*</span><br><span class="hljs-comment">        * HANDLE CreateThread(</span><br><span class="hljs-comment">          [in, optional]  LPSECURITY_ATTRIBUTES   lpThreadAttributes,是否能被子进程继承，NULL为不能</span><br><span class="hljs-comment">          [in]            SIZE_T                  dwStackSize,初始堆栈大小，0表示默认值</span><br><span class="hljs-comment">          [in]            LPTHREAD_START_ROUTINE  lpStartAddress,由线程执行的函数的指针</span><br><span class="hljs-comment">          [in, optional]  __drv_aliasesMem LPVOID lpParameter,要传递给线程的变量的指针</span><br><span class="hljs-comment">          [in]            DWORD                   dwCreationFlags,控制线程创建的标志，0代表线程在创建后立即执行</span><br><span class="hljs-comment">          [out, optional] LPDWORD                 lpThreadId，指向接收线程标识符的变量的指针。NULL则不返回线程标识符</span><br><span class="hljs-comment">          );</span><br><span class="hljs-comment">        */</span><br>        hThread = <span class="hljs-built_in">CreateThread</span>(<span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, ThreadProc, <span class="hljs-literal">NULL</span>,<span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>);<br>        <span class="hljs-built_in">CloseHandle</span>(hThread);<br>        <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> DLL_THREAD_ATTACH:<br>    <span class="hljs-keyword">case</span> DLL_THREAD_DETACH:<br>    <span class="hljs-keyword">case</span> DLL_PROCESS_DETACH:<br>        <span class="hljs-keyword">break</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> TRUE;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="使用注册表"><a href="#使用注册表" class="headerlink" title="使用注册表"></a>使用注册表</h3><p><code>Windows</code>操作系统的注册表中默认提供了<code>AppInt_DLLs</code>与<code>LoadAppInit_DLLs</code>两个注册表项。</p>
+<p><img src="C:\Users\admin\AppData\Roaming\Typora\typora-user-images\image-20220127143759703.png" srcset="/img/loading.gif" lazyload alt="image-20220127143759703"></p>
+<h4 id="myhack2"><a href="#myhack2" class="headerlink" title="myhack2"></a>myhack2</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// dllmain.cpp : 定义 DLL 应用程序的入口点。</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;pch.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;tchar.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_CMD <span class="hljs-string">L&quot;&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_ADDR <span class="hljs-string">L&quot;https://www.baidu.com&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_DST_PROC <span class="hljs-string">L&quot;notepad.exe&quot;</span></span><br><br><br><span class="hljs-function">BOOL APIENTRY <span class="hljs-title">DllMain</span><span class="hljs-params">( HMODULE hModule,</span></span><br><span class="hljs-params"><span class="hljs-function">                       DWORD  ul_reason_for_call,</span></span><br><span class="hljs-params"><span class="hljs-function">                       LPVOID lpReserved</span></span><br><span class="hljs-params"><span class="hljs-function">                     )</span></span><br><span class="hljs-function"></span>&#123;<br>    TCHAR szCmd[MAX_PATH] = &#123; <span class="hljs-number">0</span>, &#125;;<br>    TCHAR szPath[MAX_PATH] = &#123; <span class="hljs-number">0</span>, &#125;;<br>    TCHAR* p = <span class="hljs-literal">NULL</span>;<br><br>    <span class="hljs-comment">//指定创建时进程的主窗口的窗口站、桌面、标准句柄和外观</span><br>    STARTUPINFO si = &#123; <span class="hljs-number">0</span>, &#125;;<br><br>    <span class="hljs-comment">//包含有关新创建的进程及其主线程的信息</span><br>    PROCESS_INFORMATION pi = &#123; <span class="hljs-number">0</span>, &#125;;<br><br>    si.cb = <span class="hljs-built_in">sizeof</span>(STARTUPINFO); <span class="hljs-comment">//结构的大小，以字节为单位</span><br>    si.dwFlags = STARTF_USESHOWWINDOW; <span class="hljs-comment">//一个位域，用于确定进程创建窗口时是否使用某些 STARTUPINFO成员,STARTF_USESHOWWINDOW,wShowWindow成员包含附加信息</span><br>    si.wShowWindow = SW_HIDE;<span class="hljs-comment">//隐藏窗口并激活另一个窗口。</span><br><br>    <span class="hljs-keyword">switch</span> (ul_reason_for_call)<br>    &#123;<br>    <span class="hljs-keyword">case</span> DLL_PROCESS_ATTACH:<br>        <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">GetModuleFileName</span>(<span class="hljs-literal">NULL</span>, szPath, MAX_PATH))<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">if</span> (!(p = _tcsrchr(szPath, <span class="hljs-string">&#x27;\\&#x27;</span>)))<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">if</span> (_tcsicmp(p + <span class="hljs-number">1</span>, DEF_DST_PROC))<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-built_in">wsprintf</span>(szCmd, <span class="hljs-string">L&quot;%s %s&quot;</span>, DEF_CMD,DEF_ADDR); <br>        <span class="hljs-comment">/*</span><br><span class="hljs-comment">        * 创建一个新进程及其主线程</span><br><span class="hljs-comment">        * BOOL CreateProcessA(</span><br><span class="hljs-comment">        *  [in, optional]      LPCSTR                lpApplicationName, 要执行的模块的名称。lpApplicationName参数可以是NULL。在这种情况下，模块名称必须是lpCommandLine字符串中第一个以空格分隔的标记。</span><br><span class="hljs-comment">        *  [in, out, optional] LPSTR                 lpCommandLine,要执行的命令行。</span><br><span class="hljs-comment">        *    [in, optional]      LPSECURITY_ATTRIBUTES lpProcessAttributes,指向 SECURITY_ATTRIBUTES结构的指针，该结构确定返回的新进程对象的句柄是否可以被子进程继承。如果lpProcessAttributes为NULL，则不能继承句柄。</span><br><span class="hljs-comment">        *    [in, optional]      LPSECURITY_ATTRIBUTES lpThreadAttributes,指向 SECURITY_ATTRIBUTES结构的指针，该结构确定返回的新线程对象的句柄是否可以被子进程继承。如果lpThreadAttributes为 NULL，则不能继承句柄。</span><br><span class="hljs-comment">        *    [in]                BOOL                  bInheritHandles,如果此参数为 TRUE，则调用进程中的每个可继承句柄都由新进程继承。如果参数为 FALSE，则不继承句柄</span><br><span class="hljs-comment">        *    [in]                DWORD                 dwCreationFlags,控制优先级和进程创建的标志</span><br><span class="hljs-comment">        *    [in, optional]      LPVOID                lpEnvironment,指向新进程的环境块的指针。如果此参数为NULL，则新进程使用调用进程的环境。</span><br><span class="hljs-comment">        *    [in, optional]      LPCSTR                lpCurrentDirectory,进程当前目录的完整路径</span><br><span class="hljs-comment">        *    [in]                LPSTARTUPINFOA        lpStartupInfo,指向 STARTUPINFO或STARTUPINFOEX结构的指针</span><br><span class="hljs-comment">        *    [out]               LPPROCESS_INFORMATION lpProcessInformation,指向 PROCESS_INFORMATION结构的指针，该结构接收有关新进程的标识信息</span><br><span class="hljs-comment">        * );</span><br><span class="hljs-comment">        */</span><br>        <span class="hljs-comment">/*创建一个进程执行cmd的命令*/</span><br>        <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">CreateProcess</span>(<span class="hljs-literal">NULL</span>, (LPTSTR)(LPCTSTR)szCmd,<br>            <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>, FALSE,<br>            NORMAL_PRIORITY_CLASS, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>, &amp;si, &amp;pi))<br>            <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> DLL_THREAD_ATTACH:<br>    <span class="hljs-keyword">case</span> DLL_THREAD_DETACH:<br>    <span class="hljs-keyword">case</span> DLL_PROCESS_DETACH:<br>        <span class="hljs-keyword">break</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> TRUE;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="消息钩取"><a href="#消息钩取" class="headerlink" title="消息钩取"></a>消息钩取</h3><ul>
+<li><code>SetWindowsHookEx()</code>方法，示例如键盘消息钩取。</li>
+</ul>
+<h1 id="DLL卸载"><a href="#DLL卸载" class="headerlink" title="DLL卸载"></a>DLL卸载</h1><p>DLL卸载（DLL Ejection）是将强制插入进程的<code>DLL</code>弹出的一种技术。</p>
+<h2 id="EjectDll"><a href="#EjectDll" class="headerlink" title="EjectDll"></a>EjectDll</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;windows.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;TlHelp32.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;tchar.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_PROC_NAME (<span class="hljs-string">L&quot;notepad.exe&quot;</span>)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_DLL_NAME (<span class="hljs-string">L&quot;myhack.dll&quot;</span>)</span><br><br><span class="hljs-function">DWORD <span class="hljs-title">FindProcessID</span><span class="hljs-params">(LPCTSTR szProcessName)</span></span><br><span class="hljs-function"></span>&#123;<br>	DWORD dwPID = <span class="hljs-number">0xFFFFFFFF</span>;<br>	HANDLE hSnapShot = INVALID_HANDLE_VALUE;<br>	<span class="hljs-comment">//需要导入tlhelp32.h</span><br>	<span class="hljs-comment">//描述拍摄快照时驻留在系统地址空间中的进程列表中的条目</span><br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	* typedef struct tagPROCESSENTRY32 &#123;</span><br><span class="hljs-comment">	*	DWORD     dwSize; 结构的大小，以字节为单位</span><br><span class="hljs-comment">	*	DWORD     cntUsage;该成员不再使用，并且始终设置为零</span><br><span class="hljs-comment">	*	DWORD     th32ProcessID;进程标识符</span><br><span class="hljs-comment">	*	ULONG_PTR th32DefaultHeapID;该成员不再使用，并且始终设置为零</span><br><span class="hljs-comment">	*	DWORD     th32ModuleID;该成员不再使用，并且始终设置为零</span><br><span class="hljs-comment">	*	DWORD     cntThreads;进程启动的执行线程数</span><br><span class="hljs-comment">	*	DWORD     th32ParentProcessID;创建此进程的进程的标识符（其父进程）</span><br><span class="hljs-comment">	*	LONG      pcPriClassBase;此进程创建的任何线程的基本优先级</span><br><span class="hljs-comment">	*	DWORD     dwFlags;该成员不再使用，并且始终设置为零</span><br><span class="hljs-comment">	*	CHAR      szExeFile[MAX_PATH];进程的可执行文件的名称</span><br><span class="hljs-comment">	*	&#125; PROCESSENTRY32;</span><br><span class="hljs-comment">	*/</span><br>	PROCESSENTRY32 pe;<br><br>	<span class="hljs-comment">//获取系统快照</span><br>	pe.dwSize = <span class="hljs-built_in">sizeof</span>(PROCESSENTRY32);<br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	* 拍摄指定进程的快照，以及这些进程使用的堆、模块和线程</span><br><span class="hljs-comment">	* HANDLE CreateToolhelp32Snapshot(</span><br><span class="hljs-comment">	*	[in] DWORD dwFlags, 要包含在快照中的系统部分,TH32CS_SNAPALL包括系统中的所有进程和线程，以及th32ProcessID中指定的进程的堆和模块</span><br><span class="hljs-comment">	*	[in] DWORD th32ProcessID,要包含在快照中的进程的进程标识符。此参数可以为零以指示当前进程</span><br><span class="hljs-comment">	*	);</span><br><span class="hljs-comment">	*/</span><br><br>	<span class="hljs-comment">//将所有进程保存在hSnapShot</span><br>	hSnapShot = <span class="hljs-built_in">CreateToolhelp32Snapshot</span>(TH32CS_SNAPALL, <span class="hljs-literal">NULL</span>);<br><br>	<span class="hljs-comment">//查找进程</span><br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	* 检索有关系统快照中遇到的第一个进程的信息。</span><br><span class="hljs-comment">	* BOOL Process32First(</span><br><span class="hljs-comment">	*	[in]      HANDLE           hSnapshot,从先前调用CreateToolhelp32Snapshot函数返回的快照句柄</span><br><span class="hljs-comment">	*	[in, out] LPPROCESSENTRY32 lppe,指向 PROCESSENTRY32结构的指针</span><br><span class="hljs-comment">	*	);</span><br><span class="hljs-comment">	*/</span><br>	<span class="hljs-built_in">Process32First</span>(hSnapShot, &amp;pe);<br><br>	<span class="hljs-keyword">do</span><br>	&#123;<br>		<span class="hljs-comment">//pe.szExeFile 进程的可执行文件的名称</span><br>		<span class="hljs-keyword">if</span> (!_tcsicmp(szProcessName, (LPCTSTR)pe.szExeFile))<br>		&#123;<br>			dwPID = pe.th32ProcessID;<br>			<span class="hljs-keyword">break</span>;<br>		&#125;<br>	&#125; <span class="hljs-keyword">while</span> (<span class="hljs-built_in">Process32Next</span>(hSnapShot, &amp;pe));<br><br>	<span class="hljs-built_in">CloseHandle</span>(hSnapShot);<br><br>	<span class="hljs-keyword">return</span> dwPID;<br>&#125;<br><br><span class="hljs-function">BOOL <span class="hljs-title">SetPrivilege</span><span class="hljs-params">(LPCTSTR lpszPrivilege, BOOL bEnablePrivilege)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	* TOKEN_PRIVILEGES结构包含有关访问令牌的一组权限的信息</span><br><span class="hljs-comment">	* typedef struct _TOKEN_PRIVILEGES &#123;</span><br><span class="hljs-comment">	*	DWORD               PrivilegeCount;  Privileges数组中的条目数</span><br><span class="hljs-comment">	*	LUID_AND_ATTRIBUTES Privileges[ANYSIZE_ARRAY];指定LUID_AND_ATTRIBUTES结构的数组 。每个结构都包含一个特权的 LUID和属性</span><br><span class="hljs-comment">	*	&#125; TOKEN_PRIVILEGES, *PTOKEN_PRIVILEGES;</span><br><span class="hljs-comment">	*/</span><br>	TOKEN_PRIVILEGES tp;<br>	HANDLE hToken;<br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	* 描述适配器的本地标识符</span><br><span class="hljs-comment">	* typedef struct _LUID &#123;</span><br><span class="hljs-comment">	*	DWORD LowPart; 指定一个包含 id 的无符号小数的 DWORD。</span><br><span class="hljs-comment">	*	 LONG  HighPart;指定一个包含 id 的带符号高数的 LONG。</span><br><span class="hljs-comment">	*	&#125; LUID, *PLUID;</span><br><span class="hljs-comment">	*/</span><br>	LUID luid;<br><br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	* OpenProcessToken函数打开与进程关联的访问令牌</span><br><span class="hljs-comment">	* BOOL OpenProcessToken(</span><br><span class="hljs-comment">	*	[in]  HANDLE  ProcessHandle,打开其访问令牌的进程的句柄。该进程必须具有 PROCESS_QUERY_INFORMATION 访问权限</span><br><span class="hljs-comment">	*	[in]  DWORD   DesiredAccess,指定一个访问掩码，该掩码指定对访问令牌的请求访问类型</span><br><span class="hljs-comment">	*	[out] PHANDLE TokenHandle,指向句柄的指针，该句柄在函数返回时标识新打开的访问令牌</span><br><span class="hljs-comment">	*	);</span><br><span class="hljs-comment">	* </span><br><span class="hljs-comment">	* 检索当前进程的伪句柄。</span><br><span class="hljs-comment">	* HANDLE GetCurrentProcess();</span><br><span class="hljs-comment">	*/</span><br>	<span class="hljs-keyword">if</span> (!<span class="hljs-built_in">OpenProcessToken</span>(<span class="hljs-built_in">GetCurrentProcess</span>(),<br>		TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &amp;hToken))<br>	&#123;<br>		_tprintf(<span class="hljs-string">L&quot;OpenProcessToken error: %u\n&quot;</span>, <span class="hljs-built_in">GetLastError</span>());<br>		<span class="hljs-keyword">return</span> FALSE;<br>	&#125;<br><br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	* LookupPrivilegeValue函数检索指定系统上使用的本地唯一标识符 (LUID)，以在本地表示指定的特权名称</span><br><span class="hljs-comment">	* BOOL LookupPrivilegeValueA(</span><br><span class="hljs-comment">	*	[in, optional] LPCSTR lpSystemName,指向以空字符结尾的字符串的指针，该字符串指定在其上检索特权名称的系统名称。如果指定了空字符串，该函数将尝试在本地系统上查找权限名称。</span><br><span class="hljs-comment">	*	[in]           LPCSTR lpName,指向以 null 结尾的字符串的指针，该字符串指定权限的名称</span><br><span class="hljs-comment">	*	[out]          PLUID  lpLuid,一个指向变量的指针，该变量接收由lpSystemName参数指定的系统上的权限已知的 LUID</span><br><span class="hljs-comment">	*	);</span><br><span class="hljs-comment">	*/</span><br>	<span class="hljs-keyword">if</span> (!<span class="hljs-built_in">LookupPrivilegeValue</span>(<span class="hljs-literal">NULL</span>, lpszPrivilege, &amp;luid))<br>	&#123;<br>		_tprintf(<span class="hljs-string">L&quot;LookupPrivilegeValue error: %u\n&quot;</span>, <span class="hljs-built_in">GetLastError</span>());<br>		<span class="hljs-keyword">return</span> FALSE;<br>	&#125;<br><br>	tp.PrivilegeCount = <span class="hljs-number">1</span>;<br>	tp.Privileges[<span class="hljs-number">0</span>].Luid = luid;<br>	<span class="hljs-keyword">if</span> (bEnablePrivilege)<br>		tp.Privileges[<span class="hljs-number">0</span>].Attributes = SE_PRIVILEGE_ENABLED;<br>	<span class="hljs-keyword">else</span><br>		tp.Privileges[<span class="hljs-number">0</span>].Attributes = <span class="hljs-number">0</span>;<br><br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	* AdjustTokenPrivileges函数启用或禁用指定访问令牌中的权限</span><br><span class="hljs-comment">	* BOOL AdjustTokenPrivileges(</span><br><span class="hljs-comment">	*	[in]            HANDLE            TokenHandle,包含要修改的权限的访问令牌的句柄</span><br><span class="hljs-comment">	*	[in]            BOOL              DisableAllPrivileges,指定函数是否禁用所有令牌的权限。如果此值为TRUE，该函数将禁用所有权限并忽略NewState参数。如果为FALSE ，则函数根据NewState参数指向的信息修改权限</span><br><span class="hljs-comment">	*	[in, optional]  PTOKEN_PRIVILEGES NewState,指向 TOKEN_PRIVILEGES结构的指针，该结构指定特权数组及其属性</span><br><span class="hljs-comment">	*	[in]            DWORD             BufferLength,指定PreviousState参数指向的缓冲区的大小（以字节为单位）</span><br><span class="hljs-comment">	*	[out, optional] PTOKEN_PRIVILEGES PreviousState,一个指向缓冲区的指针，函数用TOKEN_PRIVILEGES结构填充该结构，该结构包含函数修改的任何特权的先前状态</span><br><span class="hljs-comment">	*	[out, optional] PDWORD            ReturnLength,指向变量的指针，该变量接收由PreviousState参数指向的缓冲区的所需大小（以字节为单位）,如果PreviousState为NULL ，则此参数可以为NULL。</span><br><span class="hljs-comment">	*	);</span><br><span class="hljs-comment">	*/</span><br>	<span class="hljs-keyword">if</span> (!<span class="hljs-built_in">AdjustTokenPrivileges</span>(hToken,<br>		FALSE,<br>		&amp;tp,<br>		<span class="hljs-built_in">sizeof</span>(TOKEN_PRIVILEGES),<br>		(PTOKEN_PRIVILEGES)<span class="hljs-literal">NULL</span>,<br>		(PDWORD)<span class="hljs-literal">NULL</span>))<br>	&#123;<br>		_tprintf(<span class="hljs-string">L&quot;AdjustTokenPrivileges error: %u\n&quot;</span>, <span class="hljs-built_in">GetLastError</span>());<br>		<span class="hljs-keyword">return</span> FALSE;<br>	&#125;<br><br>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">GetLastError</span>() == ERROR_NOT_ALL_ASSIGNED)<br>	&#123;<br>		_tprintf(<span class="hljs-string">L&quot;The token does not have the specified privilege.\n&quot;</span>);<br>		<span class="hljs-keyword">return</span> FALSE;<br>	&#125;<br>	<span class="hljs-keyword">return</span> TRUE;<br>&#125;<br><br><span class="hljs-function">BOOL <span class="hljs-title">EjectDll</span><span class="hljs-params">(DWORD dwPID, LPCTSTR szDllName)</span></span><br><span class="hljs-function"></span>&#123;<br>	BOOL bMore = FALSE, bFound = FALSE;<br>	HANDLE hSnapshot, hProcess, hThread;<br>	HMODULE hModule = <span class="hljs-literal">NULL</span>;<br><br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	* 描述属于指定进程的模块列表中的条目</span><br><span class="hljs-comment">	* typedef struct tagMODULEENTRY32 &#123;</span><br><span class="hljs-comment">	*	DWORD   dwSize;结构的大小，以字节为单位</span><br><span class="hljs-comment">	*	DWORD   th32ModuleID;该成员不再使用，并且始终设置为 1</span><br><span class="hljs-comment">	*	DWORD   th32ProcessID;要检查其模块的进程的标识符</span><br><span class="hljs-comment">	*	DWORD   GlblcntUsage;模块的加载计数，一般没有意义，通常等于 0xFFFF</span><br><span class="hljs-comment">	*	DWORD   ProccntUsage;模块的加载计数（与GlblcntUsage相同），通常没有意义，通常等于 0xFFFF</span><br><span class="hljs-comment">	*	BYTE    *modBaseAddr;拥有进程上下文中模块的基地址</span><br><span class="hljs-comment">	*	DWORD   modBaseSize;模块的大小，以字节为单位</span><br><span class="hljs-comment">	*	HMODULE hModule;拥有进程上下文中的模块句柄</span><br><span class="hljs-comment">	*	char    szModule[MAX_MODULE_NAME32 + 1];模块名称</span><br><span class="hljs-comment">	*	char    szExePath[MAX_PATH];模块路径</span><br><span class="hljs-comment">	*	&#125; MODULEENTRY32;</span><br><span class="hljs-comment">	*/</span><br>	MODULEENTRY32 me = &#123; <span class="hljs-built_in">sizeof</span>(me) &#125;;<br><br>	LPTHREAD_START_ROUTINE pThreadProc;<br><br>	hSnapshot = <span class="hljs-built_in">CreateToolhelp32Snapshot</span>(TH32CS_SNAPMODULE, dwPID);<br><br>	bMore = <span class="hljs-built_in">Module32First</span>(hSnapshot, &amp;me);<br>	<span class="hljs-keyword">for</span> (; bMore; bMore = <span class="hljs-built_in">Module32Next</span>(hSnapshot, &amp;me))<br>	&#123;<br>		<span class="hljs-keyword">if</span> (!_tcsicmp((LPCTSTR)me.szModule, szDllName) ||<br>			!_tcsicmp((LPCTSTR)me.szExePath, szDllName))<br>		&#123;<br>			bFound = TRUE;<br>			<span class="hljs-keyword">break</span>;<br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">if</span> (!bFound)<br>	&#123;<br>		<span class="hljs-built_in">CloseHandle</span>(hSnapshot);<br>		<span class="hljs-keyword">return</span> FALSE;<br>	&#125;<br><br>	<span class="hljs-keyword">if</span> (!(hProcess = <span class="hljs-built_in">OpenProcess</span>(PROCESS_ALL_ACCESS, FALSE, dwPID)))<br>	&#123;<br>		_tprintf(<span class="hljs-string">L&quot;OpenProcess(%d) failed!!! [%d]\n&quot;</span>, dwPID, <span class="hljs-built_in">GetLastError</span>());<br>		<span class="hljs-keyword">return</span> FALSE;<br>	&#125;<br>	hModule = <span class="hljs-built_in">GetModuleHandle</span>(<span class="hljs-string">L&quot;kernel32.dll&quot;</span>);<br>	pThreadProc = (LPTHREAD_START_ROUTINE)<span class="hljs-built_in">GetProcAddress</span>(hModule, <span class="hljs-string">&quot;FreeLibrary&quot;</span>);<br><br>	hThread = <span class="hljs-built_in">CreateRemoteThread</span>(hProcess, <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, pThreadProc, me.modBaseAddr, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>);<br>	<span class="hljs-built_in">WaitForSingleObject</span>(hThread, INFINITE);<br><br>	<span class="hljs-built_in">CloseHandle</span>(hThread);<br>	<span class="hljs-built_in">CloseHandle</span>(hProcess);<br>	<span class="hljs-built_in">CloseHandle</span>(hSnapshot);<br>&#125;<br><br><span class="hljs-type">int</span> _tmain(<span class="hljs-type">int</span> argc, TCHAR* argv[])<br>&#123;<br>	DWORD dwPID = <span class="hljs-number">0xFFFFFFFF</span>;<br><br>	dwPID = <span class="hljs-built_in">FindProcessID</span>(DEF_PROC_NAME);<br>	<span class="hljs-keyword">if</span> (dwPID == <span class="hljs-number">0xFFFFFFFF</span>)<br>	&#123;<br>		_tprintf(<span class="hljs-string">L&quot;There is no %s process!\n&quot;</span>, DEF_PROC_NAME);<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>	&#125;<br>	_tprintf(<span class="hljs-string">L&quot;PID of \&quot;%s\&quot; is %d \n&quot;</span>, DEF_PROC_NAME, dwPID);<br><br>	<span class="hljs-comment">//将进程的权限改为调试</span><br>	<span class="hljs-keyword">if</span> (!<span class="hljs-built_in">SetPrivilege</span>(SE_DEBUG_NAME, TRUE))<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>	<br>	<span class="hljs-comment">//将myhack.dll卸载</span><br>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">EjectDll</span>(dwPID, DEF_DLL_NAME))<br>		_tprintf(<span class="hljs-string">L&quot;EjectDll(%d, \&quot;%s\&quot;) success!!!\n&quot;</span>, dwPID, DEF_DLL_NAME);<br>	<span class="hljs-keyword">else</span>	<br>		_tprintf(<span class="hljs-string">L&quot;EjectDll(%d, \&quot;%s\&quot;) failed!!!\n&quot;</span>, dwPID, DEF_DLL_NAME);<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="通过修改PE加载DLL"><a href="#通过修改PE加载DLL" class="headerlink" title="通过修改PE加载DLL"></a>通过修改PE加载DLL</h1><h2 id="myhack3"><a href="#myhack3" class="headerlink" title="myhack3"></a>myhack3</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// dllmain.cpp : 定义 DLL 应用程序的入口点。</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;pch.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;tchar.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;ShlObj.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;WinInet.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> comment(lib,<span class="hljs-string">&quot;Wininet.lib&quot;</span>)</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_BUF_SIZE (4096)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_URL <span class="hljs-string">L&quot;https://www.baidu.com&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEF_INDEX_FILE <span class="hljs-string">L&quot;index.html&quot;</span></span><br><br>HWND g_hWnd = <span class="hljs-literal">NULL</span>;<br><span class="hljs-function">BOOL <span class="hljs-title">DownloadURL</span><span class="hljs-params">(LPCTSTR szURL, LPCTSTR szFile)</span></span><br><span class="hljs-function"></span>&#123;<br>    BOOL bRet = FALSE;<br>    <span class="hljs-comment">//需要导入wininet.h</span><br>    <span class="hljs-comment">//typedef LPVOID HINTERNET;</span><br>    HINTERNET hInternet = <span class="hljs-literal">NULL</span>, hURL = <span class="hljs-literal">NULL</span>;<br>    BYTE pBuf[DEF_BUF_SIZE] = &#123; <span class="hljs-number">0</span>, &#125;;<br>    DWORD dwBytesRead = <span class="hljs-number">0</span>;<br>    FILE* pFile = <span class="hljs-literal">NULL</span>;<br><br>    <span class="hljs-comment">//typedef int errno_t;</span><br>    <span class="hljs-type">errno_t</span> err = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">    * 初始化应用程序对 WinINet 函数的使用</span><br><span class="hljs-comment">    * HINTERNET InternetOpenA(</span><br><span class="hljs-comment">    *    [in] LPCSTR lpszAgent,指向以null结尾的字符串的指针，该字符串指定调用 WinINet 函数的应用程序或实体的名称。此名称用作 HTTP 协议中的用户代理。</span><br><span class="hljs-comment">    *    [in] DWORD  dwAccessType,所需的访问类型。INTERNET_OPEN_TYPE_PRECONFIG，从注册表中检索代理或直接配置。</span><br><span class="hljs-comment">    *    [in] LPCSTR lpszProxy,指向以null结尾的字符串的指针，该字符串指定代理服务器的名称。如果 dwAccessType未设置为 INTERNET_OPEN_TYPE_PROXY，此参数被忽略，应为NULL</span><br><span class="hljs-comment">    *         LPCTSTR lpszProxyBypass,指向以空字符结尾的字符串的长指针，该字符串包含主机名或 IP 地址或两者的可选列表，不应通过代理进行路由。如果此参数为 NULL，则该函数从注册表中读取绕过列表。</span><br><span class="hljs-comment">    *    [in] DWORD  dwFlags，指定影响函数行为的各种选项。</span><br><span class="hljs-comment">    *    );</span><br><span class="hljs-comment">    * 返回值：应用程序传递给后续 Win32 Internet 函数的有效句柄表示成功</span><br><span class="hljs-comment">    */</span><br>    hInternet = <span class="hljs-built_in">InternetOpen</span>(<span class="hljs-string">L&quot;ReverseCore&quot;</span>,<br>        INTERNET_OPEN_TYPE_PRECONFIG,<br>        <span class="hljs-literal">NULL</span>,<br>        <span class="hljs-literal">NULL</span>,<br>        <span class="hljs-number">0</span>);<br><br>    <span class="hljs-keyword">if</span> (hInternet == <span class="hljs-literal">NULL</span>)<br>    &#123;<br>        <span class="hljs-built_in">OutputDebugString</span>(<span class="hljs-string">L&quot;InternetOpen() failed!&quot;</span>);<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125;<br><br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">    * 打开由完整的 FTP 或 HTTP URL 指定的资源</span><br><span class="hljs-comment">    * HINTERNET InternetOpenUrlA(</span><br><span class="hljs-comment">    *    [in] HINTERNET hInternet, 当前 Internet 会话的句柄</span><br><span class="hljs-comment">    *    [in] LPCSTR    lpszUrl,指向以null结尾的字符串变量的指针，该变量指定要开始读取的 URL</span><br><span class="hljs-comment">    *    [in] LPCSTR    lpszHeaders,指向以null结尾的字符串的指针，该字符串指定要发送到 HTTP 服务器的标头</span><br><span class="hljs-comment">    *    [in] DWORD     dwHeadersLength,附加标头的大小，以TCHARs为单位。</span><br><span class="hljs-comment">    *    [in] DWORD     dwFlags,INTERNET_FLAG_RELOAD,强制从源服务器下载请求的文件、对象或目录列表，而不是从缓存中。</span><br><span class="hljs-comment">    *    [in] DWORD_PTR dwContext,一个指向变量的指针，该变量指定应用程序定义的值，该值连同返回的句柄一起传递给任何回调函数。</span><br><span class="hljs-comment">    *    );</span><br><span class="hljs-comment">    */</span><br>    hURL = <span class="hljs-built_in">InternetOpenUrl</span>(<br>        hInternet,<br>        szURL,<br>        <span class="hljs-literal">NULL</span>,<br>        <span class="hljs-number">0</span>,<br>        INTERNET_FLAG_RELOAD,<br>        <span class="hljs-number">0</span>);<br><br>    <span class="hljs-keyword">if</span> (hURL == <span class="hljs-literal">NULL</span>)<br>    &#123;<br>        <span class="hljs-built_in">OutputDebugString</span>(<span class="hljs-string">L&quot;InternetOpenUrl() failed!&quot;</span>);<br>        <span class="hljs-keyword">goto</span> _DownloadURL_EXIT;<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> (_tfopen_s(&amp;pFile, szFile, <span class="hljs-string">L&quot;wt&quot;</span>))<br>    &#123;<br>        <span class="hljs-built_in">OutputDebugString</span>(<span class="hljs-string">L&quot;fopen() failed!&quot;</span>);<br>        <span class="hljs-keyword">goto</span> _DownloadURL_EXIT;<br>    &#125;<br><br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">    * 从InternetOpenUrl、 FtpOpenFile或 HttpOpenRequest函数打开的句柄中读取数据</span><br><span class="hljs-comment">    * BOOL InternetReadFile(</span><br><span class="hljs-comment">    *    [in]  HINTERNET hFile,从先前调用 InternetOpenUrl、 FtpOpenFile或 HttpOpenRequest返回的句柄</span><br><span class="hljs-comment">    *    [out] LPVOID    lpBuffer,指向接收数据的缓冲区的指针</span><br><span class="hljs-comment">    *    [in]  DWORD     dwNumberOfBytesToRead,要读取的字节数</span><br><span class="hljs-comment">    *    [out] LPDWORD   lpdwNumberOfBytesRead,指向接收读取字节数的变量的指针</span><br><span class="hljs-comment">    *    );</span><br><span class="hljs-comment">    */</span><br><br>    <span class="hljs-comment">//将网络资源文件写入本地文件中</span><br>    <span class="hljs-keyword">while</span> (<span class="hljs-built_in">InternetReadFile</span>(hURL, pBuf, DEF_BUF_SIZE, &amp;dwBytesRead))<br>    &#123;<br>        <span class="hljs-keyword">if</span> (!dwBytesRead)<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-comment">/*</span><br><span class="hljs-comment">        * 把 ptr 所指向的数组中的数据写入到给定流 stream 中</span><br><span class="hljs-comment">        * size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream)</span><br><span class="hljs-comment">        * ptr -- 这是指向要被写入的元素数组的指针</span><br><span class="hljs-comment">        * size -- 这是要被写入的每个元素的大小，以字节为单位</span><br><span class="hljs-comment">        * nmemb -- 这是元素的个数，每个元素的大小为 size 字节</span><br><span class="hljs-comment">        * stream -- 这是指向 FILE 对象的指针，该 FILE 对象指定了一个输出流</span><br><span class="hljs-comment">        */</span><br>        <span class="hljs-built_in">fwrite</span>(pBuf, dwBytesRead, <span class="hljs-number">1</span>, pFile);<br>    &#125;<br><br>_DownloadURL_EXIT:<br>    <span class="hljs-keyword">if</span> (pFile)<br>        <span class="hljs-built_in">fclose</span>(pFile);<br>    <span class="hljs-keyword">if</span> (hURL)<br>        <span class="hljs-built_in">InternetCloseHandle</span>(hURL);<br>    <span class="hljs-keyword">if</span> (hInternet)<br>        <span class="hljs-built_in">InternetCloseHandle</span>(hInternet);<br>    <span class="hljs-keyword">return</span> bRet;<br>&#125;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">* 与EnumWindows或EnumDesktopWindows函数一起使用的应用程序定义的回调函数</span><br><span class="hljs-comment">* BOOL CALLBACK EnumWindowsProc(</span><br><span class="hljs-comment">*  _In_ HWND   hwnd,顶级窗口的句柄</span><br><span class="hljs-comment">*  _In_ LPARAM lParam,lParam [in] EnumWindows或EnumDesktopWindows中给出的应用程序定义的值</span><br><span class="hljs-comment">*   );</span><br><span class="hljs-comment">*/</span><br><span class="hljs-function">BOOL CALLBACK <span class="hljs-title">EnumWindowsProc</span><span class="hljs-params">(HWND hWnd, LPARAM lParam)</span></span><br><span class="hljs-function"></span>&#123;<br>    DWORD dwPID = <span class="hljs-number">0</span>;<br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">    * 检索创建指定窗口的线程的标识符，以及（可选）创建窗口的进程的标识符</span><br><span class="hljs-comment">    * DWORD GetWindowThreadProcessId(</span><br><span class="hljs-comment">    *    [in]            HWND    hWnd,窗口的句柄。</span><br><span class="hljs-comment">    *    [out, optional] LPDWORD lpdwProcessId,指向接收进程标识符的变量的指针</span><br><span class="hljs-comment">    *    );</span><br><span class="hljs-comment">    */</span><br>    <span class="hljs-built_in">GetWindowThreadProcessId</span>(hWnd, &amp;dwPID);<br><br>    <span class="hljs-keyword">if</span> (dwPID == (DWORD)lParam)<br>    &#123;<br>        g_hWnd = hWnd;<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125;<br>    <span class="hljs-keyword">return</span> TRUE;<br>&#125;<br><br><span class="hljs-function">HWND <span class="hljs-title">GetWindowHandleFromPID</span><span class="hljs-params">(DWORD dwPID)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">    * 通过将每个窗口的句柄依次传递给应用程序定义的回调函数来枚举屏幕上的所有顶级窗口。EnumWindows一直持续到枚举最后一个顶级窗口或回调函数返回FALSE</span><br><span class="hljs-comment">    * BOOL EnumWindows(</span><br><span class="hljs-comment">    *    [in] WNDENUMPROC lpEnumFunc,指向应用程序定义的回调函数的指针</span><br><span class="hljs-comment">    *    [in] LPARAM      lParam,要传递给回调函数的应用程序定义的值</span><br><span class="hljs-comment">    *    );</span><br><span class="hljs-comment">    */</span><br>    <span class="hljs-built_in">EnumWindows</span>(EnumWindowsProc, dwPID);<br>    <span class="hljs-keyword">return</span> g_hWnd;<br>&#125;<br><br><span class="hljs-comment">//需要#include&lt;shlobj.h&gt;</span><br><span class="hljs-function">BOOL <span class="hljs-title">DropFile</span><span class="hljs-params">(LPCTSTR wcsFile)</span></span><br><span class="hljs-function"></span>&#123;<br>    HWND hWnd = <span class="hljs-literal">NULL</span>;<br>    DWORD dwBufSize = <span class="hljs-number">0</span>;<br>    BYTE* pBuf = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">    * 定义CF_HDROP剪贴板格式</span><br><span class="hljs-comment">    * typedef struct _DROPFILES &#123;</span><br><span class="hljs-comment">    *    DWORD pFiles;文件列表从此结构开头的偏移量，以字节为单位</span><br><span class="hljs-comment">    *    POINT pt;落点。坐标取决于fNC</span><br><span class="hljs-comment">    *    BOOL  fNC;非客户区标志。如果此成员为TRUE，则pt指定窗口非客户区中某个点的屏幕坐标。如果它是FALSE，pt指定客户区域中一个点的客户坐标</span><br><span class="hljs-comment">    *    BOOL  fWide;指示文件是否包含 ANSI 或 Unicode 字符的值。如果该值为零，则文件包含 ANSI 字符。否则，它包含 Unicode 字符</span><br><span class="hljs-comment">    *    &#125; DROPFILES, *LPDROPFILES;</span><br><span class="hljs-comment">    */</span><br>    DROPFILES* pDrop = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-type">char</span> szFile[MAX_PATH] = &#123; <span class="hljs-number">0</span>, &#125;;<br>    HANDLE hMem = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">    * 将 UTF-16（宽字符）字符串映射到新字符串</span><br><span class="hljs-comment">    * int WideCharToMultiByte(</span><br><span class="hljs-comment">    *    [in]            UINT                               CodePage,用于执行转换的代码页,CP_ACP,系统默认的 Windows ANSI 代码页。</span><br><span class="hljs-comment">    *    [in]            DWORD                              dwFlags,指示转换类型的标志</span><br><span class="hljs-comment">    *    [in]            _In_NLS_string_(cchWideChar)LPCWCH lpWideCharStr,指向要转换的 Unicode 字符串的指针</span><br><span class="hljs-comment">    *    [in]            int                                cchWideChar,lpWideCharStr指示的字符串的大小（以字符为单位） 。或者，如果字符串以 null 结尾，则可以将此参数设置为 -1</span><br><span class="hljs-comment">    *    [out, optional] LPSTR                              lpMultiByteStr,指向接收转换后字符串的缓冲区的指针</span><br><span class="hljs-comment">    *    [in]            int                                cbMultiByte,lpMultiByteStr指示的缓冲区的大小（以字节为单位）</span><br><span class="hljs-comment">    *    [in, optional]  LPCCH                              lpDefaultChar,指向在指定代码页中无法表示字符时要使用的字符的指针。如果函数要使用系统默认值，则应用程序将此参数设置为NULL</span><br><span class="hljs-comment">    *    [out, optional] LPBOOL                             lpUsedDefaultChar,指向一个标志的指针，该标志指示函数是否在转换中使用了默认字符。如果源字符串中的一个或多个字符不能在指定的代码页中表示，则该标志设置为TRUE 。否则，标志设置为FALSE。该参数可以设置为NULL。</span><br><span class="hljs-comment">    *    );</span><br><span class="hljs-comment">    */</span><br>    <span class="hljs-built_in">WideCharToMultiByte</span>(CP_ACP, <span class="hljs-number">0</span>, wcsFile, <span class="hljs-number">-1</span>, szFile, MAX_PATH, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>);<br><br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">    * 锁定一个全局内存对象并返回一个指向对象内存块第一个字节的指针</span><br><span class="hljs-comment">    * LPVOID GlobalLock(</span><br><span class="hljs-comment">    *    [in] HGLOBAL hMem,全局内存对象的句柄</span><br><span class="hljs-comment">    *    );</span><br><span class="hljs-comment">    */</span><br>    pBuf = (LPBYTE)<span class="hljs-built_in">GlobalLock</span>(hMem);<br>    pDrop = (DROPFILES*)pBuf;<br>    pDrop-&gt;pFiles = <span class="hljs-built_in">sizeof</span>(DROPFILES);<br>    <span class="hljs-built_in">strcpy_s</span>((<span class="hljs-type">char</span>*)(pBuf + <span class="hljs-built_in">sizeof</span>(DROPFILES)), <span class="hljs-built_in">strlen</span>(szFile) + <span class="hljs-number">1</span>, szFile);<br><br>    <span class="hljs-built_in">GlobalUnlock</span>(hMem);<br><br>    <span class="hljs-keyword">if</span> (!(hWnd = <span class="hljs-built_in">GetWindowHandleFromPID</span>(<span class="hljs-built_in">GetCurrentProcessId</span>())))<br>    &#123;<br>        <span class="hljs-built_in">OutputDebugString</span>(<span class="hljs-string">L&quot;GetWndHandleFromPID() failed!!!&quot;</span>);<br>        <span class="hljs-keyword">return</span> FALSE;<br>    &#125;<br><br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">    * 在与创建指定窗口的线程关联的消息队列中放置（发布）一条消息，并在不等待线程处理消息的情况下返回。</span><br><span class="hljs-comment">    * BOOL PostMessageA(</span><br><span class="hljs-comment">    *    [in, optional] HWND   hWnd,一个窗口句柄，其窗口过程将接收消息</span><br><span class="hljs-comment">    *    [in]           UINT   Msg,要发布的消息</span><br><span class="hljs-comment">    *    [in]           WPARAM wParam,其他特定于消息的信息</span><br><span class="hljs-comment">    *    [in]           LPARAM lParam,其他特定于消息的信息</span><br><span class="hljs-comment">    *    );</span><br><span class="hljs-comment">    */</span><br>    <span class="hljs-built_in">PostMessage</span>(hWnd, WM_DROPFILES, (WPARAM)pBuf, <span class="hljs-literal">NULL</span>);<br>    <span class="hljs-keyword">return</span> TRUE;<br><br>&#125;<br><span class="hljs-function">DWORD WINAPI <span class="hljs-title">ThreadProc</span><span class="hljs-params">(LPVOID lParam)</span></span><br><span class="hljs-function"></span>&#123;<br>    TCHAR szPath[MAX_PATH] = &#123; <span class="hljs-number">0</span>, &#125;;<br>    TCHAR* p = <span class="hljs-literal">NULL</span>;<br><br>    <span class="hljs-built_in">GetModuleFileName</span>(<span class="hljs-literal">NULL</span>, szPath, <span class="hljs-built_in">sizeof</span>(szPath));<br><br>    <span class="hljs-keyword">if</span> (p = _tcsrchr(szPath, <span class="hljs-string">L&#x27;\\&#x27;</span>))<br>    &#123;<br>        _tcscpy_s(p + <span class="hljs-number">1</span>, <span class="hljs-built_in">wcslen</span>(DEF_INDEX_FILE) + <span class="hljs-number">1</span>, DEF_INDEX_FILE);<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">DownloadURL</span>(DEF_URL, szPath))<br>        &#123;<br>            <span class="hljs-built_in">DropFile</span>(szPath);<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-function">BOOL APIENTRY <span class="hljs-title">DllMain</span><span class="hljs-params">( HMODULE hModule,</span></span><br><span class="hljs-params"><span class="hljs-function">                       DWORD  ul_reason_for_call,</span></span><br><span class="hljs-params"><span class="hljs-function">                       LPVOID lpReserved</span></span><br><span class="hljs-params"><span class="hljs-function">                     )</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">switch</span> (ul_reason_for_call)<br>    &#123;<br>    <span class="hljs-keyword">case</span> DLL_PROCESS_ATTACH:<br>    <span class="hljs-keyword">case</span> DLL_THREAD_ATTACH:<br>    <span class="hljs-keyword">case</span> DLL_THREAD_DETACH:<br>    <span class="hljs-keyword">case</span> DLL_PROCESS_DETACH:<br>        <span class="hljs-built_in">CloseHandle</span>(<span class="hljs-built_in">CreateThread</span>(<span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, ThreadProc, <span class="hljs-literal">NULL</span>,<span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>));<br>        <span class="hljs-keyword">break</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> TRUE;<br>&#125;<br><br><br><br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> __cplusplus</span><br><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> &#123;<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>    __declspec(dllexport) <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dummy</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> __cplusplus</span><br>&#125;<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br></code></pre></td></tr></table></figure>
+
+<h2 id="修改TextView-exe文件"><a href="#修改TextView-exe文件" class="headerlink" title="修改TextView.exe文件"></a>修改TextView.exe文件</h2><h3 id="IMAGE-IMPORT-DESCRIPTOR"><a href="#IMAGE-IMPORT-DESCRIPTOR" class="headerlink" title="IMAGE_IMPORT_DESCRIPTOR"></a>IMAGE_IMPORT_DESCRIPTOR</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">_IMAGE_IMPORT_DESCRIPTOR</span><br>&#123;<br>    uion&#123;<br>        DWORD Characteristics;<br>        DWORD OriginalFirstThunk;<span class="hljs-comment">//指向输入名称表</span><br>    &#125;;<br>    DWORD TimeDateStamp;<span class="hljs-comment">//时间标志</span><br>    DWORD ForwarderChain;<span class="hljs-comment">//一般为0，在程序引用一个DLL中的API，而这个API又在引用其他DLL的API时使用</span><br>    DWORD Name;<span class="hljs-comment">//DLL名字的指针</span><br>    DWORD FirstThunk;<span class="hljs-comment">//包含输入地址表（IAT）的RVA</span><br>&#125;IMAGE_IMPORT_DESCRIPTOR;<br></code></pre></td></tr></table></figure>
+
+<h3 id="移动IDT"><a href="#移动IDT" class="headerlink" title="移动IDT"></a>移动IDT</h3><p>若文件中的<code>IDT</code>没有足够的空间新增<code>IID</code>时就需要将<code>IDT</code>移动。可以采用下列三种方式移动</p>
+<ul>
+<li>查找文件中的空白区域</li>
+<li>增加文件最后一节区的大小</li>
+<li>在文件末尾添加新节区</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%80%86%E5%90%91/" class="category-chain-item">逆向</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E9%80%86%E5%90%91/">#逆向</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>逆向工程核心原理--DLL注入</div>
+      <div>https://h0pe-ay.github.io/逆向工程核心原理--DLL注入/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>hope</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年6月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86--HOOK/" title="逆向工程核心原理--HOOK">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">逆向工程核心原理--HOOK</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" title="深入理解计算机系统学习笔记">
+                        <span class="hidden-mobile">深入理解计算机系统学习笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
