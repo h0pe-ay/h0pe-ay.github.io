@@ -258,7 +258,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5.5k 字
+          5.4k 字
         
       </span>
     
@@ -360,15 +360,12 @@
 <p>那么如何修改CS寄存器的值，则需要通过retfq与retf的指令</p>
 <ul>
 <li><p>refq，从64位切换到32位</p>
-<ul>
-<li><pre><code class="assembly">push 0x23; #32位的CS寄存器的值
-push 0xxx; #需要跳转的地址
-retfq; #从32位切换到64位
-<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><br>    <br><br>- ref，从<span class="hljs-number">32</span>位切换至<span class="hljs-number">64</span>位<br><br>  - ```assembly<br>    <span class="hljs-keyword">push</span> <span class="hljs-number">0x33</span>; <span class="hljs-meta">#64的CS寄存器的值</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-number">0</span>xxx; <span class="hljs-meta">#需要跳转的地址</span><br>    retf; <span class="hljs-meta">#从64位切换到32位</span><br></code></pre></td></tr></table></figure>
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs assembly">push 0x23; #32位的CS寄存器的值<br>push 0xxx; #需要跳转的地址<br>retfq; #从32位切换到64位<br></code></pre></td></tr></table></figure>
+
+
 </li>
-</ul>
-</li>
+<li><p>ref，从32位切换至64位</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs assembly">push 0x33; #64的CS寄存器的值<br>push 0xxx; #需要跳转的地址<br>retf; #从64位切换到32位<br></code></pre></td></tr></table></figure></li>
 </ul>
 <p>再以一道题目作为例子，保护如下，还是没有开启NX保护</p>
 <p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308122350610.png" srcset="/img/loading.gif" lazyload alt="image-20230812224501848"></p>
