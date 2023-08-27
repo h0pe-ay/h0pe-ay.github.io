@@ -242,6 +242,39 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/glibc2.35-%E9%80%9A%E8%BF%87tls_dtor_list%E5%8A%AB%E6%8C%81exit%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/" target="_self">
+          
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/glibc2.35-%E9%80%9A%E8%BF%87tls_dtor_list%E5%8A%AB%E6%8C%81exit%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/" target="_self">
+        <div>
+          前言glibc2.35删除了malloc_hook、free_hook以及realloc_hook，通过劫持这三个hook函数执行system已经不可行了。 传统堆漏洞利用是利用任意地址写改上上述几个hook从而执行system，在移除之后则需要找到同样只需要修改某个地址值并且能够造成程序流劫持的效果。 __call_tls_dtors在程序返回时会通过exit函数，exit函数会经历以下调用过程
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-08-27 18:45" pubdate>
+              2023-08-27
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/ETW/" target="_self">
           ETW
         </a>
@@ -778,67 +811,6 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/CVE-2022-1015/">#CVE-2022-1015</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/kernel-pwn/" target="_self">
-          Kernel-Pwn
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/kernel-pwn/" target="_self">
-        <div>
-          kernel-pwn学习笔记
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-06-28 15:26" pubdate>
-              2023-06-28
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/kernel/" class="category-chain-item">kernel</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/kernel/">#kernel</a>
             
           </div>
         
