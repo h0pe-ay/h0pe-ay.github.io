@@ -243,14 +243,14 @@
       <h1 class="index-header">
         
         <a href="/glibc2.35-%E9%80%9A%E8%BF%87tls_dtor_list%E5%8A%AB%E6%8C%81exit%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/" target="_self">
-          
+          glibc2.35-通过tls_dtor_list劫持exit执行流程
         </a>
       </h1>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/glibc2.35-%E9%80%9A%E8%BF%87tls_dtor_list%E5%8A%AB%E6%8C%81exit%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/" target="_self">
         <div>
-          前言glibc2.35删除了malloc_hook、free_hook以及realloc_hook，通过劫持这三个hook函数执行system已经不可行了。 传统堆漏洞利用是利用任意地址写改上上述几个hook从而执行system，在移除之后则需要找到同样只需要修改某个地址值并且能够造成程序流劫持的效果。 __call_tls_dtors在程序返回时会通过exit函数，exit函数会经历以下调用过程
+          通过tls_dtor_list劫持exit执行流程
         </div>
       </a>
 
@@ -264,6 +264,34 @@
           </div>
         
         
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ctf-pwn/" class="category-chain-item">ctf-pwn</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ctf-pwn/">#ctf-pwn</a>
+            
+          </div>
         
       </div>
     </article>
