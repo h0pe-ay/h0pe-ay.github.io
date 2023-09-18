@@ -317,6 +317,15 @@
   </url>
   
   <url>
+    <loc>https://h0pe-ay.github.io/Kernel-Pwn-UAF/</loc>
+    
+    <lastmod>2023-09-18</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://h0pe-ay.github.io/about/index-1.html</loc>
     
     <lastmod>2023-06-07</lastmod>
@@ -346,7 +355,7 @@
 
   <url>
     <loc>https://h0pe-ay.github.io/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -354,140 +363,140 @@
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/Android/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/CVE-2016-5195/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/CVE-2022-08475/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/Docker/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/kernel/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/fuzz/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/IDA/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/Reverse/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/CVE-2022-1015/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/CVE-2021-4034/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/CVE-2021-3156/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/%E4%BB%A3%E7%90%86%E8%AE%BE%E7%BD%AE/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/git/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/patch/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/%E9%80%86%E5%90%91/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/%E7%BC%96%E7%A8%8B/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/ctf/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/ETW/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/ctf-pwn/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -496,91 +505,91 @@
   
   <url>
     <loc>https://h0pe-ay.github.io/categories/Android%E7%BC%96%E7%A8%8B/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/categories/CVE/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/categories/Docker%E4%BD%BF%E7%94%A8/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/categories/kernel/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/categories/%E5%B7%A5%E5%85%B7/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/categories/%E9%80%86%E5%90%91/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/categories/Ubuntu/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/categories/git/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/categories/ctf-pwn/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/categories/UNIX%E7%BC%96%E7%A8%8B/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/categories/ctf/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://h0pe-ay.github.io/categories/windows/</loc>
-    <lastmod>2023-09-11</lastmod>
+    <lastmod>2023-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

