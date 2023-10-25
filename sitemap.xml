@@ -344,7 +344,7 @@
   </url>
   
   <url>
-    <loc>https://h0pe-ay.github.io/CVE-2023-0179-Nftables%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA/</loc>
+    <loc>https://h0pe-ay.github.io/CVE-2023-0179/</loc>
     
     <lastmod>2023-10-25</lastmod>
     
@@ -530,6 +530,13 @@
   
   <url>
     <loc>https://h0pe-ay.github.io/tags/pwn/</loc>
+    <lastmod>2023-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://h0pe-ay.github.io/tags/CVE-2023-0179/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
