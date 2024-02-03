@@ -1,0 +1,811 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="McULNauwae3fxE8yPK3QNQNAYvG6cZAJ02xx9Lpbc98" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/hope.jpg">
+  <link rel="icon" href="/img/hope.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="hope">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Fuzzing101-Xpdf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fuzzing101-Xpdf">
+<meta property="og:url" content="https://h0pe-ay.github.io/Fuzzing101-Xpdf/index.html">
+<meta property="og:site_name" content="hope">
+<meta property="og:description" content="Fuzzing101-Xpdf">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/GfurBk863bQOMve.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/wnl7OWoX3gGJAm8.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/8yMSE2B5QkXVtiL.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/2pMlkE4XLc1eJAw.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/fzrwmixyLpNlKZ5.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/RQXMVvUNDzWhrYE.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/Lsklrn67DdXcK9U.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/LI1OSQtCgDipywF.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/5hsRLSdlTJO3zZw.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/N1FPuzfV94iKsGd.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/UtzHSyo8jl2pZNd.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/onVuwPeMvcN2xzf.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/zvRx3DA92P1oCaM.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/VUH9IDaNM1BWnxz.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/ucB2b8CEWJjpqfY.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/jU718axCogP3lty.png">
+<meta property="og:image" content="https://s2.loli.net/2024/02/03/Q5OFPMRITAqfw3r.png">
+<meta property="article:published_time" content="2024-02-03T14:46:51.572Z">
+<meta property="article:author" content="hope">
+<meta property="article:tag" content="Fuzzing-Xpdf">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2024/02/03/GfurBk863bQOMve.png">
+  
+  
+  
+  <title>Fuzzing101-Xpdf - hope</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"h0pe-ay.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ZqEEnP8vrF2LzEKjCt8pL5Cf-gzGzoHsz","app_key":"6Owvec9nVB4K93xxi7CKzAqh","server_url":"https://zqeenp8v.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>hope</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Fuzzing101-Xpdf"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-03 22:46" pubdate>
+          2024年2月3日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Fuzzing101-Xpdf</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Fuzzing101-Xpdf"><a href="#Fuzzing101-Xpdf" class="headerlink" title="Fuzzing101-Xpdf"></a>Fuzzing101-Xpdf</h1><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><ul>
+<li>目标程序：<a target="_blank" rel="noopener" href="https://dl.xpdfreader.com/old/xpdf-3.02.tar.gz">xpdf-3.02</a></li>
+<li>工具：<a target="_blank" rel="noopener" href="https://github.com/AFLplusplus/AFLplusplus">AFL++</a></li>
+</ul>
+<h2 id="插桩编译"><a href="#插桩编译" class="headerlink" title="插桩编译"></a>插桩编译</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">CC=$HOME/AFLplusplus/afl-clang-fast CXX=$HOME/AFLplusplus/afl-clang-fast++ ./configure --prefix=&quot;$HOME/fuzzing_xpdf/install/&quot;<br>make<br>make install<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>设置<code>CC</code>与<code>CXX</code>环境变量，从而使用<code>afl-clang-fast</code>进行编译插桩</li>
+<li>编辑配置文件，指定安装目录</li>
+</ul>
+<p>编译过程如下图，途中会显示<code>afl-cc++</code></p>
+<p><img src="https://s2.loli.net/2024/02/03/GfurBk863bQOMve.png" srcset="/img/loading.gif" lazyload alt="1"></p>
+<h2 id="Fuzzing"><a href="#Fuzzing" class="headerlink" title="Fuzzing"></a>Fuzzing</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">afl-fuzz -i $HOME/fuzzing_xpdf/pdf_examples/ -o $HOME/fuzzing_xpdf/out/ -s 123 -- $HOME/fuzzing_xpdf/install/bin/pdftotext @@ $HOME/fuzzing_xpdf/output<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-i</code>参数指定需要<code>fuzzing</code>的目标文件</li>
+<li><code>-s</code>参数指定使用的静态随机种子</li>
+<li><code>@@</code>为生成文件样本进行输入，而不是标准输入</li>
+<li><code>output</code>路径是<code>pdftotext</code>文件执行后所生成的静态文件</li>
+</ul>
+<p>在<code>fuzzing</code>之前需要在命令行输入<code>echo core &gt;/proc/sys/kernel/core_pattern</code>，为了能够存储程序崩溃的情况</p>
+<p><img src="https://s2.loli.net/2024/02/03/wnl7OWoX3gGJAm8.png" srcset="/img/loading.gif" lazyload alt="2"></p>
+<p><code>fuzzing</code>速度非常快，一分钟就出<code>crash</code>样本了</p>
+<p><img src="https://s2.loli.net/2024/02/03/8yMSE2B5QkXVtiL.png" srcset="/img/loading.gif" lazyload alt="3"></p>
+<p><strong>复现崩溃</strong></p>
+<p>会发现打印了十分多的信息，这是因为使用<code>afl++</code>插桩时会开启内存泄漏探测，因此在复现时应该使用原来的编译器编译</p>
+<p><img src="https://s2.loli.net/2024/02/03/2pMlkE4XLc1eJAw.png" srcset="/img/loading.gif" lazyload alt="4"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">CFLAGS=&quot;-g -O0&quot; CXXFLAGS=&quot;-g -O0&quot; ./configure --prefix=&quot;$HOME/fuzzing_xpdf/install/&quot;<br>make &amp;&amp; make install<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-g</code>参数增加调试信息</li>
+<li><code>-O0</code>关闭优化方便调试</li>
+</ul>
+<p><strong>重新运行一次样本</strong></p>
+<p><img src="https://s2.loli.net/2024/02/03/fzrwmixyLpNlKZ5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
+<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><p>使用<code>gdb</code>分析一下崩溃的原因</p>
+<ul>
+<li>首先使用<code>gdb</code>加载<code>pdftotext</code></li>
+</ul>
+<p><img src="https://s2.loli.net/2024/02/03/RQXMVvUNDzWhrYE.png" srcset="/img/loading.gif" lazyload alt="7"></p>
+<ul>
+<li>其次，设置参数</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/02/03/Lsklrn67DdXcK9U.png" srcset="/img/loading.gif" lazyload alt="8"></p>
+<ul>
+<li>最后运行，输入<code>bt</code>查看栈回溯，可以看到会不断调用<code>getObj</code>函数，因此可能是不断递归造成的崩溃</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/02/03/LI1OSQtCgDipywF.png" srcset="/img/loading.gif" lazyload alt="6"></p>
+<p><strong>函数调用流程</strong></p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs livescript">Parser::getObj<span class="hljs-function"><span class="hljs-params">(Parser.cc:<span class="hljs-number">94</span>)</span></span><br><span class="hljs-function">--&gt;</span><br>Parser::makeStream<span class="hljs-function"><span class="hljs-params">(Parser.cc:<span class="hljs-number">156</span>)</span></span><br><span class="hljs-function">--&gt;</span><br>Object::dictLookup<span class="hljs-function"><span class="hljs-params">(<span class="hljs-built_in">Object</span>.h:<span class="hljs-number">253</span>)</span></span><br><span class="hljs-function">--&gt;</span><br>Dict::lookup<span class="hljs-function"><span class="hljs-params">(Dict.cc:<span class="hljs-number">76</span>)</span></span><br><span class="hljs-function">--&gt;</span><br>Object::fetch<span class="hljs-function"><span class="hljs-params">(<span class="hljs-built_in">Object</span>.cc:<span class="hljs-number">106</span>)</span></span><br><span class="hljs-function">--&gt;</span><br>XRef::fetch(XRef.cc:<span class="hljs-number">823</span>)<br></code></pre></td></tr></table></figure>
+
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>函数递归开头在<code>getObj</code>函数中处理流数据，会使用<code>makeStream</code>函数处理数据</p>
+<p><img src="https://s2.loli.net/2024/02/03/5hsRLSdlTJO3zZw.png" srcset="/img/loading.gif" lazyload alt="9"></p>
+<p>通过<code>dictLookup</code>函数搜索<code>Length</code>获取流数据的长度</p>
+<p>![11](D:\pwn\fuzz\Fuzzing101\Exercise 1\img\11.png)</p>
+<p>通过键值搜索对象，若是对象不为空则调用<code>fetch</code>函数</p>
+<p><img src="https://s2.loli.net/2024/02/03/N1FPuzfV94iKsGd.png" srcset="/img/loading.gif" lazyload alt="12"></p>
+<p>若对象是引用对象则会调用<code>XRef::fetch</code>函数，这里就是<strong>漏洞存在点</strong>，这里并没有判断引用的对象是否是自身。</p>
+<p><img src="https://s2.loli.net/2024/02/03/UtzHSyo8jl2pZNd.png" srcset="/img/loading.gif" lazyload alt="13"></p>
+<p>在<code>XRef::fetch</code>内部又调用了<code>getObj</code>函数</p>
+<p><img src="https://s2.loli.net/2024/02/03/onVuwPeMvcN2xzf.png" srcset="/img/loading.gif" lazyload alt="14"></p>
+<p>通过源码分析发现<code>pdf</code>对象内部是可以调用间接对象的，但是代码没有判断当前对象与调用的间接对象是否是相同对象，那么则会发送<code>crash</code>样本发生的情况，会不断递归调用<code>getObj</code>函数</p>
+<h1 id="pdf相关知识"><a href="#pdf相关知识" class="headerlink" title="pdf相关知识"></a>pdf相关知识</h1><p>为了分析<code>crash</code>样本崩溃的原因需要掌握<code>pdf</code>相关知识</p>
+<p>这个网站介绍的非常详细<a target="_blank" rel="noopener" href="https://lazymind.me/2017/10/pdf-structure/%EF%BC%8C%E8%BF%99%E9%87%8C%E7%AE%80%E5%8D%95%E8%AE%B0%E5%BD%95%E4%B8%80%E4%B8%8B">https://lazymind.me/2017/10/pdf-structure/，这里简单记录一下</a></p>
+<ul>
+<li><p><code>PDF</code>文档结构是由许多<code>PDF</code>对象组成</p>
+</li>
+<li><p><code>PDF</code>对象分为直接对象与间接对象</p>
+</li>
+<li><p>直接对象类型</p>
+<ul>
+<li>布尔类型</li>
+<li>数值类型</li>
+<li>字符串</li>
+<li>名称</li>
+<li>数组</li>
+<li>字典</li>
+<li>流对象</li>
+<li>空对象</li>
+</ul>
+</li>
+<li><p>间接对象</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">1 0 obj<br>...<br>endobj<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">引用对象</span><br>1 0 R #代表引用上述对象<br></code></pre></td></tr></table></figure>
+
+<h1 id="crash样本分析"><a href="#crash样本分析" class="headerlink" title="crash样本分析"></a>crash样本分析</h1><p>下图是样本的部分数据流，可以发现在<code>7 0 obj</code>间接对象中又交叉引用了<code>7 0 R</code>即对象本身与源码分析的情况一致，间接对象本身引用了自身导致了递归调用</p>
+<p><img src="https://s2.loli.net/2024/02/03/zvRx3DA92P1oCaM.png" srcset="/img/loading.gif" lazyload alt="14"></p>
+<p><strong>崩溃样本构造</strong></p>
+<p>一个正常<code>pdf</code>的例子</p>
+<p><img src="https://s2.loli.net/2024/02/03/VUH9IDaNM1BWnxz.png" srcset="/img/loading.gif" lazyload alt="16"></p>
+<p>正常<code>pdf</code>的数据流</p>
+<p><img src="https://s2.loli.net/2024/02/03/ucB2b8CEWJjpqfY.png" srcset="/img/loading.gif" lazyload alt="17"></p>
+<p>修改后的<code>pdf</code>的数据流</p>
+<p><img src="https://s2.loli.net/2024/02/03/jU718axCogP3lty.png" srcset="/img/loading.gif" lazyload alt="18"></p>
+<p>构造成功</p>
+<p><img src="https://s2.loli.net/2024/02/03/Q5OFPMRITAqfw3r.png" srcset="/img/loading.gif" lazyload alt="19"></p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a target="_blank" rel="noopener" href="https://github.com/antonio-morales/Fuzzing101/tree/main/Exercise%201">https://github.com/antonio-morales/Fuzzing101/tree/main/Exercise%201</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/zxyle/PDF-Explained/blob/master/chapter2.md">https://github.com/zxyle/PDF-Explained/blob/master/chapter2.md</a></p>
+<p><a target="_blank" rel="noopener" href="https://lazymind.me/2017/10/pdf-structure/">https://lazymind.me/2017/10/pdf-structure/</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7023691050757652494#heading-18">https://juejin.cn/post/7023691050757652494#heading-18</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/fxbjye/article/details/115460327">https://blog.csdn.net/fxbjye/article/details/115460327</a></p>
+<p><a target="_blank" rel="noopener" href="https://lazymind.me/2017/10/pdf-structure/">https://lazymind.me/2017/10/pdf-structure/</a></p>
+<p><a target="_blank" rel="noopener" href="https://zxyle.github.io/PDF-Explained/chapter2.html">https://zxyle.github.io/PDF-Explained/chapter2.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/warcraft/p/10998541.html">https://www.cnblogs.com/warcraft/p/10998541.html</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Fuzzing/" class="category-chain-item">Fuzzing</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Fuzzing-Xpdf/">#Fuzzing-Xpdf</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Fuzzing101-Xpdf</div>
+      <div>https://h0pe-ay.github.io/Fuzzing101-Xpdf/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>hope</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年2月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/CVE-2023-0179-Nftables%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA/" title="CVE-2023-0179-Nftables整型溢出">
+                        <span class="hidden-mobile">CVE-2023-0179-Nftables整型溢出</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
