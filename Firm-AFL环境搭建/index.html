@@ -24,24 +24,24 @@
 <meta property="og:site_name" content="hope">
 <meta property="og:description" content="环境搭建">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://github.com/h0pe-ay/picgo/raw/master/image-20221221152037290.png">
-<meta property="og:image" content="https://github.com/h0pe-ay/picgo/raw/master/image-20221221152451038.png">
-<meta property="og:image" content="https://github.com/h0pe-ay/picgo/raw/master/image-20221221153545684.png">
-<meta property="og:image" content="https://github.com/h0pe-ay/picgo/raw/master/image-20221221153706991.png">
-<meta property="og:image" content="https://github.com/h0pe-ay/picgo/raw/master/image-20221221153820363.png">
-<meta property="og:image" content="https://github.com/h0pe-ay/picgo/raw/master/image-20221220160241561.png">
-<meta property="og:image" content="https://github.com/h0pe-ay/picgo/raw/master/image-20221220160448373.png">
-<meta property="og:image" content="https://github.com/h0pe-ay/picgo/raw/master/image-20221220162308501.png">
-<meta property="og:image" content="https://github.com/h0pe-ay/picgo/raw/master/image-20221220163351554.png">
-<meta property="og:image" content="https://github.com/h0pe-ay/picgo/raw/master/image-20221220172557925.png">
-<meta property="og:image" content="https://github.com/h0pe-ay/picgo/raw/master/image-20221220172617556.png">
-<meta property="og:image" content="https://github.com/h0pe-ay/picgo/raw/master/image-20221220172539337.png">
-<meta property="og:image" content="https://github.com/h0pe-ay/picgo/raw/master/image-20221220234813318.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/byhI6aVWQrq7KAM.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/xStjCfWDQh6m8yN.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/rb7VXMeEZBGsj1a.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/YvEg3LQPWn2oZHb.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/YA2iwD7voQa9qNf.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/EGZnCt6oUJP2v1q.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/vWorO6uCeg1awKA.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/7jsBUHLpoIkr6X3.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/4cvVtEb2DKWRknj.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/WhUpIAeHiLRPExb.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/QoWvkaxsSgMrZUl.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/ZrwuLOm8qDaVxWN.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/YbPk7FUSfXQ5vcm.png">
 <meta property="article:published_time" content="2023-06-27T11:03:46.783Z">
 <meta property="article:author" content="hope">
 <meta property="article:tag" content="fuzz">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://github.com/h0pe-ay/picgo/raw/master/image-20221221152037290.png">
+<meta name="twitter:image" content="https://s2.loli.net/2024/03/17/byhI6aVWQrq7KAM.png">
   
   
   
@@ -354,13 +354,13 @@ make
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">gedit ./firmadyne/firmadyne.config<br></code></pre></td></tr></table></figure>
 
 <p>将注释删掉，并且填写自己<code>firmadyne</code>的路径</p>
-<p><img src="https://github.com/h0pe-ay/picgo/raw/master/image-20221221152037290.png" srcset="/img/loading.gif" lazyload alt="image-20221221152037290"></p>
+<p><img src="https://s2.loli.net/2024/03/17/byhI6aVWQrq7KAM.png" srcset="/img/loading.gif" lazyload alt="image-20221221152037290"></p>
 </li>
 <li><p>制作固件镜像</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd ./FrimAFL/firmadyne #这里的frimadyne是上面下载的项目<br>sudo python3 ./sources/extractor/extractor.py -b dlink -sql 127.0.0.1 -np -nk &quot;../firmware/DIR-815_FIRMWARE_1.01.ZIP&quot; images #提取镜像，提取的镜像放在了images文件夹下<br>sudo ./scripts/getArch.sh ./images/9050.tar.gz<br><span class="hljs-meta prompt_">#</span><span class="language-bash">这里作者修改了makeImage.sh脚本，因此采用作者的脚本</span><br>cp ./FrimAFL/firmadyne_modify/makeImage.sh ./FrimAFL/firmadyne/scripts<br>sudo ./scripts/makeImage.sh 9050<br>sudo ./scripts/inferNetwork.sh 9050<br>cd ..<br>python FirmAFL_setup.py 9050 mipsel<br></code></pre></td></tr></table></figure>
 
 <p>此时镜像已经制作完毕，如下图</p>
-<p><img src="https://github.com/h0pe-ay/picgo/raw/master/image-20221221152451038.png" srcset="/img/loading.gif" lazyload alt="image-20221221152451038"></p>
+<p><img src="https://s2.loli.net/2024/03/17/xStjCfWDQh6m8yN.png" srcset="/img/loading.gif" lazyload alt="image-20221221152451038"></p>
 </li>
 <li><p>Fuzzing</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd ./FrimAFL/image_9050<br><span class="hljs-meta prompt_">#</span><span class="language-bash">这里可以使用作者提供的启动文件</span><br>cp ./FrimAFL/FirmAFL_config/9050/run.sh ./FrimAFL/image_9050 <br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">这里可以通过start.py直接完成仿真+模糊测试</span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">python3 start.py</span><br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">或者分步启动</span><br>sudo ./run.sh #开启仿真<br><br>python3 test.py#可以运行这个测试文件，判断仿真完毕没，这里需要主要偶的时候这个test.py是用python2写的，需要略微修改一下才能用python3启动<br><br>sudo ./user.sh #若test.py可以正常执行，则开始Fuziing<br></code></pre></td></tr></table></figure>
@@ -368,43 +368,43 @@ make
 <ul>
 <li>开始仿真</li>
 </ul>
-<p><img src="https://github.com/h0pe-ay/picgo/raw/master/image-20221221153545684.png" srcset="/img/loading.gif" lazyload alt="image-20221221153545684"></p>
+<p><img src="https://s2.loli.net/2024/03/17/rb7VXMeEZBGsj1a.png" srcset="/img/loading.gif" lazyload alt="image-20221221153545684"></p>
 <ul>
 <li>运行测试文件，判断仿真是否完成</li>
 </ul>
-<p><img src="https://github.com/h0pe-ay/picgo/raw/master/image-20221221153706991.png" srcset="/img/loading.gif" lazyload alt="image-20221221153706991"></p>
+<p><img src="https://s2.loli.net/2024/03/17/YvEg3LQPWn2oZHb.png" srcset="/img/loading.gif" lazyload alt="image-20221221153706991"></p>
 <ul>
 <li>仿真完成后就可以Fuzzing了</li>
 </ul>
-<p><img src="https://github.com/h0pe-ay/picgo/raw/master/image-20221221153820363.png" srcset="/img/loading.gif" lazyload alt="image-20221221153820363"></p>
+<p><img src="https://s2.loli.net/2024/03/17/YA2iwD7voQa9qNf.png" srcset="/img/loading.gif" lazyload alt="image-20221221153820363"></p>
 </li>
 </ul>
 <h1 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h1><p>1.缺少<code>autoreconf</code></p>
-<p><img src="https://github.com/h0pe-ay/picgo/raw/master/image-20221220160241561.png" srcset="/img/loading.gif" lazyload alt="image-20221220160241561"></p>
+<p><img src="https://s2.loli.net/2024/03/17/EGZnCt6oUJP2v1q.png" srcset="/img/loading.gif" lazyload alt="image-20221220160241561"></p>
 <p>安装一下<code>autoerconf</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo apt install autoconf<br></code></pre></td></tr></table></figure>
 
 <p>2.<code>possibly undefined macro: AC_PROG_LIBTOOL</code></p>
-<p><img src="https://github.com/h0pe-ay/picgo/raw/master/image-20221220160448373.png" srcset="/img/loading.gif" lazyload alt="image-20221220160448373"></p>
+<p><img src="https://s2.loli.net/2024/03/17/vWorO6uCeg1awKA.png" srcset="/img/loading.gif" lazyload alt="image-20221220160448373"></p>
 <p>安装一下<code>libtool</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo apt-get install libtool<br></code></pre></td></tr></table></figure>
 
 <p>3.找不到<code>-lbfd</code></p>
-<p><img src="https://github.com/h0pe-ay/picgo/raw/master/image-20221220162308501.png" srcset="/img/loading.gif" lazyload alt="image-20221220162308501"></p>
+<p><img src="https://s2.loli.net/2024/03/17/7jsBUHLpoIkr6X3.png" srcset="/img/loading.gif" lazyload alt="image-20221220162308501"></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo apt-get install binutils-dev<br></code></pre></td></tr></table></figure>
 
 <p>4.缺少<code>boost.foreach.hpp</code>文件</p>
-<p><img src="https://github.com/h0pe-ay/picgo/raw/master/image-20221220163351554.png" srcset="/img/loading.gif" lazyload alt="image-20221220163351554"></p>
+<p><img src="https://s2.loli.net/2024/03/17/4cvVtEb2DKWRknj.png" srcset="/img/loading.gif" lazyload alt="image-20221220163351554"></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo apt-get install libboost-dev<br></code></pre></td></tr></table></figure>
 
 <p>5.<code>libproxychains.so.3</code>出错</p>
-<p><img src="https://github.com/h0pe-ay/picgo/raw/master/image-20221220172557925.png" srcset="/img/loading.gif" lazyload alt="image-20221220172557925"></p>
+<p><img src="https://s2.loli.net/2024/03/17/WhUpIAeHiLRPExb.png" srcset="/img/loading.gif" lazyload alt="image-20221220172557925"></p>
 <p>首先找到安装的路径<code>/usr/lib/x86_64-linux-gnu/libproxychains.so.3</code></p>
-<p><img src="https://github.com/h0pe-ay/picgo/raw/master/image-20221220172617556.png" srcset="/img/loading.gif" lazyload alt="image-20221220172617556"></p>
+<p><img src="https://s2.loli.net/2024/03/17/QoWvkaxsSgMrZUl.png" srcset="/img/loading.gif" lazyload alt="image-20221220172617556"></p>
 <p><code>sudo gedit /usr/bin/proxychains</code>修改配置</p>
-<p><img src="https://github.com/h0pe-ay/picgo/raw/master/image-20221220172539337.png" srcset="/img/loading.gif" lazyload alt="image-20221220172539337"></p>
+<p><img src="https://s2.loli.net/2024/03/17/ZrwuLOm8qDaVxWN.png" srcset="/img/loading.gif" lazyload alt="image-20221220172539337"></p>
 <p>7.could not be found for jpeg</p>
-<p><img src="https://github.com/h0pe-ay/picgo/raw/master/image-20221220234813318.png" srcset="/img/loading.gif" lazyload alt="image-20221220234813318"></p>
+<p><img src="https://s2.loli.net/2024/03/17/YbPk7FUSfXQ5vcm.png" srcset="/img/loading.gif" lazyload alt="image-20221220234813318"></p>
 <figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs q">sudo apt install libjpeg-<span class="hljs-built_in">dev</span> zlib1g-<span class="hljs-built_in">dev</span><br></code></pre></td></tr></table></figure>
 
 <h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a target="_blank" rel="noopener" href="https://github.com/firmadyne/firmadyne">https://github.com/firmadyne/firmadyne</a></p>
@@ -501,9 +501,9 @@ make
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/IDA%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/" title="IDA使用">
+                      <a href="/PE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" title="PE文件结构">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">IDA使用</span>
+                        <span class="hidden-mobile">PE文件结构</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

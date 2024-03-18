@@ -17,27 +17,26 @@
   <meta name="author" content="hope">
   <meta name="keywords" content="">
   
-    <meta name="description" content="ETW文件操作事件">
+    <meta name="description" content="前言由于ETW的事件非常多，并且事件名有些类似，因此记录一下文件操作所对应的事件 事件的详细信息可以通过https:&#x2F;&#x2F;github.com&#x2F;jdu2600&#x2F;Windows10EtwEvents&#x2F;blob&#x2F;master&#x2F;manifest&#x2F;Microsoft-Windows-Kernel-File.tsv进行查询 Microsoft-Windows-Kernel-File该provider主要负责内">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ETW-Microsoft-Windows-Kernel-File">
+<meta property="og:title" content="hope">
 <meta property="og:url" content="https://h0pe-ay.github.io/ETW-Microsoft-Windows-Kernel-File/index.html">
 <meta property="og:site_name" content="hope">
-<meta property="og:description" content="ETW文件操作事件">
+<meta property="og:description" content="前言由于ETW的事件非常多，并且事件名有些类似，因此记录一下文件操作所对应的事件 事件的详细信息可以通过https:&#x2F;&#x2F;github.com&#x2F;jdu2600&#x2F;Windows10EtwEvents&#x2F;blob&#x2F;master&#x2F;manifest&#x2F;Microsoft-Windows-Kernel-File.tsv进行查询 Microsoft-Windows-Kernel-File该provider主要负责内">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308311602528.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308311602530.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308311602531.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308311602532.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308311602533.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/eoMhpZALJd6Ffxw.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/35IaRtGuxQZLOmB.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/yIipVN8qkMZdsht.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/xTkl4s2gqGz9LvW.png">
+<meta property="og:image" content="https://h0pe-ay.github.io/ETW-Microsoft-Windows-Kernel-File/image-20230828125301585.png">
 <meta property="article:published_time" content="2023-08-31T08:02:09.167Z">
 <meta property="article:author" content="hope">
-<meta property="article:tag" content="ETW">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308311602528.png">
+<meta name="twitter:image" content="https://s2.loli.net/2024/03/17/eoMhpZALJd6Ffxw.png">
   
   
   
-  <title>ETW-Microsoft-Windows-Kernel-File - hope</title>
+  <title>hope</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -220,7 +219,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="ETW-Microsoft-Windows-Kernel-File"></span>
+            <span id="subtitle" data-typed-text=""></span>
           
         </div>
 
@@ -300,7 +299,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">ETW-Microsoft-Windows-Kernel-File</h1>
+            <h1 style="display: none"></h1>
             
             
               <div class="markdown-body">
@@ -312,7 +311,7 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;windows.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	<span class="hljs-type">wchar_t</span> file[<span class="hljs-number">1024</span>] = <span class="hljs-string">L&quot;C:\\PWN\\windows\\ETW_TEST\\x64\\Release\\asdihi12jeopjaposjdopasjd.txt&quot;</span>;<br>	HANDLE hFile = CreateFile(file,<br>		GENERIC_WRITE | GENERIC_READ,<br>		FILE_SHARE_READ,<br>		<span class="hljs-literal">NULL</span>,<br>		OPEN_EXISTING,<br>		FILE_ATTRIBUTE_NORMAL,<br>		<span class="hljs-literal">NULL</span>);;<br>	<span class="hljs-type">char</span> buf[<span class="hljs-number">1024</span>];<br>	DWORD dwRead;<br>	<span class="hljs-keyword">if</span> (hFile != INVALID_HANDLE_VALUE) &#123;<br>		<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;获取文件句柄&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>		getchar();<br>		<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;关闭文件&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>		CloseHandle(hFile);<br>	&#125;<br>	<span class="hljs-keyword">else</span><br>	&#123;<br>		<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;打开文件句柄失败&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>		getchar();<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>	&#125;<br>	getchar();<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>可以看到获取与关闭文件句柄会触发Create与Close事件。<strong>触发序列为Create-&gt;Close</strong></p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308311602528.png" srcset="/img/loading.gif" lazyload alt="image-20230828113902785"></p>
+<p><img src="https://s2.loli.net/2024/03/17/eoMhpZALJd6Ffxw.png" srcset="/img/loading.gif" lazyload alt="image-20230828113902785"></p>
 <table>
 <thead>
 <tr>
@@ -371,7 +370,7 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;windows.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	LPCWSTR filePath = <span class="hljs-string">L&quot;C:\\PWN\\windows\\ETW_TEST\\x64\\Release\\asdihi12jeopjaposjdopasjd.txt&quot;</span>;<br>	<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;删除文件&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>	getchar();<br>	<span class="hljs-keyword">if</span> (DeleteFile(filePath)) &#123;<br>		<span class="hljs-comment">// 文件删除成功</span><br>		wprintf(<span class="hljs-string">L&quot;File deleted successfully.\n&quot;</span>);<br>	&#125;<br>	<span class="hljs-keyword">else</span> &#123;<br>		<span class="hljs-comment">// 文件删除失败</span><br>		DWORD error = GetLastError();<br>		wprintf(<span class="hljs-string">L&quot;File deletion failed with error code %d.\n&quot;</span>, error);<br>	&#125;<br>	getchar();<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>可以看到删除文件会触发Create、SetDelete以及Namedelete的事件。<strong>触发序列为Create-&gt;SetDelete-&gt;Namedelete</strong></p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308311602530.png" srcset="/img/loading.gif" lazyload alt="image-20230828114854079"></p>
+<p><img src="https://s2.loli.net/2024/03/17/35IaRtGuxQZLOmB.png" srcset="/img/loading.gif" lazyload alt="image-20230828114854079"></p>
 <table>
 <thead>
 <tr>
@@ -440,9 +439,9 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;windows.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br><br>	<span class="hljs-type">wchar_t</span> file[<span class="hljs-number">1024</span>] = <span class="hljs-string">L&quot;C:\\PWN\\windows\\ETW_TEST\\x64\\Release\\asdihi12jeopjaposjdopasjd.txt&quot;</span>;<br>	HANDLE hFile = CreateFile(file,<br>		GENERIC_WRITE | GENERIC_READ,<br>		FILE_SHARE_READ,<br>		<span class="hljs-literal">NULL</span>,<br>		OPEN_EXISTING,<br>		FILE_ATTRIBUTE_NORMAL,<br>		<span class="hljs-literal">NULL</span>);;<br>	<span class="hljs-type">char</span> buf[<span class="hljs-number">1024</span>];<br>	DWORD dwRead;<br>	<span class="hljs-keyword">if</span> (hFile != INVALID_HANDLE_VALUE) &#123;<br>		<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;获取文件句柄&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>		getchar();<br>		<span class="hljs-type">int</span> file_size = <span class="hljs-number">0</span>;<br>		file_size = GetFileSize(hFile, <span class="hljs-literal">NULL</span>);<br>		<span class="hljs-keyword">if</span> (ReadFile(hFile, buf, file_size, &amp;dwRead, <span class="hljs-literal">NULL</span>)) &#123;<br>			<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;读文件成功&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>			getchar();<br>		&#125;<br>		<span class="hljs-keyword">else</span> &#123;<br>			<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;读文件失败&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>			getchar();<br>			<span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>		&#125;<br>		<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;读文件&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>		getchar();<br>		<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;写文件&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>		WriteFile(hFile, buf, <span class="hljs-built_in">strlen</span>(buf), &amp;dwRead, <span class="hljs-literal">NULL</span>);<br><br>		CloseHandle(hFile);<br>	&#125;<br>	<span class="hljs-keyword">else</span><br>	&#123;<br>		<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;打开文件句柄失败&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>		getchar();<br>		<span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>	&#125;<br>	getchar();<br><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>可以看到读写事件会触发Read和Write事件以及SetInformation事件，而获取文件句柄是读写的前提因此Create事件也会被触发，但是关闭文件句柄则是代码规范问题，如果不调用的话则不会触发Close事件。<strong>触发序列为Create-&gt;Read-&gt;Write-&gt;SetInformation-&gt;Close</strong></p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308311602531.png" srcset="/img/loading.gif" lazyload alt="image-20230830111102876"></p>
+<p><img src="https://s2.loli.net/2024/03/17/yIipVN8qkMZdsht.png" srcset="/img/loading.gif" lazyload alt="image-20230830111102876"></p>
 <p>这里可以看到Write事件会触发多次。这是因为即使不写入文件有时候也会触发写事件。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308311602532.png" srcset="/img/loading.gif" lazyload alt="image-20230828124423925"></p>
+<p><img src="https://s2.loli.net/2024/03/17/xTkl4s2gqGz9LvW.png" srcset="/img/loading.gif" lazyload alt="image-20230828124423925"></p>
 <table>
 <thead>
 <tr>
@@ -561,7 +560,7 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;windows.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	<span class="hljs-comment">// 原始文件路径</span><br>	LPCWSTR filePath = <span class="hljs-string">L&quot;C:\\PWN\\windows\\ETW_TEST\\x64\\Release\\asdihi12jeopjaposjdopasjd.txt&quot;</span>;<br>	<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;修改文件名&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>	getchar();<br>	LPCWSTR newFilePath = <span class="hljs-string">L&quot;C:\\PWN\\windows\\ETW_TEST\\x64\\Release\\1234.txt&quot;</span>;     <span class="hljs-comment">// 新文件路径</span><br><br>	<span class="hljs-keyword">if</span> (MoveFile(filePath, newFilePath)) &#123;<br>		<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;文件名修改成功\n&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>	&#125;<br>	<span class="hljs-keyword">else</span> &#123;<br>		<span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;文件名修改失败\n&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>可以看到文件名的修改会触发Create、Rename、Namedelete以及Close事件。<strong>触发序列为Create-&gt;Rename-&gt;Namedelete-&gt;Close</strong></p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308311602533.png" srcset="/img/loading.gif" lazyload alt="image-20230828125301585"></p>
+<p><img src="/ETW-Microsoft-Windows-Kernel-File/image-20230828125301585.png" srcset="/img/loading.gif" lazyload alt="image-20230828125301585"></p>
 <table>
 <thead>
 <tr>
@@ -654,34 +653,6 @@
             <div>
               <div class="post-metas my-3">
   
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/windows/" class="category-chain-item">windows</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/ETW/">#ETW</a>
-      
-    </div>
   
 </div>
 
@@ -691,7 +662,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>ETW-Microsoft-Windows-Kernel-File</div>
+      <div></div>
       <div>https://h0pe-ay.github.io/ETW-Microsoft-Windows-Kernel-File/</div>
     </div>
     <div class="license-meta">
@@ -736,9 +707,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/Kernel-Pwn-heapoverflow/" title="Kernel-Pwn-HeapOverflow">
+                      <a href="/2023%E5%8D%8E%E4%B8%BAWriteUp/" title="2023华为杯WriteUp">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Kernel-Pwn-HeapOverflow</span>
+                        <span class="hidden-mobile">2023华为杯WriteUp</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -746,8 +717,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/glibc2.35-%E9%80%9A%E8%BF%87tls_dtor_list%E5%8A%AB%E6%8C%81exit%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/" title="glibc2.35-通过tls_dtor_list劫持exit执行流程">
-                        <span class="hidden-mobile">glibc2.35-通过tls_dtor_list劫持exit执行流程</span>
+                      <a href="/ETW/" title="">
+                        <span class="hidden-mobile"></span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

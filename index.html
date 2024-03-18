@@ -242,15 +242,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/C++%E8%99%9A%E5%87%BD%E6%95%B0%E3%80%81this%E3%80%81%E5%A4%9A%E6%80%81/" target="_self">
-          C++虚函数、this、多态
+        <a href="/shellcode%E7%9A%84%E6%8A%80%E5%B7%A7/" target="_self">
+          shellcode技巧
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/C++%E8%99%9A%E5%87%BD%E6%95%B0%E3%80%81this%E3%80%81%E5%A4%9A%E6%80%81/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/shellcode%E7%9A%84%E6%8A%80%E5%B7%A7/" target="_self">
         <div>
-          C++
+          shellcode
         </div>
       </a>
 
@@ -258,8 +258,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-16 14:05" pubdate>
-              2024-03-16
+            <time datetime="2024-03-18 17:34" pubdate>
+              2024-03-18
             </time>
           </div>
         
@@ -274,7 +274,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/C/" class="category-chain-item">C++</a>
+  <a href="/categories/ctf/" class="category-chain-item">ctf</a>
   
   
 
@@ -289,7 +289,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E8%99%9A%E5%87%BD%E6%95%B0%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/">#虚函数相关知识</a>
+              <a href="/tags/ctf/">#ctf</a>
             
           </div>
         
@@ -303,15 +303,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/babku%E5%88%86%E6%9E%90/" target="_self">
-          baku分析
+        <a href="/glibc2.35-%E9%80%9A%E8%BF%87tls_dtor_list%E5%8A%AB%E6%8C%81exit%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/" target="_self">
+          
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/babku%E5%88%86%E6%9E%90/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/glibc2.35-%E9%80%9A%E8%BF%87tls_dtor_list%E5%8A%AB%E6%8C%81exit%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/" target="_self">
         <div>
-          病毒分析
+          前言glibc2.35删除了malloc_hook、free_hook以及realloc_hook，通过劫持这三个hook函数执行system已经不可行了。 传统堆漏洞利用是利用任意地址写改上上述几个hook从而执行system，在移除之后则需要找到同样只需要修改某个地址值并且能够造成程序流劫持的效果。 __call_tls_dtors在程序返回时会通过exit函数，exit函数会经历以下调用过程
         </div>
       </a>
 
@@ -319,8 +319,41 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-13 21:24" pubdate>
-              2024-03-13
+            <time datetime="2024-03-18 17:30" pubdate>
+              2024-03-18
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/pwn%E4%B9%8B%E7%AE%80%E5%8D%95patch/" target="_self">
+          Pwn之简单patch
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/pwn%E4%B9%8B%E7%AE%80%E5%8D%95patch/" target="_self">
+        <div>
+          patch技巧
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-18 17:27" pubdate>
+              2024-03-18
             </time>
           </div>
         
@@ -335,7 +368,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90/" class="category-chain-item">病毒分析</a>
+  <a href="/categories/ctf-pwn/" class="category-chain-item">ctf-pwn</a>
   
   
 
@@ -350,7 +383,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/baku%E5%88%86%E6%9E%90/">#baku分析</a>
+              <a href="/tags/patch/">#patch</a>
             
           </div>
         
@@ -364,15 +397,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/wannacry/" target="_self">
-          WannaCry分析
+        <a href="/ret2dir/" target="_self">
+          
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/wannacry/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/ret2dir/" target="_self">
         <div>
-          病毒分析
+          前言ret2dir是2014年在USENIX发表的一篇论文，该论文提出针对ret2usr提出的SMEP、SMAP等保护的绕过。全称为return-to-direct-mapped memory，返回直接映射的内存。论文地址：https://www.usenix.org/system/files/conference/usenixsecurity14/sec14-paper-kemerlis.pdf
         </div>
       </a>
 
@@ -380,40 +413,12 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-08 17:42" pubdate>
-              2024-03-08
+            <time datetime="2024-03-18 17:19" pubdate>
+              2024-03-18
             </time>
           </div>
         
         
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%97%85%E6%AF%92%E5%88%86%E6%9E%90/" class="category-chain-item">病毒分析</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/WannaCry%E5%88%86%E6%9E%90/">#WannaCry分析</a>
-            
-          </div>
         
       </div>
     </article>
@@ -425,15 +430,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/Fuzzing101-Xpdf/" target="_self">
-          Fuzzing101-Xpdf
+        <a href="/Kernel-Pwn-heapoverflow/" target="_self">
+          
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/Fuzzing101-Xpdf/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/Kernel-Pwn-heapoverflow/" target="_self">
         <div>
-          Fuzzing101-Xpdf
+          前言用户进程会通过malloc等函数进行动态内存分配相应的内核也有一套动态的内存分配机制。 内核中的内存分配有两种类型的计算机并且使用不同的方法管理物理内存  UMA计算机：每个处理器访问内存的速度一直 NUMA计算机：每个处理器访问自己的本地内存速度较快，但是访问其他处理器的本地内存会相对较慢   首先将内存划为为结点，每个结点与一个处理器进行关联，因此上图的与处理器关联的内存都被视作为结点。结
         </div>
       </a>
 
@@ -441,40 +446,12 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-03 22:46" pubdate>
-              2024-02-03
+            <time datetime="2024-03-18 15:52" pubdate>
+              2024-03-18
             </time>
           </div>
         
         
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Fuzzing/" class="category-chain-item">Fuzzing</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Fuzzing-Xpdf/">#Fuzzing-Xpdf</a>
-            
-          </div>
         
       </div>
     </article>
@@ -486,15 +463,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/CVE-2023-0179-Nftables%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA/" target="_self">
-          CVE-2023-0179-Nftables整型溢出
+        <a href="/%E5%88%A9%E7%94%A8modprobe_path%E6%8F%90%E6%9D%83/" target="_self">
+          
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/CVE-2023-0179-Nftables%E6%95%B4%E5%9E%8B%E6%BA%A2%E5%87%BA/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/%E5%88%A9%E7%94%A8modprobe_path%E6%8F%90%E6%9D%83/" target="_self">
         <div>
-          CVE-2023-0179复现
+          前言现常用的提权方式为commit_creds(prepare_kernel_cred(0)去获得root凭证后返回用户态执行system(&quot;/bin/sh&quot;)。现有另一种方法，则是通过改写modprobe_path完成提权操作。 modprobe_pathmodprobe_path中存储了一个名为modprobe的程序  modprobe是一个最初由Rusty Russell
         </div>
       </a>
 
@@ -502,101 +479,12 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2023-11-21 14:45" pubdate>
-              2023-11-21
+            <time datetime="2024-03-18 15:50" pubdate>
+              2024-03-18
             </time>
           </div>
         
         
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/CVE/" class="category-chain-item">CVE</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/CVE-2023-0179/">#CVE-2023-0179</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023%E5%8D%8E%E4%B8%BAWriteUp/" target="_self">
-          2023华为杯WriteUp
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023%E5%8D%8E%E4%B8%BAWriteUp/" target="_self">
-        <div>
-          ctf-pwn
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-10-01 23:39" pubdate>
-              2023-10-01
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/pwn/" class="category-chain-item">pwn</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/pwn/">#pwn</a>
-            
-          </div>
         
       </div>
     </article>
@@ -624,8 +512,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2023-09-24 14:49" pubdate>
-              2023-09-24
+            <time datetime="2024-03-18 15:47" pubdate>
+              2024-03-18
             </time>
           </div>
         
@@ -670,14 +558,14 @@
       <h1 class="index-header">
         
         <a href="/Kernel-Pwn-UAF/" target="_self">
-          Kernel-Pwn-UAF
+          
         </a>
       </h1>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/Kernel-Pwn-UAF/" target="_self">
         <div>
-          kernel-pwn学习笔记
+          前言UAF是用户态中常见的漏洞，在内核中同样存在UAF漏洞，都是由于对释放后的空间处理不当，导致被释放后的堆块仍然可以使用所造成的漏洞。 LK01-3结合题目来看UAF漏洞 项目地址：https://github.com/h0pe-ay/Kernel-Pwn/tree/master/LK01-3 open模块在执行open模块时会分配0x400大小的堆空间，并将地址存储在g_buf中 123456
         </div>
       </a>
 
@@ -685,40 +573,12 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2023-09-18 18:44" pubdate>
-              2023-09-18
+            <time datetime="2024-03-18 15:46" pubdate>
+              2024-03-18
             </time>
           </div>
         
         
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/kernel/" class="category-chain-item">kernel</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/kernel/">#kernel</a>
-            
-          </div>
         
       </div>
     </article>
@@ -730,15 +590,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/KernelPwn-AAR&amp;AAW/" target="_self">
-          Kernel-Pwn-AAR&amp;AAW
+        <a href="/Kernel-Pwn-FGKASLR/" target="_self">
+          
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/KernelPwn-AAR&amp;AAW/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/Kernel-Pwn-FGKASLR/" target="_self">
         <div>
-          kernel-pwn学习笔记
+          FGKASLRFGASLR（Function Granular KASLR）是KASLR的加强版，增加了更细粒度的地址随机化。因此在开启了FGASLR的内核中，即使泄露了内核的程序基地址也不能调用任意的内核函数。 layout_randomized_image在fgkaslr.c文件中存在着随机化的明细。 1234567891011121314151617181920212223242526272
         </div>
       </a>
 
@@ -746,40 +606,12 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2023-09-11 11:23" pubdate>
-              2023-09-11
+            <time datetime="2024-03-18 15:44" pubdate>
+              2024-03-18
             </time>
           </div>
         
         
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/kernel/" class="category-chain-item">kernel</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/kernel/">#kernel</a>
-            
-          </div>
         
       </div>
     </article>
@@ -791,15 +623,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/Kernel-Pwn-heapoverflow/" target="_self">
-          Kernel-Pwn-HeapOverflow
+        <a href="/KernelPwn-AAR-AAW/" target="_self">
+          
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/Kernel-Pwn-heapoverflow/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/KernelPwn-AAR-AAW/" target="_self">
         <div>
-          kernel-pwn学习笔记
+          前言在之前的HeapOverflow文章中，作者还构造了任意地址读写的操作，使用了任意地址读写去进行提权，还挺有意思的，记录一下如何利用任意地址读写进行提权。 作者利用任意地址读写分别改写modprobe_path以及cred结构体去实现提权的操作，由于改写modprobe_path的方法之前已经研究过了，因此现在详细记录一下如何修改cred结构体完成提权操作。 cred结构体cred 结构体通常
         </div>
       </a>
 
@@ -807,40 +639,12 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2023-09-08 18:33" pubdate>
-              2023-09-08
+            <time datetime="2024-03-18 15:43" pubdate>
+              2024-03-18
             </time>
           </div>
         
         
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/kernel/" class="category-chain-item">kernel</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/kernel/">#kernel</a>
-            
-          </div>
         
       </div>
     </article>

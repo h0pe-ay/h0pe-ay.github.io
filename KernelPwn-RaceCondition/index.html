@@ -24,14 +24,14 @@
 <meta property="og:site_name" content="hope">
 <meta property="og:description" content="kernel-pwn学习笔记">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309241449735.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309241449736.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309241449737.png">
-<meta property="article:published_time" content="2023-09-24T06:49:20.153Z">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/4a5JYoFzCq7TN3W.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/byqmGsMUgnzBx35.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/sxdiXboaWUKt3Tj.png">
+<meta property="article:published_time" content="2024-03-18T07:47:52.422Z">
 <meta property="article:author" content="hope">
 <meta property="article:tag" content="kernel">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309241449735.png">
+<meta name="twitter:image" content="https://s2.loli.net/2024/03/18/4a5JYoFzCq7TN3W.png">
   
   
   
@@ -229,8 +229,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-09-24 14:49" pubdate>
-          2023年9月24日 下午
+        <time datetime="2024-03-18 15:47" pubdate>
+          2024年3月18日 下午
         </time>
       </span>
     
@@ -312,11 +312,11 @@
 <p>例如以下代码，连续执行两遍<code>open</code>模块时，第二次执行会返回<code>-1</code>。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;fcntl.h&gt;</span></span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	<span class="hljs-type">int</span> fd1 = open(<span class="hljs-string">&quot;/dev/holstein&quot;</span>,O_RDWR);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;fd1:%d\n&quot;</span>,fd1);<br>	<br>	<span class="hljs-type">int</span> fd2 = open(<span class="hljs-string">&quot;/dev/holstein&quot;</span>,O_RDWR);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;fd2:%d\n&quot;</span>,fd2);<br>	<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309241449735.png" srcset="/img/loading.gif" lazyload alt="image-20230921160911373"></p>
+<p><img src="https://s2.loli.net/2024/03/18/4a5JYoFzCq7TN3W.png" srcset="/img/loading.gif" lazyload alt="image-20230921160911373"></p>
 <p>单线程下执行的流程如下。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309241449736.png" srcset="/img/loading.gif" lazyload alt="image-20230924124535907"></p>
+<p><img src="https://s2.loli.net/2024/03/18/byqmGsMUgnzBx35.png" srcset="/img/loading.gif" lazyload alt="image-20230924124535907"></p>
 <p>但是上述情况会在多线程的情况下出现潜在的问题。由于线程1与线程2会切换执行，那么就有可能会出现以下情况，在线程1执行<code>open</code>模块时，在处于判断<code>mutex = 1</code>这个赋值操作之前，而在<code>mutext == 1</code>这个判断语句之后切换到线程2，那么线程2在执行<code>mutext == 1</code>时，线程1还没有完成赋值操作，因此线程2会认为是第一次执行<code>open</code>模块，从而获得指向<code>g_buf</code>的文件描述符，而在线程2切回到线程1时，由于此时线程1已经指向完判断语句了，因此也会成功获取指向<code>g_buf</code>的文件描述符，因此会构成存在两个指针指向同一块区域的情况，从而造成后续的<code>UAF</code>漏洞的利用。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202309241449737.png" srcset="/img/loading.gif" lazyload alt="image-20230924125005531"></p>
+<p><img src="https://s2.loli.net/2024/03/18/sxdiXboaWUKt3Tj.png" srcset="/img/loading.gif" lazyload alt="image-20230924125005531"></p>
 <h2 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h2><p>为了验证上述的可能性，我们需要创建两个线程并且两个线程需要不断的调用<code>open</code>模块。我们需要注意以下几点。</p>
 <ul>
 <li>首先是<code>POC</code>使用了<code>3</code>与<code>4</code>作为新打开的文件描述符，这是因为<code>0</code>，<code>1</code>，<code>2</code>是标准流，因此新打开的文件应该是从<code>3</code>开始分配。但是避免不是从<code>3</code>开始分配，我们可以使用作者提供的<code>exp</code>，打开临时文件去判断下一个文件描述符是什么。</li>
@@ -397,7 +397,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年9月24日</div>
+          <div>2024年3月18日</div>
         </div>
       
       
@@ -429,9 +429,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023%E5%8D%8E%E4%B8%BAWriteUp/" title="2023华为杯WriteUp">
+                      <a href="/%E5%88%A9%E7%94%A8modprobe_path%E6%8F%90%E6%9D%83/" title="">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">2023华为杯WriteUp</span>
+                        <span class="hidden-mobile"></span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -439,8 +439,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/Kernel-Pwn-UAF/" title="Kernel-Pwn-UAF">
-                        <span class="hidden-mobile">Kernel-Pwn-UAF</span>
+                      <a href="/Kernel-Pwn-UAF/" title="">
+                        <span class="hidden-mobile"></span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

