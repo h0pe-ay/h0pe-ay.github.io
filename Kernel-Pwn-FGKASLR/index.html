@@ -17,12 +17,12 @@
   <meta name="author" content="hope">
   <meta name="keywords" content="">
   
-    <meta name="description" content="FGKASLRFGASLR（Function Granular KASLR）是KASLR的加强版，增加了更细粒度的地址随机化。因此在开启了FGASLR的内核中，即使泄露了内核的程序基地址也不能调用任意的内核函数。 layout_randomized_image在fgkaslr.c文件中存在着随机化的明细。 1234567891011121314151617181920212223242526272">
+    <meta name="description" content="FGKASLR学习笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hope">
+<meta property="og:title" content="FGKASLR">
 <meta property="og:url" content="https://h0pe-ay.github.io/Kernel-Pwn-FGKASLR/index.html">
 <meta property="og:site_name" content="hope">
-<meta property="og:description" content="FGKASLRFGASLR（Function Granular KASLR）是KASLR的加强版，增加了更细粒度的地址随机化。因此在开启了FGASLR的内核中，即使泄露了内核的程序基地址也不能调用任意的内核函数。 layout_randomized_image在fgkaslr.c文件中存在着随机化的明细。 1234567891011121314151617181920212223242526272">
+<meta property="og:description" content="FGKASLR学习笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2024/03/18/o3HgtVnsuUl9q84.png">
 <meta property="og:image" content="https://s2.loli.net/2024/03/18/MgXNe16x75DBwS8.png">
@@ -35,12 +35,13 @@
 <meta property="og:image" content="https://s2.loli.net/2024/03/18/Q4mptl3AKi81dLT.png">
 <meta property="article:published_time" content="2024-03-18T07:44:56.149Z">
 <meta property="article:author" content="hope">
+<meta property="article:tag" content="kernel">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://s2.loli.net/2024/03/18/o3HgtVnsuUl9q84.png">
   
   
   
-  <title>hope</title>
+  <title>FGKASLR - hope</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -223,7 +224,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="FGKASLR"></span>
           
         </div>
 
@@ -303,7 +304,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none"></h1>
+            <h1 style="display: none">FGKASLR</h1>
             
             
               <div class="markdown-body">
@@ -380,6 +381,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/kernel/" class="category-chain-item">kernel</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/kernel/">#kernel</a>
+      
+    </div>
   
 </div>
 
@@ -389,7 +418,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
+      <div>FGKASLR</div>
       <div>https://h0pe-ay.github.io/Kernel-Pwn-FGKASLR/</div>
     </div>
     <div class="license-meta">
@@ -434,9 +463,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/Kernel-Pwn-UAF/" title="">
+                      <a href="/Kernel-Pwn-UAF/" title="Kernel-Pwn-UAF">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">Kernel-Pwn-UAF</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -444,8 +473,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/KernelPwn-AAR-AAW/" title="">
-                        <span class="hidden-mobile"></span>
+                      <a href="/KernelPwn-AAR-AAW/" title="KernelPwn-AAR&amp;AAW">
+                        <span class="hidden-mobile">KernelPwn-AAR&amp;AAW</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
