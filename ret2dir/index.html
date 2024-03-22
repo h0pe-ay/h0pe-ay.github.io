@@ -27,7 +27,7 @@
 <meta property="og:image" content="https://s2.loli.net/2024/03/18/AQ8I9w7uf2cFCWq.png">
 <meta property="og:image" content="https://s2.loli.net/2024/03/18/dQ4GqabCgtY2mXF.png">
 <meta property="og:image" content="https://s2.loli.net/2024/03/18/1MdlQR38mi27cDO.png">
-<meta property="og:image" content="https://h0pe-ay.github.io/ret2dir/https:/s2.loli.net/2024/03/18/zXQucWv9Z8Ak3mN.png">
+<meta property="og:image" content="https://s2.loli.net/2024/03/18/zXQucWv9Z8Ak3mN.png">
 <meta property="og:image" content="https://s2.loli.net/2024/03/18/sf13dZvXoi8FTaM.png">
 <meta property="og:image" content="https://s2.loli.net/2024/03/18/uzEQM2f73ShyZnr.png">
 <meta property="og:image" content="https://s2.loli.net/2024/03/18/gHDBSfGq62QNFIC.png">
@@ -325,7 +325,7 @@
 <p>这个映射区其实就是内核空间会与物理地址空间进行线性的映射，我们可以在这段区域直接访问到物理地址对应的内容。</p>
 <p><img src="https://s2.loli.net/2024/03/18/1MdlQR38mi27cDO.png" srcset="/img/loading.gif" lazyload></p>
 <p>那么作者就提出了一种攻击场景，由于在虚地址中的内容最终都会映射到物理地址上，若能将用户空间的数据同样映射到这段区域上，岂不是就可以在内核空间也可以访问到用户空间的数据了。该段区域也被称之为<code>phsymap</code>，它是一段大的，连续的虚拟内存区域，它包含了部分或全部的物理内存的直接映射。下图这种情况作者也称之为是虚拟地址别名的情况，因为在用户空间与内核空间中都存在一个地址可以访问<code>payload</code>。</p>
-<p><img src="/ret2dir/https:/s2.loli.net/2024/03/18/zXQucWv9Z8Ak3mN.png" srcset="/img/loading.gif" lazyload>)</p>
+<p><img src="https://s2.loli.net/2024/03/18/zXQucWv9Z8Ak3mN.png" srcset="/img/loading.gif" lazyload></p>
 <p>最终作者构想的攻击场景如下图所示（图片来自论文），不同于<code>ret2usr</code>，指针不再被修改为指向用户空间，而是指向了物理地址的直接映射区，由于该映射区指向物理地址，而在用户空间构造的<code>payload</code>也会映射到物理地址，因此若能获得指向存在<code>payload</code>的用户空间对应的物理地址在<code>phsymap</code>位置，就能够直接执行用户空间的<code>payload</code>。</p>
 <p><img src="https://s2.loli.net/2024/03/18/sf13dZvXoi8FTaM.png" srcset="/img/loading.gif" lazyload></p>
 <p>想要获得映射地址有以下方法</p>
