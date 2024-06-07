@@ -1,0 +1,769 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="McULNauwae3fxE8yPK3QNQNAYvG6cZAJ02xx9Lpbc98" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/hope.jpg">
+  <link rel="icon" href="/img/hope.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="hope">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="导入表的钩取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hook-IAT">
+<meta property="og:url" content="https://h0pe-ay.github.io/Hook-IAT/index.html">
+<meta property="og:site_name" content="hope">
+<meta property="og:description" content="导入表的钩取">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/06/07/xMXw9l5pj7NTyY1.png">
+<meta property="og:image" content="https://s2.loli.net/2024/06/07/8hdtLaUQSNMP7Xe.png">
+<meta property="og:image" content="https://s2.loli.net/2024/06/07/2zVtBfSvdlIEHDw.png">
+<meta property="og:image" content="https://s2.loli.net/2024/06/07/O4hFP2IDivHNMo7.png">
+<meta property="og:image" content="https://s2.loli.net/2024/06/07/DOoRkKX7Azib9hN.png">
+<meta property="og:image" content="https://s2.loli.net/2024/06/07/L8QMcoWStNGaKgT.png">
+<meta property="og:image" content="https://s2.loli.net/2024/06/07/CDpdOPeW9zA3Rnx.png">
+<meta property="og:image" content="https://s2.loli.net/2024/06/07/VUAfbYPH1DpZ2FS.png">
+<meta property="og:image" content="https://s2.loli.net/2024/06/07/Hqb4oXJQN2exWps.png">
+<meta property="og:image" content="https://s2.loli.net/2024/06/07/K5ezmQuWc7TfPI9.png">
+<meta property="og:image" content="https://s2.loli.net/2024/06/07/zHCpyh9KoP7WTD8.png">
+<meta property="og:image" content="https://s2.loli.net/2024/06/07/LbYTkxmK7RH5veu.png">
+<meta property="og:image" content="https://s2.loli.net/2024/06/07/rVPDZhtAzdJFswp.png">
+<meta property="article:published_time" content="2024-06-07T15:12:54.862Z">
+<meta property="article:author" content="hope">
+<meta property="article:tag" content="windows">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2024/06/07/xMXw9l5pj7NTyY1.png">
+  
+  
+  
+  <title>Hook-IAT - hope</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"h0pe-ay.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ZqEEnP8vrF2LzEKjCt8pL5Cf-gzGzoHsz","app_key":"6Owvec9nVB4K93xxi7CKzAqh","server_url":"https://zqeenp8v.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>hope</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Hook-IAT"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-07 23:12" pubdate>
+          2024年6月7日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Hook-IAT</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>本文首发于蚁景网安</strong></p>
+<h1 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h1><h2 id="导入表"><a href="#导入表" class="headerlink" title="导入表"></a>导入表</h2><p>在一个可执行文件需要用到其余<code>DLL</code>文件中的函数时，就需要用到导入表，用于记录需要引用的函数。例如我们编写的可执行文件需要用到<code>CreateProcess</code>函数，就需要用到<code>kernel32.dll</code>文件并且将其中的<code>CreateProcess</code>函数的信息导入到我们的可执行文件中，然后再调用。</p>
+<p>为了管理这些导入函数，就构建了一个导入表进行统一的管理，简单来说，当我们编写的可执行文件中使用到导入函数就会去导入表中去搜索找到指定的导入函数，获取该导入函数的地址并调用。</p>
+<p><img src="https://s2.loli.net/2024/06/07/xMXw9l5pj7NTyY1.png" srcset="/img/loading.gif" lazyload alt="image-20240424192254287"></p>
+<p>因此加载器再调用导入函数之前需要先找到导入表的所在处。在可执行文件映射到内存空间是，都是以<code>Dos Header</code>开始的，在该头部存在<code>elfanew</code>的字段，用于记录<code>PE</code>文件头的偏移，在<code>PE</code>文件头存在可选头的结构体，该结构体中存储数据目录项，其中就包括了导入表。因此在内存中我们需要通过<code>Dos Header -&gt; Nt Header -&gt; Option Header -&gt; Import Table</code>的顺序获取导入表。</p>
+<p><img src="https://s2.loli.net/2024/06/07/8hdtLaUQSNMP7Xe.png" srcset="/img/loading.gif" lazyload alt="image-20240424193422922"></p>
+<p>这里使用《加密与解密》的图来看一下导入表的结构体，如下图。</p>
+<p><img src="https://s2.loli.net/2024/06/07/2zVtBfSvdlIEHDw.png" srcset="/img/loading.gif" lazyload alt="image-20240424195938393"></p>
+<p>可以看到导入表涉及的变量非常多，这里重点关注<code>OriginalFirstThunk</code>、<code>FistThunk</code>以及<code>Name</code></p>
+<ul>
+<li><code>Name</code>：指向导入库的名称。</li>
+<li><code>OriginalFistThunk</code>：指向输入名称表，里面存储了导入函数的信息。</li>
+<li><code>FirstThunk</code>：指向输入地址表，可以看到在初始化的时候<code>OriginalFistThunk</code>与<code>FirstThunk</code>指向的是同一块区域，即导入函数的信息。</li>
+</ul>
+<p>输入名称表的结构体如下图，这里重点关注<code>Ordinal</code>与<code>AddressOfData</code></p>
+<ul>
+<li><code>Ordinal</code>：记录函数的序号，即导入函数以序号存储</li>
+<li><code>AdressOfData</code>：以函数命的形式记录导入函数</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/06/07/O4hFP2IDivHNMo7.png" srcset="/img/loading.gif" lazyload alt="image-20240424201610702"></p>
+<p>那么<code>INT</code>与<code>IAT</code>的区别在于，加载器会在从导入表中获取了导入函数名称后，会搜索该函数的名称并获取该函数的地址并填入到<code>IAT</code>中，因此在经历了加载器后，<code>IAT</code>中存储了实际地址。如下图。</p>
+<p><img src="https://s2.loli.net/2024/06/07/DOoRkKX7Azib9hN.png" srcset="/img/loading.gif" lazyload alt="image-20240424202850423"></p>
+<h1 id="导入地址表钩取技术"><a href="#导入地址表钩取技术" class="headerlink" title="导入地址表钩取技术"></a>导入地址表钩取技术</h1><p>输入地址表钩取技术就是通过修改输入地址表的地址值，因此当调用该导入函数时会跳转到被篡改的地址上。</p>
+<p>在钩取之前的状态如下图</p>
+<p><img src="https://s2.loli.net/2024/06/07/L8QMcoWStNGaKgT.png" srcset="/img/loading.gif" lazyload alt="image-20240424204535373"></p>
+<p>在钩取之后的状态如下图</p>
+<p><img src="https://s2.loli.net/2024/06/07/CDpdOPeW9zA3Rnx.png" srcset="/img/loading.gif" lazyload alt="image-20240424204853835"></p>
+<p>因此总结一下输入地址表钩取技术的流程</p>
+<ul>
+<li>确定需要钩取的导入函数</li>
+<li>获取输入地址表的地址</li>
+<li>在输入地址表中搜索需要钩取的导入函数地址并且将导入函数地址修改为自定义的函数</li>
+<li>在处理完之后需要在自定义函数中重新调用被钩取的函数</li>
+</ul>
+<h2 id="确定需要钩取的导入函数"><a href="#确定需要钩取的导入函数" class="headerlink" title="确定需要钩取的导入函数"></a>确定需要钩取的导入函数</h2><p>首先确定可执行文件中存在什么导入函数，可以发现目标的可执行文件中导入了<code>kernel32.dll</code>的系统库，并且导入的<code>CreateProcessW</code></p>
+<p><img src="https://s2.loli.net/2024/06/07/VUAfbYPH1DpZ2FS.png" srcset="/img/loading.gif" lazyload alt="image-20240424205932029"></p>
+<p>那么采用输入地址表钩取方法钩取<code>CreateProcessW</code>函数。</p>
+<h2 id="获取导入地址表的地址"><a href="#获取导入地址表的地址" class="headerlink" title="获取导入地址表的地址"></a>获取导入地址表的地址</h2><p>根据<code>DOS Header -&gt; Nt Header -&gt; Option Header -&gt;Import Table</code>的顺序进行搜索，即可获取导入地址表的地址。</p>
+<p>代码如下</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++">...<br>        <span class="hljs-comment">//获取当前进程的基地址</span><br>    hMod = <span class="hljs-built_in">GetModuleHandle</span>(<span class="hljs-literal">NULL</span>);<br>    pBase = (PBYTE)hMod;<br>	<span class="hljs-comment">//进程的基地址是从DOS头开始的</span><br>    pImageDosHeader = (PIMAGE_DOS_HEADER)hMod;<br>	<span class="hljs-comment">//通过e_lfanew变量获取NT头的偏移，然后加上基地址及NT头的位置</span><br>    pImageNtHeaders = (PIMAGE_NT_HEADERS)(pBase + pImageDosHeader-&gt;e_lfanew);<br>	<span class="hljs-comment">//数据目录项下标为1的项是导入表</span><br>    pImageImportDescriptor = (PIMAGE_IMPORT_DESCRIPTOR)(pImageNtHeaders-&gt;OptionalHeader.DataDirectory[<span class="hljs-number">1</span>].VirtualAddress + pBase)<br>...<br></code></pre></td></tr></table></figure>
+
+<h2 id="获取导入函数地址并修改"><a href="#获取导入函数地址并修改" class="headerlink" title="获取导入函数地址并修改"></a>获取导入函数地址并修改</h2><p>在获取导入地址表的地址后，首先通过遍历导入表的结构体，提取其中的<code>Name</code>字段，判断是否为我们需要钩取的导入库名。在匹配完成后则选择继续遍历<code>IAT</code>中的函数地址，找到需要钩取的函数地址，找到后则修改为自定义函数的地址。</p>
+<p><img src="https://s2.loli.net/2024/06/07/Hqb4oXJQN2exWps.png" srcset="/img/loading.gif" lazyload alt="image-20240424212559365"></p>
+<p>代码如下</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs c++">...<br><span class="hljs-comment">//遍历导入表项</span><br><span class="hljs-keyword">for</span> (; pImageImportDescriptor-&gt;Name; pImageImportDescriptor++)<br>&#123;<br>    <span class="hljs-comment">//获取导入库的名称</span><br>    szLibName = (LPCSTR)(pImageImportDescriptor-&gt;Name + pBase);<br>    <span class="hljs-comment">//比较导入库的名称，判断是否为kernel32.dll</span><br>    <span class="hljs-keyword">if</span> (!_stricmp(szLibName, szDllName))<br>    &#123;<br>        <span class="hljs-comment">//获取IAT</span><br>        PIMAGE_THUNK_DATA pImageThunkData = (PIMAGE_THUNK_DATA)(pImageImportDescriptor-&gt;FirstThunk + pBase);<br>        <span class="hljs-comment">//获取导入函数地址</span><br>        <span class="hljs-keyword">for</span> (; pImageThunkData-&gt;u1.Function; pImageThunkData++)<br>        &#123;<br>            <span class="hljs-comment">//判断函数地址是否是需要钩取的函数地址，这里需要注意的是64位与32位地址的区别</span><br>            <span class="hljs-keyword">if</span> (pImageThunkData-&gt;u1.Function == (ULONGLONG)pfnOrg)<br>            &#123;<br>                <span class="hljs-comment">//修改IAT的权限为可写</span><br>                <span class="hljs-built_in">VirtualProtect</span>(&amp;pImageThunkData-&gt;u1.Function, <span class="hljs-number">4</span>, PAGE_EXECUTE_READWRITE, &amp;dwOldProtect);<br>                <span class="hljs-comment">//将原始的地址修改为自定义函数地址</span><br>                pImageThunkData-&gt;u1.Function = (ULONGLONG)pfnNew;<br>                <span class="hljs-comment">//将权限恢复</span><br>                <span class="hljs-built_in">VirtualProtect</span>(&amp;pImageThunkData-&gt;u1.Function, <span class="hljs-number">4</span>, dwOldProtect, &amp;dwOldProtect);<br>                <span class="hljs-keyword">return</span> TRUE;<br>            &#125;<br>        &#125;<br>    &#125;<br>    ...<br></code></pre></td></tr></table></figure>
+
+<h2 id="在自定义函数中重新调用被钩取的函数"><a href="#在自定义函数中重新调用被钩取的函数" class="headerlink" title="在自定义函数中重新调用被钩取的函数"></a>在自定义函数中重新调用被钩取的函数</h2><p>这里需要注意的是，我们需要构建一个自定函数，该函数的返回类型与参数需要与钩取的函数一模一样，这样我们就可以获取所有参数的信息，然后篡改后重新传递给原始的导入函数，即可完成钩取。</p>
+<p><img src="https://s2.loli.net/2024/06/07/K5ezmQuWc7TfPI9.png" srcset="/img/loading.gif" lazyload alt="image-20240424213549505"></p>
+<p>代码如下，这里篡改原始<code>CreateaProcessW</code>函数的第一个参数，使计算器</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c++">...<br>    LPCWSTR applicationName = <span class="hljs-string">L&quot;C:\\Windows\\System32\\calc.exe&quot;</span>;<br>    <br>    <span class="hljs-keyword">return</span> ((LPFN_CreateProcessW)g_pOrgFunc)(applicationName,<br>        lpCommandLine,<br>        lpProcessAttributes,<br>        lpThreadAttributes,<br>        bInheritHandles,<br>        dwCreationFlags,<br>        lpEnvironment,<br>        lpCurrentDirectory,<br>        lpStartupInfo,<br>        lpProcessInformation);<br>...<br></code></pre></td></tr></table></figure>
+
+<p>完整代码:<a target="_blank" rel="noopener" href="https://github.com/h0pe-ay/HookTechnology/blob/main/Hook-IAT/iat.cpp">https://github.com/h0pe-ay/HookTechnology/blob/main/Hook-IAT/iat.cpp</a></p>
+<h1 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h1><p>刚开始使用的是<code>xdbg</code>调试，但是用的不太习惯，后面改用<code>WinDbg</code>还可以源码调试，这里记录一下需要用到的操作与指令。</p>
+<h2 id="符号表与源码加载"><a href="#符号表与源码加载" class="headerlink" title="符号表与源码加载"></a>符号表与源码加载</h2><p>在设置中可以选择源码默认的目录以及符号表默认的目录，符号文件则是利用<code>Visutal Studio</code>编译生成的<code>pdb</code>文件。</p>
+<p>其中<code>srv*c:\Symbols*https://msdl.microsoft.com/download/symbols</code>是下载官方的符号表文件，这里可以选择删掉只调试我们设置的文件。不然每次都需要下载一遍影响时间。</p>
+<p>源码文件也可以在侧边栏选择<code>Open source file</code>选项打开。</p>
+<p><img src="https://s2.loli.net/2024/06/07/zHCpyh9KoP7WTD8.png" srcset="/img/loading.gif" lazyload alt="image-20240425103000930"></p>
+<h2 id="DLL加载调试"><a href="#DLL加载调试" class="headerlink" title="DLL加载调试"></a>DLL加载调试</h2><p>由于钩取时需要先使用<code>DLL</code>注入技术将自定义的<code>DLL</code>文件注入进去，因此想要调试钩取过程则需要在<code>DLL</code>附着的时候打下断点。</p>
+<p>利用<code>sxe ld:xxx.dll</code>即可在加载<code>xxx.dll</code>的时候打下断点。</p>
+<p>利用<code>sxe ud:xxx.dll</code>即在卸载<code>xxx.dll</code>的时候打下断点。</p>
+<p><img src="https://s2.loli.net/2024/06/07/LbYTkxmK7RH5veu.png" srcset="/img/loading.gif" lazyload alt="image-20240425103802758"></p>
+<h2 id="关闭优化调试"><a href="#关闭优化调试" class="headerlink" title="关闭优化调试"></a>关闭优化调试</h2><p>防止自定义函数中的变量被优化导致不方便单步调试，在<code>Visual Studio</code>中可以选择关闭优化进行编译。</p>
+<p><img src="https://s2.loli.net/2024/06/07/rVPDZhtAzdJFswp.png" srcset="/img/loading.gif" lazyload alt="image-20240425104053895"></p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ul>
+<li>《加密与解密》</li>
+<li>《逆向工程核心原理》</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Hook/" class="category-chain-item">Hook</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/windows/">#windows</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Hook-IAT</div>
+      <div>https://h0pe-ay.github.io/Hook-IAT/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>hope</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年6月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/CVE-2022-32250%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86/" title="CVE-2022-32250漏洞原理">
+                        <span class="hidden-mobile">CVE-2022-32250漏洞原理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
