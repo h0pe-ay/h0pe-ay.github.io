@@ -1,0 +1,781 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="McULNauwae3fxE8yPK3QNQNAYvG6cZAJ02xx9Lpbc98" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/hope.jpg">
+  <link rel="icon" href="/img/hope.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="hope">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="进程隐藏">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ProcecssHide">
+<meta property="og:url" content="https://h0pe-ay.github.io/ProcecssHide/index.html">
+<meta property="og:site_name" content="hope">
+<meta property="og:description" content="进程隐藏">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/07/15/f9RwOgtnSQ8Wq6s.png">
+<meta property="og:image" content="https://s2.loli.net/2024/07/15/KYU5JqNs4fBvlir.png">
+<meta property="og:image" content="https://s2.loli.net/2024/07/15/xJp8ynAhGgdV4v3.png">
+<meta property="og:image" content="https://s2.loli.net/2024/07/15/wNTEkqHByxpogIz.png">
+<meta property="og:image" content="https://s2.loli.net/2024/07/15/23HeMslrQD18GTf.png">
+<meta property="og:image" content="https://s2.loli.net/2024/07/15/1NRV824PMXZDvsn.png">
+<meta property="og:image" content="https://s2.loli.net/2024/07/15/zeMHYDO6ckmXPUv.png">
+<meta property="og:image" content="https://s2.loli.net/2024/07/15/pvcIgXAnqW5wU7k.png">
+<meta property="og:image" content="https://s2.loli.net/2024/07/15/PYqdws1SJUvDxoV.png">
+<meta property="og:image" content="https://s2.loli.net/2024/07/15/qOzA2dNpUmHnSKT.png">
+<meta property="og:image" content="https://s2.loli.net/2024/07/15/85l9uhkQLjapFXs.png">
+<meta property="og:image" content="https://s2.loli.net/2024/07/15/1Z5R6hdzeCDoq4U.png">
+<meta property="og:image" content="https://s2.loli.net/2024/07/15/GiEwT2PyU4cdMIu.png">
+<meta property="og:image" content="https://s2.loli.net/2024/07/15/2y6rVgAXB7cWeOk.png">
+<meta property="article:published_time" content="2024-07-15T14:45:07.554Z">
+<meta property="article:author" content="hope">
+<meta property="article:tag" content="windows">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2024/07/15/f9RwOgtnSQ8Wq6s.png">
+  
+  
+  
+  <title>ProcecssHide - hope</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"h0pe-ay.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ZqEEnP8vrF2LzEKjCt8pL5Cf-gzGzoHsz","app_key":"6Owvec9nVB4K93xxi7CKzAqh","server_url":"https://zqeenp8v.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>hope</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ProcecssHide"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-15 22:45" pubdate>
+          2024年7月15日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          73 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ProcecssHide</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>本文首发于蚁景网安</strong></p>
+<h1 id="进程遍历方法"><a href="#进程遍历方法" class="headerlink" title="进程遍历方法"></a>进程遍历方法</h1><p>在实现进程隐藏时，首先需要明确遍历进程的方法。</p>
+<h2 id="CreateToolhelp32Snapshot"><a href="#CreateToolhelp32Snapshot" class="headerlink" title="CreateToolhelp32Snapshot"></a>CreateToolhelp32Snapshot</h2><p><code>CreateToolhelp32Snapshot</code>函数用于创建进程的镜像，当第二个参数为<code>0</code>时则是创建所有进程的镜像，那么就可以达到遍历所有进程的效果。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;Windows.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;TlHelp32.h&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">//设置编码，便于后面能够输出中文</span><br>    <span class="hljs-built_in">setlocale</span>(LC_ALL, <span class="hljs-string">&quot;zh_CN.UTF-8&quot;</span>);<br>    <span class="hljs-comment">//创建进程镜像，参数0代表创建所有进程的镜像</span><br>    HANDLE hSnapshot = <span class="hljs-built_in">CreateToolhelp32Snapshot</span>(TH32CS_SNAPPROCESS, <span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">if</span> (hSnapshot == INVALID_HANDLE_VALUE)<br>    &#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Create Error&quot;</span> &lt;&lt; std::endl;<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);<br>    &#125;<br><br>    <span class="hljs-comment">/*</span><br><span class="hljs-comment">    * typedef struct tagPROCESSENTRY32 &#123; </span><br><span class="hljs-comment">    * DWORD dwSize; 　　　　　　　　　　　　　　进程信息结构体大小,首次调用之前必须初始化</span><br><span class="hljs-comment">    * DWORD cntUsage; 　　　　　　　　　　　　 引用进程的次数,引用次数为0时,则进程结束</span><br><span class="hljs-comment">    * DWORD th32ProcessID; 　　　　　　　　　　进程的ID</span><br><span class="hljs-comment">    * ULONG_PTR th32DefaultHeapID; 　　　　  进程默认堆的标识符,除工具使用对我们没用</span><br><span class="hljs-comment">    * DWORD th32ModuleID;                  进程模块的标识符</span><br><span class="hljs-comment">    * DWORD cntThreads; 　　　　　　　　　　  进程启动的执行线程数</span><br><span class="hljs-comment">    * DWORD th32ParentProcessID;           父进程ID</span><br><span class="hljs-comment">    * LONG  pcPriClassBase; 　　　　　　　　 进程线程的基本优先级</span><br><span class="hljs-comment">    * DWORD dwFlags; 　　　　　　　　　　　　 保留</span><br><span class="hljs-comment">    * TCHAR szExeFile[MAX_PATH];          进程的路径</span><br><span class="hljs-comment">    * &#125; PROCESSENTRY32; </span><br><span class="hljs-comment">    * typedef PROCESSENTRY32 *PPROCESSENTRY32; </span><br><span class="hljs-comment">    */</span><br>    PROCESSENTRY32 pi;<br>    pi.dwSize = <span class="hljs-built_in">sizeof</span>(PROCESSENTRY32);<br>    <span class="hljs-comment">//取出第一个进程</span><br>    BOOL bRet = <span class="hljs-built_in">Process32First</span>(hSnapshot, &amp;pi);<br>    <span class="hljs-keyword">while</span> (bRet)<br>    &#123;<br>        <span class="hljs-built_in">wprintf</span>(<span class="hljs-string">L&quot;进程路径:%s\t进程号:%d\n&quot;</span>, pi.szExeFile, pi.th32ProcessID);<br>        <span class="hljs-comment">//取出下一个进程</span><br>        bRet = <span class="hljs-built_in">Process32Next</span>(hSnapshot, &amp;pi);<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="EnumProcesses"><a href="#EnumProcesses" class="headerlink" title="EnumProcesses"></a>EnumProcesses</h2><p><code>EnumProcesses</code>用于将所有进程号的收集。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;Windows.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;Psapi.h&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">setlocale</span>(LC_ALL, <span class="hljs-string">&quot;zh_CN.UTF-8&quot;</span>);<br><br>    DWORD processes[<span class="hljs-number">1024</span>], dwResult, size;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> i;<br>	<span class="hljs-comment">//收集所有进程的进程号</span><br>    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">EnumProcesses</span>(processes, <span class="hljs-built_in">sizeof</span>(processes), &amp;dwResult))<br>    &#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Enum Error&quot;</span> &lt;&lt; std::endl;<br>    &#125;<br>	<br>    <span class="hljs-comment">//进程数量</span><br>    size = dwResult / <span class="hljs-built_in">sizeof</span>(DWORD);<br><br>    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; size; i++)<br>    &#123;<br>        <span class="hljs-comment">//判断进程号是否为0</span><br>        <span class="hljs-keyword">if</span> (processes[i] != <span class="hljs-number">0</span>)<br>        &#123;<br>            <span class="hljs-comment">//用于存储进程路径</span><br>            TCHAR szProcessName[MAX_PATH] = &#123; <span class="hljs-number">0</span> &#125;;<br>            <span class="hljs-comment">//使用查询权限打开进程</span><br>            HANDLE hProcess = <span class="hljs-built_in">OpenProcess</span>(PROCESS_QUERY_INFORMATION |<br>                PROCESS_VM_READ,<br>                FALSE,<br>                processes[i]);<br><br>            <span class="hljs-keyword">if</span> (hProcess != <span class="hljs-literal">NULL</span>)<br>            &#123;<br>                HMODULE hMod;<br>                DWORD dwNeeded;<br>				<span class="hljs-comment">//收集该进程的所有模块句柄，第一个句柄则为文件路径</span><br>                <span class="hljs-keyword">if</span> (<span class="hljs-built_in">EnumProcessModules</span>(hProcess, &amp;hMod, <span class="hljs-built_in">sizeof</span>(hMod),<br>                    &amp;dwNeeded))<br>                &#123;<br>                    <span class="hljs-comment">//根据句柄获取文件路径</span><br>                    <span class="hljs-built_in">GetModuleBaseName</span>(hProcess, hMod, szProcessName,<br>                        <span class="hljs-built_in">sizeof</span>(szProcessName) / <span class="hljs-built_in">sizeof</span>(TCHAR));<br>                &#125;<br>                <span class="hljs-built_in">wprintf</span>(<span class="hljs-string">L&quot;进程路径:%s\t进程号:%d\n&quot;</span>, szProcessName, processes[i]);<br>            &#125;<br>        &#125;   <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="ZwQuerySystemInfomation"><a href="#ZwQuerySystemInfomation" class="headerlink" title="ZwQuerySystemInfomation"></a>ZwQuerySystemInfomation</h2><p><code>ZwQuerySystemInfomation</code>函数是<code>CreateToolhelp32Snapshot</code>函数与<code>EnumProcesses</code>函数底层调用的函数，也用于遍历进程信息。代码参考<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1454933">https://cloud.tencent.com/developer/article/1454933</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;Windows.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;ntstatus.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;winternl.h&gt;</span> </span><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> comment(lib, <span class="hljs-string">&quot;ntdll.lib&quot;</span>) </span><br><br><span class="hljs-comment">//定义函数指针</span><br><span class="hljs-function"><span class="hljs-keyword">typedef</span> <span class="hljs-title">NTSTATUS</span><span class="hljs-params">(WINAPI* NTQUERYSYSTEMINFORMATION)</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">	IN      SYSTEM_INFORMATION_CLASS SystemInformationClass,</span></span><br><span class="hljs-params"><span class="hljs-function">	IN OUT   PVOID                    SystemInformation,</span></span><br><span class="hljs-params"><span class="hljs-function">	IN      ULONG                    SystemInformationLength,</span></span><br><span class="hljs-params"><span class="hljs-function">	OUT PULONG                   ReturnLength</span></span><br><span class="hljs-params"><span class="hljs-function">	)</span></span>;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">//设置编码</span><br>	<span class="hljs-built_in">setlocale</span>(LC_ALL, <span class="hljs-string">&quot;zh_CN.UTF-8&quot;</span>);<br>    <span class="hljs-comment">//获取模块地址</span><br>	HINSTANCE ntdll_dll = <span class="hljs-built_in">GetModuleHandle</span>(<span class="hljs-string">L&quot;ntdll.dll&quot;</span>);<br>	<span class="hljs-keyword">if</span> (ntdll_dll == <span class="hljs-literal">NULL</span>) &#123;<br>		std::cout &lt;&lt; <span class="hljs-string">&quot;Get Module Error&quot;</span> &lt;&lt; std::endl;<br>		<span class="hljs-built_in">exit</span>(<span class="hljs-number">-1</span>);<br>	&#125;<br><br>	NTQUERYSYSTEMINFORMATION ZwQuerySystemInformation = <span class="hljs-literal">NULL</span>;<br>	<span class="hljs-comment">//获取函数地址</span><br>	ZwQuerySystemInformation = (NTQUERYSYSTEMINFORMATION)<span class="hljs-built_in">GetProcAddress</span>(ntdll_dll, <span class="hljs-string">&quot;ZwQuerySystemInformation&quot;</span>);<br>	<span class="hljs-keyword">if</span> (ZwQuerySystemInformation != <span class="hljs-literal">NULL</span>)<br>	&#123;<br>		SYSTEM_BASIC_INFORMATION sbi = &#123; <span class="hljs-number">0</span> &#125;;<br>        <span class="hljs-comment">//查询系统基本信息</span><br>		NTSTATUS status = <span class="hljs-built_in">ZwQuerySystemInformation</span>(SystemBasicInformation, (PVOID)&amp;sbi, <span class="hljs-built_in">sizeof</span>(sbi), <span class="hljs-literal">NULL</span>);<br>		<span class="hljs-keyword">if</span> (status == STATUS_SUCCESS)<br>		&#123;<br>			<span class="hljs-built_in">wprintf</span>(<span class="hljs-string">L&quot;处理器个数:%d\r\n&quot;</span>, sbi.NumberOfProcessors);<br>		&#125;<br>		<span class="hljs-keyword">else</span><br>		&#123;<br>			<span class="hljs-built_in">wprintf</span>(<span class="hljs-string">L&quot;ZwQuerySystemInfomation Error\n&quot;</span>);<br>		&#125;<br><br>		DWORD dwNeedSize = <span class="hljs-number">0</span>;<br>		BYTE* pBuffer = <span class="hljs-literal">NULL</span>;<br><br>		<span class="hljs-built_in">wprintf</span>(<span class="hljs-string">L&quot;\t----所有进程信息----\t\n&quot;</span>);<br>		PSYSTEM_PROCESS_INFORMATION psp = <span class="hljs-literal">NULL</span>;<br>        <span class="hljs-comment">//查询进程数量</span><br>		status = <span class="hljs-built_in">ZwQuerySystemInformation</span>(SystemProcessInformation, <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, &amp;dwNeedSize);<br>		<span class="hljs-keyword">if</span> (status == STATUS_INFO_LENGTH_MISMATCH)<br>		&#123;<br>			pBuffer = <span class="hljs-keyword">new</span> BYTE[dwNeedSize];<br>            <span class="hljs-comment">//查询进程信息</span><br>			status = <span class="hljs-built_in">ZwQuerySystemInformation</span>(SystemProcessInformation, (PVOID)pBuffer, dwNeedSize, <span class="hljs-literal">NULL</span>);<br>			<span class="hljs-keyword">if</span> (status == STATUS_SUCCESS)<br>			&#123;<br>				psp = (PSYSTEM_PROCESS_INFORMATION)pBuffer;<br>				<span class="hljs-built_in">wprintf</span>(<span class="hljs-string">L&quot;\tPID\t线程数\t工作集大小\t进程名\n&quot;</span>);<br>				<span class="hljs-keyword">do</span> &#123;<br>                    <span class="hljs-comment">//获取进程号</span><br>					<span class="hljs-built_in">wprintf</span>(<span class="hljs-string">L&quot;\t%d&quot;</span>, psp-&gt;UniqueProcessId);<br>                    <span class="hljs-comment">//获取线程数量</span><br>					<span class="hljs-built_in">wprintf</span>(<span class="hljs-string">L&quot;\t%d&quot;</span>, psp-&gt;NumberOfThreads);<br>                    <span class="hljs-comment">//获取工作集大小</span><br>					<span class="hljs-built_in">wprintf</span>(<span class="hljs-string">L&quot;\t%d&quot;</span>, psp-&gt;WorkingSetSize / <span class="hljs-number">1024</span>);<br>                    <span class="hljs-comment">//获取路径</span><br>					<span class="hljs-built_in">wprintf</span>(<span class="hljs-string">L&quot;\t%s\n&quot;</span>, psp-&gt;ImageName.Buffer);<br>                    <span class="hljs-comment">//移动</span><br>					psp = (PSYSTEM_PROCESS_INFORMATION)((PBYTE)psp + psp-&gt;NextEntryOffset);<br>				&#125; <span class="hljs-keyword">while</span> (psp-&gt;NextEntryOffset != <span class="hljs-number">0</span>);<br>				<span class="hljs-keyword">delete</span>[]pBuffer;<br>				pBuffer = <span class="hljs-literal">NULL</span>;<br>			&#125;<br>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (status == STATUS_UNSUCCESSFUL) &#123;<br>				<span class="hljs-built_in">wprintf</span>(<span class="hljs-string">L&quot;\n STATUS_UNSUCCESSFUL&quot;</span>);<br>			&#125;<br>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (status == STATUS_NOT_IMPLEMENTED) &#123;<br>				<span class="hljs-built_in">wprintf</span>(<span class="hljs-string">L&quot;\n STATUS_NOT_IMPLEMENTED&quot;</span>);<br>			&#125;<br>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (status == STATUS_INVALID_INFO_CLASS) &#123;<br>				<span class="hljs-built_in">wprintf</span>(<span class="hljs-string">L&quot;\n STATUS_INVALID_INFO_CLASS&quot;</span>);<br>			&#125;<br>			<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (status == STATUS_INFO_LENGTH_MISMATCH) &#123;<br>				<span class="hljs-built_in">wprintf</span>(<span class="hljs-string">L&quot;\n STATUS_INFO_LENGTH_MISMATCH&quot;</span>);<br>			&#125;<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="进程隐藏"><a href="#进程隐藏" class="headerlink" title="进程隐藏"></a>进程隐藏</h1><p>通过上述分析可以知道遍历进程的方式有三种，分别是利用<code>CreateToolhelp32Snapshot</code>、<code>EnumProcesses</code>以及<code>ZwQuerySystemInfomation</code>函数</p>
+<p>但是<code>CreateToolhelp32Snapshot</code>与<code>EnumProcesses</code>函数底层都是调用了<code>ZwQuerySystemInfomation</code>函数，因此我们只需要钩取该函数即可。</p>
+<p>由于测试环境是<code>Win11</code>，因此需要判断在<code>Win11</code>情况下底层是否还是调用了<code>ZwQuerySystemInfomation</code>函数。</p>
+<p>可以看到在<code>Win11</code>下还是会调用<code>ZwQuerySystemInfomation</code>函数，在用户态下该函数的名称为<code>NtQuerySystemInformation</code>函数。</p>
+<p><img src="https://s2.loli.net/2024/07/15/f9RwOgtnSQ8Wq6s.png" srcset="/img/loading.gif" lazyload alt="image-20240521112821914"></p>
+<p>这里采用内联钩取的方式对<code>ZwQuerySystemInfomation</code>进行钩取处理，具体怎么钩取在<a href="">浅谈内联钩取原理与实现</a>已经介绍过了，这里就不详细说明了。这里对自定义的<code>ZwQuerySystemInfomation</code>函数进行说明。</p>
+<p>首先第一步需要进行脱钩处理，因为后续需要用到初始的<code>ZwQuerySystemInfomation</code>函数，紧接着获取待钩取函数的地址即可。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++">...<br>    <span class="hljs-comment">//脱钩</span><br>    <span class="hljs-built_in">UnHook</span>(<span class="hljs-string">&quot;ntdll.dll&quot;</span>, <span class="hljs-string">&quot;ZwQuerySystemInformation&quot;</span>, g_pOrgBytes);<br>    HMODULE hModule = <span class="hljs-built_in">GetModuleHandleA</span>(<span class="hljs-string">&quot;ntdll.dll&quot;</span>);<br>	<span class="hljs-comment">//获取待钩取函数的地址</span><br>    PROC    pfnOld = <span class="hljs-built_in">GetProcAddress</span>(hModule, <span class="hljs-string">&quot;ZwQuerySystemInformation&quot;</span>);<br>	<span class="hljs-comment">//调用原始的ZwQuerySystemInfomation函数</span><br>    NTSTATUS status = ((NTQUERYSYSTEMINFORMATION)pfnOld)(SystemInformationClass, SystemInformation, SystemInformationLength, ReturnLength);<br>...<br></code></pre></td></tr></table></figure>
+
+<p>为了隐藏指定进程，我们需要遍历进程信息，找到目标进程并且删除该进程信息实现隐藏的效果。这里需要知道的是进程信息都存储在<code>SYSTEM_PROCESS_INFORMATION</code>结构体中，该结构体是通过单链表对进程信息进行链接。因此我们通过匹配进程名称找到对应的<code>SYSTEM_PROCESS_INFORMATION</code>结构体，然后进行删除即可，效果如下图。</p>
+<p><img src="https://s2.loli.net/2024/07/15/KYU5JqNs4fBvlir.png" srcset="/img/loading.gif" lazyload alt="image-20240521114544753"></p>
+<p>通过单链表中删除节点的操作，取出目标进程的结构体。代码如下</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c++">...<br> 		pCur = (PSYSTEM_PROCESS_INFORMATION)(SystemInformation);<br>        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">lstrcmpi</span>(pCur-&gt;ImageName.Buffer, <span class="hljs-string">L&quot;test.exe&quot;</span>))<br>            &#123;<br>                <span class="hljs-comment">//需要隐藏的进程是最后一个节点</span><br>                <span class="hljs-keyword">if</span> (pCur-&gt;NextEntryOffset == <span class="hljs-number">0</span>)<br>                    pPrev-&gt;NextEntryOffset = <span class="hljs-number">0</span>;<br>                <span class="hljs-comment">//不是最后一个节点，则将该节点取出</span><br>                <span class="hljs-keyword">else</span><br>                    pPrev-&gt;NextEntryOffset += pCur-&gt;NextEntryOffset;<br><br>            &#125;<br>            <span class="hljs-comment">//不是需要隐藏的节点，则继续遍历</span><br>            <span class="hljs-keyword">else</span><br>                pPrev = pCur;<br>            <span class="hljs-comment">//链表遍历完毕</span><br>            <span class="hljs-keyword">if</span> (pCur-&gt;NextEntryOffset == <span class="hljs-number">0</span>)<br>                <span class="hljs-keyword">break</span>;<br>            pCur = (PSYSTEM_PROCESS_INFORMATION)((PBYTE)pCur + pCur-&gt;NextEntryOffset);<br>        &#125;<br>...<br></code></pre></td></tr></table></figure>
+
+<p>完整代码：<a target="_blank" rel="noopener" href="https://github.com/h0pe-ay/HookTechnology/blob/main/ProcessHidden/inlineHook.c">https://github.com/h0pe-ay/HookTechnology/blob/main/ProcessHidden/inlineHook.c</a></p>
+<p>但是采用内联钩取的方法去钩取任务管理器就会出现一个问题，这里将断点取消，利用内联钩取的方式去隐藏进程。</p>
+<p>首先利用<code>bl</code>命令查看断点</p>
+<p><img src="https://s2.loli.net/2024/07/15/xJp8ynAhGgdV4v3.png" srcset="/img/loading.gif" lazyload alt="image-20240521163453039"></p>
+<p>紧着利用 <code>bc [ID]</code>删除断点</p>
+<p><img src="https://s2.loli.net/2024/07/15/wNTEkqHByxpogIz.png" srcset="/img/loading.gif" lazyload alt="image-20240521163650956"></p>
+<p>在注入之后任务管理器会在拷贝的时候发生异常</p>
+<p><img src="https://s2.loli.net/2024/07/15/23HeMslrQD18GTf.png" srcset="/img/loading.gif" lazyload alt="image-20240521164244394"></p>
+<p>在经过一番调试后发现，由于多线程共同执行导致原本需要可写权限的段被修改为只读权限</p>
+<p>在<code>windbg</code>可以用使用<code>!vprot + address</code>查看指定地址的权限，可以看到由于程序往只读权限的地址进行拷贝处理，所以导致了异常。</p>
+<p><img src="https://s2.loli.net/2024/07/15/1NRV824PMXZDvsn.png" srcset="/img/loading.gif" lazyload alt="image-20240521164709861"></p>
+<p>但是在执行拷贝阶段是先修改了该地址为可写权限，那么导致该原因的情况就是其他线程执行了权限恢复后切换到该线程中进行写，所以导致了这个问题。</p>
+<p><img src="https://s2.loli.net/2024/07/15/zeMHYDO6ckmXPUv.png" srcset="/img/loading.gif" lazyload alt="image-20240521165018268"></p>
+<p>因此内联钩取是存在多线程安全的问题，此时可以使用微软自己构建的钩取库<code>Detours</code>，可以在钩取过程中确保线程安全。 </p>
+<h1 id="Detours"><a href="#Detours" class="headerlink" title="Detours"></a>Detours</h1><p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/microsoft/Detours">https://github.com/microsoft/Detours</a></p>
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/linxmouse/p/14168712.html">https://www.cnblogs.com/linxmouse/p/14168712.html</a></p>
+<p>使用<code>vcpkg</code>下载</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs vim">vcpkg.<span class="hljs-keyword">exe</span> install detour<span class="hljs-variable">s:x86</span>-windows<br>vcpkg.<span class="hljs-keyword">exe</span> install detour<span class="hljs-variable">s:x64</span>-windows<br>vcpkg.<span class="hljs-keyword">exe</span> integrate install<br></code></pre></td></tr></table></figure>
+
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p><strong>挂钩</strong></p>
+<p>利用<code>Detours</code>挂钩非常简单，只需要根据下列顺序，并且将自定义函数的地址与被挂钩的地址即可完成挂钩处理。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++">...<br>    	<span class="hljs-comment">//用于确保在 DLL 注入或加载时，恢复被 Detours 修改的进程镜像,保持稳定性</span><br>		<span class="hljs-built_in">DetourRestoreAfterWith</span>();<br>        <span class="hljs-comment">//开始一个新的事务来附加或分离</span><br>        <span class="hljs-built_in">DetourTransactionBegin</span>();<br>		<span class="hljs-comment">//进行线程上下文的更新</span><br>        <span class="hljs-built_in">DetourUpdateThread</span>(<span class="hljs-built_in">GetCurrentThread</span>());<br>		<span class="hljs-comment">//挂钩</span><br>        <span class="hljs-built_in">DetourAttach</span>(&amp;(PVOID&amp;)TrueZwQuerySystemInformation, ZwQuerySystemInformationEx);<br>		<span class="hljs-comment">//提交事务</span><br>        error = <span class="hljs-built_in">DetourTransactionCommit</span>();<br>...<br></code></pre></td></tr></table></figure>
+
+<p><strong>脱钩</strong></p>
+<p>然后根据顺序完成脱钩即可。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++">...<br>    	<span class="hljs-comment">//开始一个新的事务来附加或分离</span><br>		<span class="hljs-built_in">DetourTransactionBegin</span>();<br>		<span class="hljs-comment">//进行线程上下文的更新</span><br>        <span class="hljs-built_in">DetourUpdateThread</span>(<span class="hljs-built_in">GetCurrentThread</span>());<br>		<span class="hljs-comment">//脱钩</span><br>        <span class="hljs-built_in">DetourDetach</span>(&amp;(PVOID&amp;)TrueZwQuerySystemInformation, ZwQuerySystemInformationEx);<br>		<span class="hljs-comment">//提交事务</span><br>        error = <span class="hljs-built_in">DetourTransactionCommit</span>();<br>...<br></code></pre></td></tr></table></figure>
+
+<h2 id="挂钩的原理"><a href="#挂钩的原理" class="headerlink" title="挂钩的原理"></a>挂钩的原理</h2><p>从上述可以看到，<code>Detours</code>是通过事务确保了在<code>DLL</code>加载与卸载时后的原子性，但是如何确保多线程安全呢？后续通过调试去发现。</p>
+<p>可以利用<code>x ntdl!ZwQuerySystemInformation</code>查看函数地址，可以看到函数的未被挂钩前的情况如下图。</p>
+<p><img src="https://s2.loli.net/2024/07/15/pvcIgXAnqW5wU7k.png" srcset="/img/loading.gif" lazyload alt="image-20240521201600606"></p>
+<p>挂钩之后原始的指令被修改为一个跳转指令把前八个字节覆盖掉，剩余的3字节用垃圾指令填充。</p>
+<p><img src="https://s2.loli.net/2024/07/15/PYqdws1SJUvDxoV.png" srcset="/img/loading.gif" lazyload alt="image-20240521201738346"></p>
+<p>该地址里面又是一个<code>jmp</code>指令，并且完成间接寻址的跳转。</p>
+<p><img src="https://s2.loli.net/2024/07/15/qOzA2dNpUmHnSKT.png" srcset="/img/loading.gif" lazyload alt="image-20240521203443934"></p>
+<p>该地址是自定义函数<code>ZwQuerySystemInformationEx</code>，因此该间接跳转是跳转到的自定义函数内部。</p>
+<p><img src="https://s2.loli.net/2024/07/15/85l9uhkQLjapFXs.png" srcset="/img/loading.gif" lazyload alt="image-20240521203616163"></p>
+<p>跳转到<code>TrueZwQuerySystemInformation</code>内部发现<code>ZwQuerySystemInformation</code>函数内部的八字节指令被移动到该函数内部。紧接着又完成一个跳转。</p>
+<p><img src="https://s2.loli.net/2024/07/15/1Z5R6hdzeCDoq4U.png" srcset="/img/loading.gif" lazyload alt="image-20240521203949688"></p>
+<p>该跳转到<code>ZwQuerySystemInformation</code>函数内部紧接着完成<code>ZwQuerySystemInformation</code>函数的调用。</p>
+<p><img src="https://s2.loli.net/2024/07/15/GiEwT2PyU4cdMIu.png" srcset="/img/loading.gif" lazyload alt="image-20240521204307767"></p>
+<p>综上所述，整体流程如下图。实际上<code>Detours</code>实际上使用的是热补丁的思路，但是<code>Detours</code>并不是直接在原始的函数空间中进行补丁，而是开辟了一段临时空间，将指令存储在里面。因此在挂钩后不需要进行脱钩处理就可以调用原始函数。因此就不存在多线程中挂钩与脱钩的冲突。</p>
+<p><img src="https://s2.loli.net/2024/07/15/2y6rVgAXB7cWeOk.png" srcset="/img/loading.gif" lazyload alt="image-20240521205625185"></p>
+<p>完整代码：<a target="_blank" rel="noopener" href="https://github.com/h0pe-ay/HookTechnology/blob/main/ProcessHidden/detoursHook.c">https://github.com/h0pe-ay/HookTechnology/blob/main/ProcessHidden/detoursHook.c</a></p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/win32/psapi/enumerating-all-processes">https://learn.microsoft.com/zh-cn/windows/win32/psapi/enumerating-all-processes</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1454933">https://cloud.tencent.com/developer/article/1454933</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/linxmouse/p/14168712.html">https://www.cnblogs.com/linxmouse/p/14168712.html</a></p>
+<p>《逆向工程核心原理》</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Hook/" class="category-chain-item">Hook</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/windows/">#windows</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ProcecssHide</div>
+      <div>https://h0pe-ay.github.io/ProcecssHide/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>hope</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/Hook-HotPatch/" title="Hook-HotPatch">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hook-HotPatch</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/Hook-IAT/" title="Hook-IAT">
+                        <span class="hidden-mobile">Hook-IAT</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
